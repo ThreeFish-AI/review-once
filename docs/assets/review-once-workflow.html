@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="archify 3.0.0">
   <meta name="archify-reader-contract" content="declared-wide-v1">
-  <title>review-once · 双 Mode 有界 Review-Fix</title>
+  <title>review-once · 双 Mode 有界 Review-Fix 生命周期</title>
   <script>
     // Resolve the theme before first paint so light-preference users don't
     // see a dark flash. The toolbar script below re-applies with UI state.
@@ -2980,7 +2980,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       body { background: #ffffff !important; padding: 0; }
       .container { max-width: none; }
       .toolbar, .diagram-nav, .focus-chip, .archify-toast, .no-print { display: none !important; }
-
+      
       .diagram-container, .card { box-shadow: none; border-color: #e2e8f0; }
       .diagram-container { --archify-nav-reserve: 0px !important; }
       html[data-preset="signal-flow"] .diagram-container,
@@ -3902,24 +3902,24 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       .route-journey-controls button { min-height: 2.75rem; }
       .route-probe-status { padding: 0.05rem 0.48rem 0.38rem; }
       .route-probe-node { max-width: 7.5rem; }
-
-
-
-
-
-
-
-
-
-
-
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       html[data-embed="true"][data-share-playback="true"] .diagram-container {
         padding-top: 4.25rem;
       }
       html[data-embed="true"][data-share-moment="true"] .diagram-container {
         padding-top: 4.25rem;
       }
-
+      
       .cards {
         grid-template-columns: 1fr;
         margin-top: 1rem;
@@ -3962,7 +3962,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-
+      
       html[data-present="true"]:not([data-embed="true"]) .diagram-container { padding: 0.5rem 0.5rem 3.75rem; }
       html[data-present="true"]:not([data-embed="true"]) .diagram-container[data-wide-diagram="true"] > svg {
         width: 720px;
@@ -4842,7 +4842,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       .semantic-lens,
       .diagram-guide,
       .overview-map-live { animation: none !important; }
-
+      
       .intent-trace-flow {
         animation: none !important;
         stroke-dasharray: none;
@@ -4978,7 +4978,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
            data-preset-badge-blueprint="蓝图 / 修订 01"
            data-preset-badge-editorial="编辑风格 / 现场笔记">
         <div class="pulse-dot"></div>
-        <h1>review-once · 双 Mode 有界 Review-Fix</h1>
+        <h1>review-once · 双 Mode 有界 Review-Fix 生命周期</h1>
       </div>
       <p class="subtitle">Conductor / Git fallback → Review → Chat → Fix → Verify → Re-review → 收敛或有界停止</p>
     </div>
@@ -4988,8 +4988,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     <!-- Main Diagram -->
     <div class="diagram-container" data-detail-level="read"
          data-preset-badge-editorial-plate="ARCHIFY / 图版 04">
-      <svg viewBox="0 0 1205 676" data-layout-contract="readable-v2" role="img" lang="zh-CN" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="signal-flow" data-quality-profile="showcase">
-        <title id="archify-diagram-title">review-once · 双 Mode 有界 Review-Fix</title>
+      <svg viewBox="0 0 1238 768" data-reader-fit="intrinsic-height" role="img" lang="zh-CN" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="signal-flow" data-quality-profile="showcase">
+        <title id="archify-diagram-title">review-once · 双 Mode 有界 Review-Fix 生命周期</title>
         <desc id="archify-diagram-description">Conductor / Git fallback → Review → Chat → Fix → Verify → Re-review → 收敛或有界停止</desc>
         <!-- Definitions -->
         <defs>
@@ -5013,219 +5013,251 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <!-- Background Grid -->
         <rect width="100%" height="100%" fill="url(#grid)" />
 
-        <!-- Swimlanes -->
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="lane-0" x="40" y="52" width="1149" height="114" rx="10" class="c-lane" stroke-width="1"/>
-        <text x="54" y="74" class="t-dim" font-size="10" font-weight="600">01 / Mode 路由</text>
+        <!-- Lifecycle bands -->
+        <text x="18" y="88" class="t-dim" font-size="10" font-weight="600" writing-mode="vertical-rl" text-anchor="middle">Review-Fix 主生命周期</text>
+        <text x="18" y="272" class="t-dim" font-size="10" font-weight="600" writing-mode="vertical-rl" text-anchor="middle">取证 Mode</text>
+        <text x="18" y="456" class="t-dim" font-size="10" font-weight="600" writing-mode="vertical-rl" text-anchor="middle">验证回路</text>
+        <text x="18" y="640" class="t-dim" font-size="10" font-weight="600" writing-mode="vertical-rl" text-anchor="middle">终态策略</text>
 
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="lane-1" x="40" y="186" width="1149" height="106" rx="10" class="c-lane" stroke-width="1"/>
-        <text x="54" y="208" class="t-dim" font-size="10" font-weight="600">02 / Conductor Mode</text>
+        <!-- Primary lifecycle rail -->
 
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="lane-2" x="40" y="312" width="1149" height="106" rx="10" class="c-lane" stroke-width="1"/>
-        <text x="54" y="334" class="t-dim" font-size="10" font-weight="600">03 / Git fallback Mode</text>
 
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="lane-3" x="40" y="438" width="1149" height="114" rx="10" class="c-lane" stroke-width="1"/>
-        <text x="54" y="460" class="t-dim" font-size="10" font-weight="600">04 / Review-Fix Loop</text>
+        <!-- Transition paths -->
+        <g data-graph-role="automatic-crossover" style="--step:0">
+          <path data-graph-role="automatic-crossover-underlay" d="M 140 120 L 140 240" fill="none" stroke="var(--mask)" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="request" data-edge-to="conductor" data-edge-label="MCP 可用" data-edge-key="0" data-edge-id="request-conductor" data-composition-points="140,120;140,240" data-composition-crossover="halo" d="M 140 120 L 140 240" class="a-emphasis" stroke-width="1.6" marker-end="url(#arrowhead-emphasis)"/>
+        </g>
+        <g data-graph-role="automatic-crossover" style="--step:1">
+          <path data-graph-role="automatic-crossover-underlay" d="M 170 120 L 170 146 Q 170 156 180 156 L 364 156 Q 374 156 374 166 L 374 240" fill="none" stroke="var(--mask)" stroke-width="5.1" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="request" data-edge-to="git" data-edge-label="fallback" data-edge-key="1" data-edge-id="request-git" data-composition-points="170,120;170,156;374,156;374,240" data-composition-crossover="halo" d="M 170 120 L 170 146 Q 170 156 180 156 L 364 156 Q 374 156 374 166 L 374 240" class="a-default" stroke-width="1.1" marker-end="url(#arrowhead)"/>
+        </g>
+        <g data-graph-role="automatic-crossover" style="--step:2">
+          <path data-graph-role="automatic-crossover-underlay" d="M 170 240 L 170 190 Q 170 180 180 180 L 568 180 Q 578 180 578 170 L 578 120" fill="none" stroke="var(--mask)" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="conductor" data-edge-to="review" data-edge-label="Diff + Comments" data-edge-key="2" data-edge-id="conductor-review" data-composition-points="170,240;170,180;578,180;578,120" data-composition-crossover="halo" d="M 170 240 L 170 190 Q 170 180 180 180 L 568 180 Q 578 180 578 170 L 578 120" class="a-emphasis" stroke-width="1.6" marker-end="url(#arrowhead-emphasis)"/>
+        </g>
+        <g data-graph-role="automatic-crossover" style="--step:3">
+          <path data-graph-role="automatic-crossover-underlay" d="M 404 240 L 404 214 Q 404 204 414 204 L 598 204 Q 608 204 608 194 L 608 120" fill="none" stroke="var(--mask)" stroke-width="5.1" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="git" data-edge-to="review" data-edge-label="base + Diff" data-edge-key="3" data-edge-id="git-review" data-composition-points="404,240;404,204;608,204;608,120" data-composition-crossover="halo" d="M 404 240 L 404 214 Q 404 204 414 204 L 598 204 Q 608 204 608 194 L 608 120" class="a-default" stroke-width="1.1" marker-end="url(#arrowhead)"/>
+        </g>
+        <g data-graph-role="automatic-crossover" style="--step:4">
+          <path data-graph-role="automatic-crossover-underlay" d="M 718 88 L 773 88" fill="none" stroke="var(--mask)" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="review" data-edge-to="report" data-edge-label="Finding" data-edge-key="4" data-edge-id="review-report" data-composition-points="718,88;773,88" data-composition-crossover="halo" d="M 718 88 L 773 88" class="a-emphasis" stroke-width="1.6" marker-end="url(#arrowhead-emphasis)"/>
+        </g>
+        <g data-graph-role="automatic-crossover" style="--step:5">
+          <path data-graph-role="automatic-crossover-underlay" d="M 943 88 L 1003 88" fill="none" stroke="var(--mask)" stroke-width="5.1" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="report" data-edge-to="fix" data-edge-label="可安全修复" data-edge-key="5" data-edge-id="report-fix" data-composition-points="943,88;1003,88" data-composition-crossover="halo" d="M 943 88 L 1003 88" class="a-default" stroke-width="1.1" marker-end="url(#arrowhead)"/>
+        </g>
+        <g data-graph-role="automatic-crossover" style="--step:6">
+          <path data-graph-role="automatic-crossover-underlay" d="M 1088 120 L 1088 424" fill="none" stroke="var(--mask)" stroke-width="5.1" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="fix" data-edge-to="verify" data-edge-label="最小补丁" data-edge-key="6" data-edge-id="fix-verify" data-composition-points="1088,120;1088,424" data-composition-crossover="halo" d="M 1088 120 L 1088 424" class="a-default" stroke-width="1.1" marker-end="url(#arrowhead)"/>
+        </g>
+        <path data-edge-from="verify" data-edge-to="review" data-edge-label="重新取证" data-edge-key="7" data-edge-id="verify-review" data-composition-points="998,456;492,456;492,88;718,88" d="M 998 456 L 502 456 Q 492 456 492 446 L 492 98 Q 492 88 502 88 L 718 88" class="a-emphasis" stroke-width="1.6" marker-end="url(#arrowhead-emphasis)"/>
+        <g data-graph-role="automatic-crossover" style="--step:8">
+          <path data-graph-role="automatic-crossover-underlay" d="M 638 120 L 638 608" fill="none" stroke="var(--mask)" stroke-width="5.1" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="review" data-edge-to="converged" data-edge-label="无 Finding" data-edge-key="8" data-edge-id="review-converged" data-composition-points="638,120;638,608" data-composition-crossover="halo" d="M 638 120 L 638 608" class="a-security" stroke-width="1.1" marker-end="url(#arrowhead-security)"/>
+        </g>
+        <g data-graph-role="automatic-crossover" style="--step:9">
+          <path data-graph-role="automatic-crossover-underlay" d="M 668 120 L 668 538 Q 668 548 678 548 L 848 548 Q 858 548 858 558 L 858 608" fill="none" stroke="var(--mask)" stroke-width="5.1" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="review" data-edge-to="bounded" data-edge-label="停止条件" data-edge-key="9" data-edge-id="review-bounded" data-composition-points="668,120;668,548;858,548;858,608" data-composition-crossover="halo" d="M 668 120 L 668 538 Q 668 548 678 548 L 848 548 Q 858 548 858 558 L 858 608" class="a-security" stroke-width="1.1" marker-end="url(#arrowhead-security)"/>
+        </g>
 
-        <!-- Phase headers -->
-        <line x1="77" y1="35" x2="289" y2="35" class="a-emphasis" stroke-width="1.1"/>
-        <rect x="77" y="27" width="212" height="16" rx="4" class="c-mask"/>
-        <text x="183" y="39" class="t-backend" font-size="8" font-weight="600" text-anchor="middle">取证入口</text>
-        <line x1="317" y1="35" x2="919" y2="35" class="a-default" stroke-width="1.1"/>
-        <rect x="317" y="27" width="602" height="16" rx="4" class="c-mask"/>
-        <text x="618" y="39" class="t-muted" font-size="8" font-weight="600" text-anchor="middle">证据反馈闭环</text>
-        <line x1="1043.4" y1="35" x2="1135.4" y2="35" class="a-security" stroke-width="1.1"/>
-        <rect x="1043.4" y="27" width="92" height="16" rx="4" class="c-mask"/>
-        <text x="1089.4" y="39" class="t-security" font-size="8" font-weight="600" text-anchor="middle">终态判定</text>
-
-        <!-- Workflow groups -->
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="group" data-composition-frame-id="group-0" x="44" y="90" width="249" height="72" rx="9" class="c-lane" stroke-width="1"/>
-        <text x="54" y="88" class="t-backend" font-size="7" font-weight="600">同一契约的两种取证载体</text>
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="group" data-composition-frame-id="group-1" x="781.5" y="90" width="399.4000000000001" height="72" rx="9" class="c-security-group" stroke-width="1"/>
-        <text x="791.5" y="88" class="t-security" font-size="7" font-weight="600">无 Finding / 阻塞 / 达到上限</text>
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="group" data-composition-frame-id="group-2" x="269" y="476" width="904.4000000000001" height="72" rx="9" class="c-lane" stroke-width="1"/>
-        <text x="279" y="474" class="t-messagebus" font-size="7" font-weight="600">每轮重新取证，不复用陈旧结论</text>
-
-        <!-- Edge paths -->
-        <path data-edge-from="chat" data-edge-to="fix" data-edge-label="可安全修复" data-edge-key="0" data-edge-id="chat-fix" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="727,513;793,513" d="M 727 513 L 793 513" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="conductor" data-edge-to="review" data-edge-label="Checks / Diff / Comments" data-edge-key="1" data-edge-id="conductor-review" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="243,228;243,170;469,170;469,506;453,506" d="M 243 228 L 243 170 L 469 170 L 469 506 L 453 506" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="fix" data-edge-to="verify" data-edge-label="最小补丁" data-edge-key="2" data-edge-id="fix-verify" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="953,513;1009.4000000000001,513" d="M 953 513 L 1009.4000000000001 513" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="git" data-edge-to="review" data-edge-label="base + Diff + checks" data-edge-key="3" data-edge-id="git-review" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="243,406;243,568;363,568;363,547" d="M 243 406 L 243 568 L 363 568 L 363 547" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="review" data-edge-to="chat" data-edge-label="Finding 或无 Finding" data-edge-key="4" data-edge-id="review-chat" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="375,547;375,568;647,568;647,539" d="M 375 547 L 375 568 L 647 568 L 647 539" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="route" data-edge-to="conductor" data-edge-label="工具可用" data-edge-key="5" data-edge-id="route-conductor" data-composition-routing="workflow-v2-auto" data-edge-role="branch" data-composition-points="48,127;32,127;32,308;243,308;243,280" d="M 48 127 L 32 127 L 32 308 L 243 308 L 243 280" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="route" data-edge-to="git" data-edge-label="工具不可用" data-edge-key="6" data-edge-id="route-git" data-composition-routing="workflow-v2-auto" data-edge-role="branch" data-composition-points="48,115;20,115;20,380;158,380" d="M 48 115 L 20 115 L 20 380 L 158 380" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="verify" data-edge-to="bounded" data-edge-label="重复 / 无进展 / 达上限" data-edge-key="7" data-edge-id="verify-bounded" data-composition-routing="workflow-v2-auto" data-edge-role="error" data-composition-points="1089.4,487;1089.4,153" d="M 1089.4 487 L 1089.4 153" class="a-security" stroke-width="1.4" marker-end="url(#arrowhead-security)"/>
-        <path data-edge-from="verify" data-edge-to="converged" data-edge-label="无 Finding 且验证通过" data-edge-key="8" data-edge-id="verify-converged" data-composition-routing="workflow-v2-auto" data-edge-role="return" data-composition-points="1077.4,487;1077.4,471;975.2,471;975.2,169;873,169;873,153" d="M 1077.4 487 L 1077.4 471 L 975.2 471 L 975.2 169 L 873 169 L 873 153" class="a-security" stroke-width="1.4" marker-end="url(#arrowhead-security)"/>
-
-        <!-- Nodes -->
-        <g id="node-route" data-node-id="route" data-node-label="选择 Mode" tabindex="0" role="button" aria-label="聚焦选择 Mode，工具可用性 + 基线, Mode 路由 › 同一契约的两种取证载体 › 取证入口" aria-pressed="false" data-node-kind="backend" data-node-sublabel="工具可用性 + 基线" data-node-tag="先定证据范围" data-node-context="Mode 路由 › 同一契约的两种取证载体 › 取证入口">
-          <title>选择 Mode · 工具可用性 + 基线 · Mode 路由 › 同一契约的两种取证载体 › 取证入口 · 先定证据范围</title>
-          <rect x="48" y="93" width="150" height="68" rx="6" class="c-mask"/>
-          <rect x="48" y="93" width="150" height="68" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(54 99) scale(0.6875)">
-            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+        <!-- States -->
+        <g id="node-request" data-node-id="request" data-node-label="开始 Review" tabindex="0" role="button" aria-label="聚焦开始 Review，读取 Review request.md（若指定）, Review-Fix 主生命周期" aria-pressed="false" data-node-kind="start" data-node-sublabel="读取 Review request.md（若指定）" data-node-tag="scope" data-node-context="Review-Fix 主生命周期">
+          <title>开始 Review · 读取 Review request.md（若指定） · Review-Fix 主生命周期 · scope</title>
+          <rect x="65" y="56" width="180" height="64" rx="7" class="c-mask"/>
+          <rect x="65" y="56" width="180" height="64" rx="7" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-lifecycle-initial-marker="">
+            <circle cx="43" cy="88" r="4.5" style="fill: var(--arrow-emphasis)"/><path d="M 47.5 88 L 58 88" class="a-emphasis" stroke-width="1.4"/><path d="M 57 84.5 L 64 88 L 57 91.5 Z" style="fill: var(--arrow-emphasis)"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="123" y="114" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">选择 Mode</text>
-          <text data-detail="context" x="123" y="131" class="t-muted" font-size="8" text-anchor="middle">工具可用性 + 基线</text>
-        <text data-detail="fine" x="123" y="149" class="t-backend" font-size="7" text-anchor="middle">先定证据范围</text>
-        </g>
-
-        <g id="node-converged" data-node-id="converged" data-node-label="收敛" tabindex="0" role="button" aria-label="聚焦收敛，无明确 Finding + 验证无未解释失败, Mode 路由 › 无 Finding / 阻塞 / 达到上限 › 证据反馈闭环" aria-pressed="false" data-node-kind="security" data-node-sublabel="无明确 Finding + 验证无未解释失败" data-node-context="Mode 路由 › 无 Finding / 阻塞 / 达到上限 › 证据反馈闭环">
-          <title>收敛 · 无明确 Finding + 验证无未解释失败 · Mode 路由 › 无 Finding / 阻塞 / 达到上限 › 证据反馈闭环</title>
-          <rect x="785.5" y="101" width="175" height="52" rx="6" class="c-mask"/>
-          <rect x="785.5" y="101" width="175" height="52" rx="6" class="c-security" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(791.5 107) scale(0.6875)">
-            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
-            <path d="m5.8 8 1.5 1.5 3-3"/>
+          <g aria-hidden="true" data-semantic-sigil="start" class="semantic-sigil s-frontend" transform="translate(71 62) scale(0.6875)">
+            <circle cx="8" cy="8" r="5"/>
+            <path d="m7 5.4 3.6 2.6L7 10.6Z" class="sigil-fill"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="873" y="122" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">收敛</text>
-          <text data-detail="context" x="873" y="139" class="t-muted" font-size="8" text-anchor="middle">无明确 Finding + 验证无未解释失败</text>
+        <text data-detail="fine" x="88" y="70" class="t-frontend" font-size="8" font-weight="700">01</text>
+          <text data-node-label="" data-detail-anchor="" x="155" y="79" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">开始 Review</text>
+          <text data-detail="context" x="155" y="96" class="t-muted" font-size="8" text-anchor="middle">读取 Review request.md（若指定）</text>
+        <text data-detail="fine" x="155" y="108" class="t-frontend" font-size="8" text-anchor="middle">scope</text>
         </g>
 
-        <g id="node-bounded" data-node-id="bounded" data-node-label="有界停止" tabindex="0" role="button" aria-label="聚焦有界停止，重复 / 无进展 / 阻塞 / 8 轮, Mode 路由 › 无 Finding / 阻塞 / 达到上限 › 终态判定" aria-pressed="false" data-node-kind="security" data-node-sublabel="重复 / 无进展 / 阻塞 / 8 轮" data-node-context="Mode 路由 › 无 Finding / 阻塞 / 达到上限 › 终态判定">
-          <title>有界停止 · 重复 / 无进展 / 阻塞 / 8 轮 · Mode 路由 › 无 Finding / 阻塞 / 达到上限 › 终态判定</title>
-          <rect x="1001.9000000000001" y="101" width="175" height="52" rx="6" class="c-mask"/>
-          <rect x="1001.9000000000001" y="101" width="175" height="52" rx="6" class="c-security" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(1007.9000000000001 107) scale(0.6875)">
-            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
-            <path d="m5.8 8 1.5 1.5 3-3"/>
+        <g id="node-review" data-node-id="review" data-node-label="Review / Re-review" tabindex="0" role="button" aria-label="聚焦Review / Re-review，重新获取 Diff、评论与验证结果, Review-Fix 主生命周期" aria-pressed="false" data-node-kind="decision" data-node-sublabel="重新获取 Diff、评论与验证结果" data-node-tag="Finding gate" data-node-context="Review-Fix 主生命周期">
+          <title>Review / Re-review · 重新获取 Diff、评论与验证结果 · Review-Fix 主生命周期 · Finding gate</title>
+          <rect x="528" y="56" width="190" height="64" rx="7" class="c-mask"/>
+          <rect x="528" y="56" width="190" height="64" rx="7" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="neutral" class="semantic-sigil s-database" transform="translate(534 62) scale(0.6875)">
+            <rect x="3" y="3" width="10" height="10" rx="2"/>
+            <circle cx="8" cy="8" r="1.2" class="sigil-fill"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="1089.4" y="122" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">有界停止</text>
-          <text data-detail="context" x="1089.4" y="139" class="t-muted" font-size="8" text-anchor="middle">重复 / 无进展 / 阻塞 / 8 轮</text>
+        <text data-detail="fine" x="551" y="70" class="t-database" font-size="8" font-weight="700">02</text>
+          <text data-node-label="" data-detail-anchor="" x="623" y="79" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Review / Re-review</text>
+          <text data-detail="context" x="623" y="96" class="t-muted" font-size="8" text-anchor="middle">重新获取 Diff、评论与验证结果</text>
+        <text data-detail="fine" x="623" y="108" class="t-database" font-size="8" text-anchor="middle">Finding gate</text>
         </g>
 
-        <g id="node-conductor" data-node-id="conductor" data-node-label="Conductor Mode" tabindex="0" role="button" aria-label="聚焦Conductor Mode，Diff Viewer + Checks + Comments, Conductor Mode › 取证入口" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="Diff Viewer + Checks + Comments" data-node-context="Conductor Mode › 取证入口">
-          <title>Conductor Mode · Diff Viewer + Checks + Comments · Conductor Mode › 取证入口</title>
-          <rect x="158" y="228" width="170" height="52" rx="6" class="c-mask"/>
-          <rect x="158" y="228" width="170" height="52" rx="6" class="c-frontend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(164 234) scale(0.6875)">
-            <rect x="2" y="3" width="12" height="10" rx="2"/>
-            <path d="M2 6.5h12"/>
-            <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
-            <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
+        <g id="node-report" data-node-id="report" data-node-label="Chat 报告" tabindex="0" role="button" aria-label="聚焦Chat 报告，严重性 · 位置 · 影响 · 证据, Review-Fix 主生命周期" aria-pressed="false" data-node-kind="active" data-node-sublabel="严重性 · 位置 · 影响 · 证据" data-node-tag="evidence" data-node-context="Review-Fix 主生命周期">
+          <title>Chat 报告 · 严重性 · 位置 · 影响 · 证据 · Review-Fix 主生命周期 · evidence</title>
+          <rect x="773" y="56" width="170" height="64" rx="7" class="c-mask"/>
+          <rect x="773" y="56" width="170" height="64" rx="7" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="active" class="semantic-sigil s-frontend" transform="translate(779 62) scale(0.6875)">
+            <path d="M2 8h3l1.5-3.5L9 12l1.6-4H14"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="243" y="249" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Conductor Mode</text>
-          <text data-detail="context" x="243" y="266" class="t-muted" font-size="8" text-anchor="middle">Diff Viewer + Checks + Comments</text>
+        <text data-detail="fine" x="796" y="70" class="t-frontend" font-size="8" font-weight="700">03</text>
+          <text data-node-label="" data-detail-anchor="" x="858" y="79" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Chat 报告</text>
+          <text data-detail="context" x="858" y="96" class="t-muted" font-size="8" text-anchor="middle">严重性 · 位置 · 影响 · 证据</text>
+        <text data-detail="fine" x="858" y="108" class="t-frontend" font-size="8" text-anchor="middle">evidence</text>
         </g>
 
-        <g id="node-git" data-node-id="git" data-node-label="Git fallback Mode" tabindex="0" role="button" aria-label="聚焦Git fallback Mode，merge-base Diff + Chat 记录, Git fallback Mode › 取证入口" aria-pressed="false" data-node-kind="backend" data-node-sublabel="merge-base Diff + Chat 记录" data-node-context="Git fallback Mode › 取证入口">
-          <title>Git fallback Mode · merge-base Diff + Chat 记录 · Git fallback Mode › 取证入口</title>
-          <rect x="158" y="354" width="170" height="52" rx="6" class="c-mask"/>
-          <rect x="158" y="354" width="170" height="52" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(164 360) scale(0.6875)">
-            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+        <g id="node-fix" data-node-id="fix" data-node-label="最小 Fix" tabindex="0" role="button" aria-label="聚焦最小 Fix，只修复可证明的根因, Review-Fix 主生命周期" aria-pressed="false" data-node-kind="active" data-node-sublabel="只修复可证明的根因" data-node-tag="bounded" data-node-context="Review-Fix 主生命周期">
+          <title>最小 Fix · 只修复可证明的根因 · Review-Fix 主生命周期 · bounded</title>
+          <rect x="1003" y="56" width="170" height="64" rx="7" class="c-mask"/>
+          <rect x="1003" y="56" width="170" height="64" rx="7" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="active" class="semantic-sigil s-frontend" transform="translate(1009 62) scale(0.6875)">
+            <path d="M2 8h3l1.5-3.5L9 12l1.6-4H14"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="243" y="375" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Git fallback Mode</text>
-          <text data-detail="context" x="243" y="392" class="t-muted" font-size="8" text-anchor="middle">merge-base Diff + Chat 记录</text>
+        <text data-detail="fine" x="1026" y="70" class="t-frontend" font-size="8" font-weight="700">04</text>
+          <text data-node-label="" data-detail-anchor="" x="1088" y="79" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">最小 Fix</text>
+          <text data-detail="context" x="1088" y="96" class="t-muted" font-size="8" text-anchor="middle">只修复可证明的根因</text>
+        <text data-detail="fine" x="1088" y="108" class="t-frontend" font-size="8" text-anchor="middle">bounded</text>
         </g>
 
-        <g id="node-review" data-node-id="review" data-node-label="Review / Re-review" tabindex="0" role="button" aria-label="聚焦Review / Re-review，每轮重新获取 Diff、评论和结果, Review-Fix Loop › 每轮重新取证，不复用陈旧结论 › 证据反馈闭环" aria-pressed="false" data-node-kind="backend" data-node-sublabel="每轮重新获取 Diff、评论和结果" data-node-tag="Evaluator + Optimizer" data-node-context="Review-Fix Loop › 每轮重新取证，不复用陈旧结论 › 证据反馈闭环">
-          <title>Review / Re-review · 每轮重新获取 Diff、评论和结果 · Review-Fix Loop › 每轮重新取证，不复用陈旧结论 › 证据反馈闭环 · Evaluator + Optimizer</title>
-          <rect x="273" y="479" width="180" height="68" rx="6" class="c-mask"/>
-          <rect x="273" y="479" width="180" height="68" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(279 485) scale(0.6875)">
-            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+        <g id="node-conductor" data-node-id="conductor" data-node-label="Conductor Mode" tabindex="0" role="button" aria-label="聚焦Conductor Mode，GetWorkspaceDiff · Comments · Checks, 取证 Mode" aria-pressed="false" data-node-kind="external" data-node-sublabel="GetWorkspaceDiff · Comments · Checks" data-node-tag="MCP" data-node-context="取证 Mode">
+          <title>Conductor Mode · GetWorkspaceDiff · Comments · Checks · 取证 Mode · MCP</title>
+          <rect x="60" y="240" width="190" height="64" rx="7" class="c-mask"/>
+          <rect x="60" y="240" width="190" height="64" rx="7" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(66 246) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="363" y="500" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Review / Re-review</text>
-          <text data-detail="context" x="363" y="517" class="t-muted" font-size="8" text-anchor="middle">每轮重新获取 Diff、评论和结果</text>
-        <text data-detail="fine" x="363" y="535" class="t-backend" font-size="7" text-anchor="middle">Evaluator + Optimizer</text>
+          <text data-node-label="" data-detail-anchor="" x="155" y="263" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Conductor Mode</text>
+          <text data-detail="context" x="155" y="280" class="t-muted" font-size="8" text-anchor="middle">GetWorkspaceDiff · Comments · Checks</text>
+        <text data-detail="fine" x="155" y="292" class="t-muted" font-size="8" text-anchor="middle">MCP</text>
         </g>
 
-        <g id="node-chat" data-node-id="chat" data-node-label="Chat" tabindex="0" role="button" aria-label="聚焦Chat，严重性 · 位置 · 影响 · 证据, Review-Fix Loop › 每轮重新取证，不复用陈旧结论 › 证据反馈闭环" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="严重性 · 位置 · 影响 · 证据" data-node-context="Review-Fix Loop › 每轮重新取证，不复用陈旧结论 › 证据反馈闭环">
-          <title>Chat · 严重性 · 位置 · 影响 · 证据 · Review-Fix Loop › 每轮重新取证，不复用陈旧结论 › 证据反馈闭环</title>
-          <rect x="567" y="487" width="160" height="52" rx="6" class="c-mask"/>
-          <rect x="567" y="487" width="160" height="52" rx="6" class="c-frontend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(573 493) scale(0.6875)">
-            <rect x="2" y="3" width="12" height="10" rx="2"/>
-            <path d="M2 6.5h12"/>
-            <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
-            <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
+        <g id="node-git" data-node-id="git" data-node-label="Git fallback Mode" tabindex="0" role="button" aria-label="聚焦Git fallback Mode，merge-base · git diff · Chat 证据, 取证 Mode" aria-pressed="false" data-node-kind="external" data-node-sublabel="merge-base · git diff · Chat 证据" data-node-tag="CLI" data-node-context="取证 Mode">
+          <title>Git fallback Mode · merge-base · git diff · Chat 证据 · 取证 Mode · CLI</title>
+          <rect x="294" y="240" width="190" height="64" rx="7" class="c-mask"/>
+          <rect x="294" y="240" width="190" height="64" rx="7" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(300 246) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="647" y="508" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Chat</text>
-          <text data-detail="context" x="647" y="525" class="t-muted" font-size="8" text-anchor="middle">严重性 · 位置 · 影响 · 证据</text>
+          <text data-node-label="" data-detail-anchor="" x="389" y="263" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Git fallback Mode</text>
+          <text data-detail="context" x="389" y="280" class="t-muted" font-size="8" text-anchor="middle">merge-base · git diff · Chat 证据</text>
+        <text data-detail="fine" x="389" y="292" class="t-muted" font-size="8" text-anchor="middle">CLI</text>
         </g>
 
-        <g id="node-fix" data-node-id="fix" data-node-label="Fix" tabindex="0" role="button" aria-label="聚焦Fix，最小根因修复, Review-Fix Loop › 每轮重新取证，不复用陈旧结论 › 证据反馈闭环" aria-pressed="false" data-node-kind="backend" data-node-sublabel="最小根因修复" data-node-tag="不扩大授权范围" data-node-context="Review-Fix Loop › 每轮重新取证，不复用陈旧结论 › 证据反馈闭环">
-          <title>Fix · 最小根因修复 · Review-Fix Loop › 每轮重新取证，不复用陈旧结论 › 证据反馈闭环 · 不扩大授权范围</title>
-          <rect x="793" y="479" width="160" height="68" rx="6" class="c-mask"/>
-          <rect x="793" y="479" width="160" height="68" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(799 485) scale(0.6875)">
-            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+        <g id="node-verify" data-node-id="verify" data-node-label="Verify" tabindex="0" role="button" aria-label="聚焦Verify，相关测试 / Lint / 静态检查, 验证回路" aria-pressed="false" data-node-kind="decision" data-node-sublabel="相关测试 / Lint / 静态检查" data-node-tag="feedback" data-node-context="验证回路">
+          <title>Verify · 相关测试 / Lint / 静态检查 · 验证回路 · feedback</title>
+          <rect x="998" y="424" width="180" height="64" rx="7" class="c-mask"/>
+          <rect x="998" y="424" width="180" height="64" rx="7" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="neutral" class="semantic-sigil s-database" transform="translate(1004 430) scale(0.6875)">
+            <rect x="3" y="3" width="10" height="10" rx="2"/>
+            <circle cx="8" cy="8" r="1.2" class="sigil-fill"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="873" y="500" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Fix</text>
-          <text data-detail="context" x="873" y="517" class="t-muted" font-size="8" text-anchor="middle">最小根因修复</text>
-        <text data-detail="fine" x="873" y="535" class="t-backend" font-size="7" text-anchor="middle">不扩大授权范围</text>
+          <text data-node-label="" data-detail-anchor="" x="1088" y="447" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Verify</text>
+          <text data-detail="context" x="1088" y="464" class="t-muted" font-size="8" text-anchor="middle">相关测试 / Lint / 静态检查</text>
+        <text data-detail="fine" x="1088" y="476" class="t-database" font-size="8" text-anchor="middle">feedback</text>
         </g>
 
-        <g id="node-verify" data-node-id="verify" data-node-label="Verify" tabindex="0" role="button" aria-label="聚焦Verify，相关检查 → 更广检查, Review-Fix Loop › 每轮重新取证，不复用陈旧结论 › 终态判定" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="相关检查 → 更广检查" data-node-context="Review-Fix Loop › 每轮重新取证，不复用陈旧结论 › 终态判定">
-          <title>Verify · 相关检查 → 更广检查 · Review-Fix Loop › 每轮重新取证，不复用陈旧结论 › 终态判定</title>
-          <rect x="1009.4000000000001" y="487" width="160" height="52" rx="6" class="c-mask"/>
-          <rect x="1009.4000000000001" y="487" width="160" height="52" rx="6" class="c-messagebus" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(1015.4000000000001 493) scale(0.6875)">
-            <path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"/>
-            <circle cx="5" cy="4.5" r="1" class="sigil-fill"/>
-            <circle cx="10.5" cy="8" r="1" class="sigil-fill"/>
-            <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
+        <g id="node-converged" data-node-id="converged" data-node-label="收敛" tabindex="0" role="button" aria-label="聚焦收敛，无明确 Finding 且验证无未解释失败, 终态策略" aria-pressed="false" data-node-kind="success" data-node-sublabel="无明确 Finding 且验证无未解释失败" data-node-tag="done" data-node-context="终态策略">
+          <title>收敛 · 无明确 Finding 且验证无未解释失败 · 终态策略 · done</title>
+          <rect x="528" y="608" width="190" height="64" rx="7" class="c-mask"/>
+          <rect x="528" y="608" width="190" height="64" rx="7" class="c-backend" stroke-width="1.5"/>
+          <rect x="531" y="611" width="184" height="58" rx="4" class="c-backend" style="fill: none" stroke-width="1"/>
+          <g aria-hidden="true" data-semantic-sigil="success" class="semantic-sigil s-backend" transform="translate(534 614) scale(0.6875)">
+            <circle cx="8" cy="8" r="5.3"/>
+            <path d="m5.2 8 1.8 1.8 3.8-4"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="1089.4" y="508" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Verify</text>
-          <text data-detail="context" x="1089.4" y="525" class="t-muted" font-size="8" text-anchor="middle">相关检查 → 更广检查</text>
+          <text data-node-label="" data-detail-anchor="" x="623" y="631" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">收敛</text>
+          <text data-detail="context" x="623" y="648" class="t-muted" font-size="8" text-anchor="middle">无明确 Finding 且验证无未解释失败</text>
+        <text data-detail="fine" x="623" y="660" class="t-backend" font-size="8" text-anchor="middle">done</text>
         </g>
 
-        <!-- Edge labels -->
-        <g data-detail="context" data-edge-from="chat" data-edge-to="fix" data-edge-label="可安全修复" data-edge-key="0" data-edge-id="chat-fix">
-          <rect x="731" y="493" width="58" height="14" rx="3" class="c-mask"/>
-          <text x="760" y="503" class="t-edge-default" font-size="8" text-anchor="middle">可安全修复</text>
+        <g id="node-bounded" data-node-id="bounded" data-node-label="有界停止" tabindex="0" role="button" aria-label="聚焦有界停止，重复 / 无进展 / 阻塞 / 达到 8 轮, 终态策略" aria-pressed="false" data-node-kind="failure" data-node-sublabel="重复 / 无进展 / 阻塞 / 达到 8 轮" data-node-tag="decision" data-node-context="终态策略">
+          <title>有界停止 · 重复 / 无进展 / 阻塞 / 达到 8 轮 · 终态策略 · decision</title>
+          <rect x="763" y="608" width="190" height="64" rx="7" class="c-mask"/>
+          <rect x="763" y="608" width="190" height="64" rx="7" class="c-security" stroke-width="1.5"/>
+          <rect x="766" y="611" width="184" height="58" rx="4" class="c-security" style="fill: none" stroke-width="1"/>
+          <g aria-hidden="true" data-semantic-sigil="failure" class="semantic-sigil s-security" transform="translate(769 614) scale(0.6875)">
+            <circle cx="8" cy="8" r="5.3"/>
+            <path d="m5.7 5.7 4.6 4.6m0-4.6-4.6 4.6"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="858" y="631" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">有界停止</text>
+          <text data-detail="context" x="858" y="648" class="t-muted" font-size="8" text-anchor="middle">重复 / 无进展 / 阻塞 / 达到 8 轮</text>
+        <text data-detail="fine" x="858" y="660" class="t-security" font-size="8" text-anchor="middle">decision</text>
         </g>
-        <g data-detail="context" data-edge-from="conductor" data-edge-to="review" data-edge-label="Checks / Diff / Comments" data-edge-key="1" data-edge-id="conductor-review">
-          <rect x="293.4" y="150" width="125.19999999999999" height="14" rx="3" class="c-mask"/>
-          <text x="356" y="160" class="t-edge-emphasis" font-size="8" text-anchor="middle">Checks / Diff / Comments</text>
+
+        <!-- Transition labels -->
+        <g data-detail="context" data-edge-from="request" data-edge-to="conductor" data-edge-label="MCP 可用" data-edge-key="0" data-edge-id="request-conductor">
+          <rect x="82.80000000000001" y="172" width="51.2" height="16" rx="4" class="c-mask"/>
+          <text x="108.4" y="183" class="t-edge-emphasis" font-size="8" text-anchor="middle">MCP 可用</text>
         </g>
-        <g data-detail="context" data-edge-from="fix" data-edge-to="verify" data-edge-label="最小补丁" data-edge-key="2" data-edge-id="fix-verify">
-          <rect x="957" y="493" width="48.4" height="14" rx="3" class="c-mask"/>
-          <text x="981.2" y="503" class="t-edge-default" font-size="8" text-anchor="middle">最小补丁</text>
+        <g data-detail="context" data-edge-from="request" data-edge-to="git" data-edge-label="fallback" data-edge-key="1" data-edge-id="request-git">
+          <rect x="176" y="130" width="51.2" height="16" rx="4" class="c-mask"/>
+          <text x="201.6" y="141" class="t-edge-default" font-size="8" text-anchor="middle">fallback</text>
         </g>
-        <g data-detail="context" data-edge-from="git" data-edge-to="review" data-edge-label="base + Diff + checks" data-edge-key="3" data-edge-id="git-review">
-          <rect x="250" y="548" width="106" height="14" rx="3" class="c-mask"/>
-          <text x="303" y="558" class="t-edge-default" font-size="8" text-anchor="middle">base + Diff + checks</text>
+        <g data-detail="context" data-edge-from="conductor" data-edge-to="review" data-edge-label="Diff + Comments" data-edge-key="2" data-edge-id="conductor-review">
+          <rect x="176" y="202" width="85.5" height="16" rx="4" class="c-mask"/>
+          <text x="218.75" y="213" class="t-edge-emphasis" font-size="8" text-anchor="middle">Diff + Comments</text>
         </g>
-        <g data-detail="context" data-edge-from="review" data-edge-to="chat" data-edge-label="Finding 或无 Finding" data-edge-key="4" data-edge-id="review-chat">
-          <rect x="458" y="548" width="106" height="14" rx="3" class="c-mask"/>
-          <text x="511" y="558" class="t-edge-emphasis" font-size="8" text-anchor="middle">Finding 或无 Finding</text>
+        <g data-detail="context" data-edge-from="git" data-edge-to="review" data-edge-label="base + Diff" data-edge-key="3" data-edge-id="git-review">
+          <rect x="410" y="214" width="65.9" height="16" rx="4" class="c-mask"/>
+          <text x="442.95" y="225" class="t-edge-default" font-size="8" text-anchor="middle">base + Diff</text>
         </g>
-        <g data-detail="context" data-edge-from="route" data-edge-to="conductor" data-edge-label="工具可用" data-edge-key="5" data-edge-id="route-conductor">
-          <rect x="113.3" y="288" width="48.4" height="14" rx="3" class="c-mask"/>
-          <text x="137.5" y="298" class="t-edge-emphasis" font-size="8" text-anchor="middle">工具可用</text>
+        <g data-detail="context" data-edge-from="review" data-edge-to="report" data-edge-label="Finding" data-edge-key="4" data-edge-id="review-report">
+          <rect x="722.35" y="39" width="46.300000000000004" height="16" rx="4" class="c-mask"/>
+          <text x="745.5" y="50" class="t-edge-emphasis" font-size="8" text-anchor="middle">Finding</text>
         </g>
-        <g data-detail="context" data-edge-from="route" data-edge-to="git" data-edge-label="工具不可用" data-edge-key="6" data-edge-id="route-git">
-          <rect x="60" y="360" width="58" height="14" rx="3" class="c-mask"/>
-          <text x="89" y="370" class="t-edge-default" font-size="8" text-anchor="middle">工具不可用</text>
+        <g data-detail="context" data-edge-from="report" data-edge-to="fix" data-edge-label="可安全修复" data-edge-key="5" data-edge-id="report-fix">
+          <rect x="942.5" y="67" width="61" height="16" rx="4" class="c-mask"/>
+          <text x="973" y="78" class="t-edge-default" font-size="8" text-anchor="middle">可安全修复</text>
         </g>
-        <g data-detail="context" data-edge-from="verify" data-edge-to="bounded" data-edge-label="重复 / 无进展 / 达上限" data-edge-key="7" data-edge-id="verify-bounded">
-          <rect x="1031.6000000000001" y="310" width="115.6" height="14" rx="3" class="c-mask"/>
-          <text x="1089.4" y="320" class="t-edge-security" font-size="8" text-anchor="middle">重复 / 无进展 / 达上限</text>
+        <g data-detail="context" data-edge-from="fix" data-edge-to="verify" data-edge-label="最小补丁" data-edge-key="6" data-edge-id="fix-verify">
+          <rect x="1030.8000000000002" y="264" width="51.2" height="16" rx="4" class="c-mask"/>
+          <text x="1056.4" y="275" class="t-edge-default" font-size="8" text-anchor="middle">最小补丁</text>
         </g>
-        <g data-detail="context" data-edge-from="verify" data-edge-to="converged" data-edge-label="无 Finding 且验证通过" data-edge-key="8" data-edge-id="verify-converged">
-          <rect x="970.9000000000002" y="451" width="110.8" height="14" rx="3" class="c-mask"/>
-          <text x="1026.3000000000002" y="461" class="t-edge-security" font-size="8" text-anchor="middle">无 Finding 且验证通过</text>
+        <g data-detail="context" data-edge-from="verify" data-edge-to="review" data-edge-label="重新取证" data-edge-key="7" data-edge-id="verify-review">
+          <rect x="719.4" y="435" width="51.2" height="16" rx="4" class="c-mask"/>
+          <text x="745" y="446" class="t-edge-emphasis" font-size="8" text-anchor="middle">重新取证</text>
+        </g>
+        <g data-detail="context" data-edge-from="review" data-edge-to="converged" data-edge-label="无 Finding" data-edge-key="8" data-edge-id="review-converged">
+          <rect x="571" y="356" width="61" height="16" rx="4" class="c-mask"/>
+          <text x="601.5" y="367" class="t-edge-security" font-size="8" text-anchor="middle">无 Finding</text>
+        </g>
+        <g data-detail="context" data-edge-from="review" data-edge-to="bounded" data-edge-label="停止条件" data-edge-key="9" data-edge-id="review-bounded">
+          <rect x="674" y="326" width="51.2" height="16" rx="4" class="c-mask"/>
+          <text x="699.6" y="337" class="t-edge-security" font-size="8" text-anchor="middle">停止条件</text>
         </g>
 
         <!-- Legend -->
         <g data-legend="" data-legend-bridge="">
-          <text x="20" y="576" class="t-primary" font-size="12" font-weight="650">图例</text>
-          <g data-legend-semantic-kind="frontend" data-legend-kind="frontend" data-legend-label="用户界面" data-legend-x="20" data-legend-baseline="596" data-legend-width="78">
-            <rect x="20" y="588" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
-            <text x="42" y="596" class="t-muted" font-size="7.5" font-weight="500">用户界面</text>
+          <text x="40" y="712" class="t-primary" font-size="12" font-weight="650">图例</text>
+          <g data-legend-semantic-kind="start" data-legend-kind="start" data-legend-label="起点" data-legend-x="40" data-legend-baseline="732" data-legend-width="75">
+            <circle cx="44.5" cy="728.5" r="4.5" style="fill: var(--arrow-emphasis)"/><path d="M 49 728.5 L 58 728.5" class="a-emphasis" stroke-width="1.4"/><path d="M 57 725 L 64 728.5 L 57 732 Z" style="fill: var(--arrow-emphasis)"/>
+            <text x="74" y="732" class="t-muted" font-size="10" font-weight="500">起点</text>
           </g>
-          <g data-legend-semantic-kind="backend" data-legend-kind="backend" data-legend-label="Agent 逻辑" data-legend-x="105" data-legend-baseline="596" data-legend-width="87">
-            <rect x="105" y="588" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
-            <text x="127" y="596" class="t-muted" font-size="7.5" font-weight="500">Agent 逻辑</text>
+          <g data-legend-semantic-kind="active" data-legend-kind="active" data-legend-label="进行中" data-legend-x="137" data-legend-baseline="732" data-legend-width="73">
+            <rect x="137" y="724" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
+            <text x="159" y="732" class="t-muted" font-size="10" font-weight="500">进行中</text>
           </g>
-          <g data-legend-semantic-kind="security" data-legend-kind="security" data-legend-label="策略" data-legend-x="199" data-legend-baseline="596" data-legend-width="61">
-            <rect x="199" y="588" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
-            <text x="221" y="596" class="t-muted" font-size="7.5" font-weight="500">策略</text>
+          <g data-legend-semantic-kind="decision" data-legend-kind="decision" data-legend-label="决策" data-legend-x="232" data-legend-baseline="732" data-legend-width="63">
+            <rect x="232" y="724" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
+            <text x="254" y="732" class="t-muted" font-size="10" font-weight="500">决策</text>
           </g>
-          <g data-legend-semantic-kind="messagebus" data-legend-kind="messagebus" data-legend-label="工具操作" data-legend-x="267" data-legend-baseline="596" data-legend-width="78">
-            <rect x="267" y="588" width="14" height="9" rx="2" class="c-messagebus" stroke-width="1"/>
-            <text x="289" y="596" class="t-muted" font-size="7.5" font-weight="500">工具操作</text>
+          <g data-legend-semantic-kind="success" data-legend-kind="success" data-legend-label="成功" data-legend-x="317" data-legend-baseline="732" data-legend-width="63">
+            <rect x="317" y="724" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
+            <text x="339" y="732" class="t-muted" font-size="10" font-weight="500">成功</text>
+          </g>
+          <g data-legend-semantic-kind="failure" data-legend-kind="failure" data-legend-label="失败 / 退出" data-legend-x="402" data-legend-baseline="732" data-legend-width="98">
+            <rect x="402" y="724" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
+            <text x="424" y="732" class="t-muted" font-size="10" font-weight="500">失败 / 退出</text>
+          </g>
+          <g data-legend-semantic-kind="external" data-legend-kind="external" data-legend-label="外部状态" data-legend-x="522" data-legend-baseline="732" data-legend-width="83">
+            <rect x="522" y="724" width="14" height="9" rx="2" class="c-external" stroke-width="1"/>
+            <text x="544" y="732" class="t-muted" font-size="10" font-weight="500">外部状态</text>
+          </g>
+          <g data-legend-semantic-kind="final" data-legend-x="627" data-legend-baseline="732" data-legend-width="44">
+            <rect x="627" y="724" width="14" height="9" rx="2" class="c-external" stroke-width="1"/><rect x="629.5" y="726.5" width="9" height="4" rx="1" class="c-external" style="fill: none" stroke-width="0.8"/>
+            <text x="651" y="732" class="t-muted" font-size="10" font-weight="500">终态</text>
           </g>
         </g>
       </svg>
@@ -5411,18 +5443,29 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </div>
         <ul>
           <li>两个 Mode 只改变取证载体，不改变 Finding 判定与停止语义</li>
-          <li>主循环与 Review Contract 保持唯一事实源</li>
+          <li>Review Contract 与主循环保持唯一事实源</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot amber"></div>
+          <h3>每轮新证据</h3>
+        </div>
+        <ul>
+          <li>Verify 必须回到 Review / Re-review，不复用陈旧结论</li>
+          <li>测试失败先作为回归处理，不能宣称 Review 已完成</li>
         </ul>
       </div>
 
       <div class="card">
         <div class="card-header">
           <div class="card-dot rose"></div>
-          <h3>有界反馈</h3>
+          <h3>有界终止</h3>
         </div>
         <ul>
-          <li>Review / Re-review 只接受新 Diff、评论和验证证据</li>
-          <li>Conductor Merge readiness 仍由 Checks、评论、Todo 与 CI 独立决定</li>
+          <li>重复 Finding、连续无进展、阻塞或第 8 轮触发有界停止</li>
+          <li>收敛只表示没有明确值得修复的 Finding</li>
         </ul>
       </div>
     </div>

@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "diagram_type": "workflow",
+  "diagram_type": "lifecycle",
   "meta": {
-    "title": "review-once · 双 Mode 有界 Review-Fix",
+    "title": "review-once · 双 Mode 有界 Review-Fix 生命周期",
     "locale": "zh-CN",
     "subtitle": "Conductor / Git fallback → Review → Chat → Fix → Verify → Re-review → 收敛或有界停止",
     "animation": "none",
@@ -11,43 +11,33 @@
     "output": "docs/assets/review-once-workflow.html"
   },
   "lanes": [
-    { "id": "routing", "label": "Mode 路由" },
-    { "id": "conductor", "label": "Conductor Mode" },
-    { "id": "git", "label": "Git fallback Mode" },
-    { "id": "loop", "label": "Review-Fix Loop" }
+    { "id": "main", "label": "Review-Fix 主生命周期" },
+    { "id": "evidence", "label": "取证 Mode" },
+    { "id": "loop", "label": "验证回路" },
+    { "id": "terminal", "label": "终态策略" }
   ],
-  "phases": [
-    { "id": "route", "label": "取证入口", "fromCol": 0, "toCol": 1, "variant": "emphasis" },
-    { "id": "review_fix", "label": "证据反馈闭环", "fromCol": 2, "toCol": 4, "variant": "default" },
-    { "id": "terminal", "label": "终态判定", "fromCol": 5, "toCol": 5, "variant": "security" }
+  "states": [
+    { "id": "request", "type": "start", "label": "开始 Review", "sublabel": "读取 Review request.md（若指定）", "lane": "main", "col": 0, "step": "01", "tag": "scope", "width": 180 },
+    { "id": "review", "type": "decision", "label": "Review / Re-review", "sublabel": "重新获取 Diff、评论与验证结果", "lane": "main", "col": 2, "step": "02", "tag": "Finding gate", "width": 190 },
+    { "id": "report", "type": "active", "label": "Chat 报告", "sublabel": "严重性 · 位置 · 影响 · 证据", "lane": "main", "col": 3, "step": "03", "tag": "evidence", "width": 170 },
+    { "id": "fix", "type": "active", "label": "最小 Fix", "sublabel": "只修复可证明的根因", "lane": "main", "col": 4, "step": "04", "tag": "bounded", "width": 170 },
+    { "id": "conductor", "type": "external", "label": "Conductor Mode", "sublabel": "GetWorkspaceDiff · Comments · Checks", "lane": "evidence", "col": 0, "tag": "MCP", "width": 190 },
+    { "id": "git", "type": "external", "label": "Git fallback Mode", "sublabel": "merge-base · git diff · Chat 证据", "lane": "evidence", "col": 1, "tag": "CLI", "width": 190 },
+    { "id": "verify", "type": "decision", "label": "Verify", "sublabel": "相关测试 / Lint / 静态检查", "lane": "loop", "col": 4, "tag": "feedback", "width": 180 },
+    { "id": "converged", "type": "success", "label": "收敛", "sublabel": "无明确 Finding 且验证无未解释失败", "lane": "terminal", "col": 2, "tag": "done", "width": 190 },
+    { "id": "bounded", "type": "failure", "label": "有界停止", "sublabel": "重复 / 无进展 / 阻塞 / 达到 8 轮", "lane": "terminal", "col": 3, "tag": "decision", "width": 190 }
   ],
-  "groups": [
-    { "id": "mode_group", "label": "同一契约的两种取证载体", "lane": "routing", "fromCol": 0, "toCol": 1, "variant": "emphasis" },
-    { "id": "evidence_loop", "label": "每轮重新取证，不复用陈旧结论", "lane": "loop", "fromCol": 2, "toCol": 5, "variant": "dashed" },
-    { "id": "stop_policy", "label": "无 Finding / 阻塞 / 达到上限", "lane": "routing", "fromCol": 4, "toCol": 5, "variant": "security" }
-  ],
-  "mainPath": ["route", "conductor", "review", "chat", "fix", "verify"],
-  "nodes": [
-    { "id": "route", "lane": "routing", "col": 0, "type": "backend", "label": "选择 Mode", "sublabel": "工具可用性 + 基线", "tag": "先定证据范围", "width": 150 },
-    { "id": "conductor", "lane": "conductor", "col": 1, "type": "frontend", "label": "Conductor Mode", "sublabel": "Diff Viewer + Checks + Comments", "width": 170 },
-    { "id": "git", "lane": "git", "col": 1, "type": "backend", "label": "Git fallback Mode", "sublabel": "merge-base Diff + Chat 记录", "width": 170 },
-    { "id": "review", "lane": "loop", "col": 2, "type": "backend", "label": "Review / Re-review", "sublabel": "每轮重新获取 Diff、评论和结果", "tag": "Evaluator + Optimizer", "width": 180 },
-    { "id": "chat", "lane": "loop", "col": 3, "type": "frontend", "label": "Chat", "sublabel": "严重性 · 位置 · 影响 · 证据", "width": 160 },
-    { "id": "fix", "lane": "loop", "col": 4, "type": "backend", "label": "Fix", "sublabel": "最小根因修复", "tag": "不扩大授权范围", "width": 160 },
-    { "id": "verify", "lane": "loop", "col": 5, "type": "messagebus", "label": "Verify", "sublabel": "相关检查 → 更广检查", "width": 160 },
-    { "id": "converged", "lane": "routing", "col": 4, "type": "security", "label": "收敛", "sublabel": "无明确 Finding + 验证无未解释失败", "width": 175 },
-    { "id": "bounded", "lane": "routing", "col": 5, "type": "security", "label": "有界停止", "sublabel": "重复 / 无进展 / 阻塞 / 8 轮", "width": 175 }
-  ],
-  "edges": [
-    { "id": "route-conductor", "from": "route", "to": "conductor", "label": "工具可用", "variant": "emphasis", "role": "branch" },
-    { "id": "route-git", "from": "route", "to": "git", "label": "工具不可用", "variant": "default", "role": "branch" },
-    { "id": "conductor-review", "from": "conductor", "to": "review", "label": "Checks / Diff / Comments", "variant": "emphasis" },
-    { "id": "git-review", "from": "git", "to": "review", "label": "base + Diff + checks", "variant": "default" },
-    { "id": "review-chat", "from": "review", "to": "chat", "label": "Finding 或无 Finding", "variant": "emphasis" },
-    { "id": "chat-fix", "from": "chat", "to": "fix", "label": "可安全修复", "variant": "default" },
+  "transitions": [
+    { "id": "request-conductor", "from": "request", "to": "conductor", "label": "MCP 可用", "variant": "emphasis" },
+    { "id": "request-git", "from": "request", "to": "git", "label": "fallback", "variant": "default" },
+    { "id": "conductor-review", "from": "conductor", "to": "review", "label": "Diff + Comments", "variant": "emphasis" },
+    { "id": "git-review", "from": "git", "to": "review", "label": "base + Diff", "variant": "default" },
+    { "id": "review-report", "from": "review", "to": "report", "label": "Finding", "variant": "emphasis" },
+    { "id": "report-fix", "from": "report", "to": "fix", "label": "可安全修复", "variant": "default" },
     { "id": "fix-verify", "from": "fix", "to": "verify", "label": "最小补丁", "variant": "default" },
-    { "id": "verify-converged", "from": "verify", "to": "converged", "label": "无 Finding 且验证通过", "variant": "security", "role": "return" },
-    { "id": "verify-bounded", "from": "verify", "to": "bounded", "label": "重复 / 无进展 / 达上限", "variant": "security", "role": "error" }
+    { "id": "verify-review", "from": "verify", "to": "review", "label": "重新取证", "variant": "emphasis", "route": "left-channel" },
+    { "id": "review-converged", "from": "review", "to": "converged", "label": "无 Finding", "variant": "security" },
+    { "id": "review-bounded", "from": "review", "to": "bounded", "label": "停止条件", "variant": "security" }
   ],
   "cards": [
     {
@@ -55,15 +45,23 @@
       "title": "共享契约",
       "items": [
         "两个 Mode 只改变取证载体，不改变 Finding 判定与停止语义",
-        "主循环与 Review Contract 保持唯一事实源"
+        "Review Contract 与主循环保持唯一事实源"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "每轮新证据",
+      "items": [
+        "Verify 必须回到 Review / Re-review，不复用陈旧结论",
+        "测试失败先作为回归处理，不能宣称 Review 已完成"
       ]
     },
     {
       "dot": "rose",
-      "title": "有界反馈",
+      "title": "有界终止",
       "items": [
-        "Review / Re-review 只接受新 Diff、评论和验证证据",
-        "Conductor Merge readiness 仍由 Checks、评论、Todo 与 CI 独立决定"
+        "重复 Finding、连续无进展、阻塞或第 8 轮触发有界停止",
+        "收敛只表示没有明确值得修复的 Finding"
       ]
     }
   ]
