@@ -27,3 +27,17 @@
 **后续防范**：在支持原生 Skill loader 的 Runtime 中重复运行 Trigger eval；同时保留显式 `/review-once` / `$review-once` 调用样例，区分“Description 触发能力”和“Runner 是否观察到工具调用”。
 
 **同类问题影响与注意事项**：任何依赖模型主动调用工具的 eval 都必须记录 Runtime、模型、超时、命令发现方式和工具事件；没有事件证据时只能标记“未验证”，不能把 false negative 当作 Skill 逻辑缺陷。
+
+## RSI-003 发布前独立 Review 发现的契约漂移
+
+**日期**：2026-10-04
+
+**问题描述**：发布前独立 Review 发现 Archify workflow 曾将 Verify 直接连接到终态，重复 Finding eval 曾把行位置隐含为身份字段，Trigger eval 指南曾与官方 Runner 的 threshold 判定不一致。
+
+**表因与根因**：视觉资产、行为评测和运行契约分别演进，缺少一次跨资产的发布前交叉核对。
+
+**处理方式**：使用 Archify Lifecycle 表达 `Verify → Review/Re-review → 终态` 的语义路径，避免 Workflow 布局中的脆弱回环路由；将 Finding 断言改为规范化路径、失败模式/根因和触发场景；将 Trigger 指南同步为官方 Runner 的 `>= 0.5` / `< 0.5` 判定。
+
+**后续防范**：发布前同时审查运行时主循环、评测断言和可视化资产；任何图表只能作为说明，不得改变运行契约的状态机语义。
+
+**同类问题影响与注意事项**：视觉图、eval 和 runtime reference 出现同一概念时，只允许引用同一事实源；若图表为可读性做拓扑简化，必须保持所有关键状态转移可追踪。

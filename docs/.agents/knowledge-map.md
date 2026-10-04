@@ -31,8 +31,8 @@
 | 文档 | 内容 |
 | --- | --- |
 | [Progressive Loop Research](../research/2026-10-04-review-once-progressive-loop-research.md) | Agent Skills、evaluator-optimizer、Conductor review gate 与真实案例调研 |
-| [Workflow Candidate](../assets/review-once-workflow.candidate.json) | Archify workflow 的可编辑事实源 |
-| [Workflow Diagram](../assets/review-once-workflow.html) | 通过 Archify validate、deliver、check、browser-check 的 standalone HTML |
+| [Lifecycle Candidate](../assets/review-once-workflow.candidate.json) | Archify Lifecycle 的可编辑事实源，完整表达 Verify → Re-review 回路 |
+| [Lifecycle Diagram](../assets/review-once-workflow.html) | 通过 Archify validate、deliver、check、browser-check 的 standalone HTML |
 
 ## 外部规范
 
