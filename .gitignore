@@ -1,0 +1,7 @@
+.DS_Store
+.temp/
+.context/
+dist/
+*.skill
+__pycache__/
+*.pyc
