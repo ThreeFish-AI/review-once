@@ -55,7 +55,7 @@
       "prompt": "如果同一个 Finding 在修复后仍然出现，最多确认一次原因；不要无限重复修改，请按 review-once 的收敛规则停止并报告。",
       "expected_output": "Agent 比较 Finding fingerprint，确认不是新触发场景后停止循环，报告重复 Finding、已执行轮次、验证结果和需要人工决策的下一步。",
       "assertions": [
-        "使用路径、行位置、失败模式和触发场景区分 Finding",
+        "使用规范化路径、失败模式或根因、触发场景区分 Finding；行位置只用于当前定位",
         "重复 Finding 不生成重复评论",
         "停止状态不是已收敛",
         "报告剩余问题和阻塞原因"

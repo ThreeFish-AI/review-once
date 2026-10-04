@@ -23,7 +23,7 @@
 - 负例覆盖一次性 Review、解释代码、只跑测试、普通开发、PR 发布和 Release；
 - collision case 使用共享的“检查/修复/变更”词汇，但目标是 Security Audit、测试编写或文档审阅。
 
-建议每条 query 重复运行 3 次；正例 trigger rate 应大于 `0.5`，负例应小于 `0.5`。Description 优化时固定 60/40 train/validation 切分，只用 train 失败项改写，按 validation 结果选择版本。官方 Runner 会直接读取数组，不需要额外的 `skill_name` 或 `queries` 包装层。
+建议每条 query 重复运行 3 次；官方 Runner 的默认判定是正例 trigger rate `>= 0.5`、负例 `< 0.5`。若需要更严格的质量门槛，应另行标注为项目额外标准。Description 优化时固定 60/40 train/validation 切分，只用 train 失败项改写，按 validation 结果选择版本。官方 Runner 会直接读取数组，不需要额外的 `skill_name` 或 `queries` 包装层。
 
 ## 本地校验
 
