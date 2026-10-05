@@ -24,9 +24,11 @@ Conductor Mode 的详细规则见 [references/conductor-mode.md](./references/co
 
 ## 核心约束
 
-- 只报告当前变更引入、离散、可证明且原作者会修复的缺陷。
-- 修复后重新获取 Diff 和 Review 结果，不依赖陈旧结论。
-- 最多 8 轮；重复 Finding、连续两轮无进展或工具/验证阻塞时安全停止。
+- 只报告当前变更引入、离散、可证明且严格的 PR reviewer 会要求修改的缺陷。
+- 每轮覆盖四个审查镜头：行为正确性、契约一致性、修复回归、仓库惯例。
+- 自审无 Finding 不构成收敛：宣布收敛前须经收敛门，由 fresh-context 独立 reviewer 盲审；无法委派时只能标「自审收敛」并披露未经独立复审。
+- 修复后重新获取 Diff 和 Review 结果，不依赖陈旧结论；收敛 Review 之后任何文件改动都使收敛作废。
+- 最多 8 轮；同一根因两次不同方向修复后仍复现、连续两轮无进展、误报争议待裁决或工具/验证阻塞时安全停止。
 - 测试失败必须分类处理；存在未解释失败时不得宣称 Review 已完成。
 - 不默认向 GitHub 发布 Review；Conductor 评论使用 Checks 面板的 `DiffComment`。
 

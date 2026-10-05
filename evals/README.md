@@ -8,9 +8,12 @@
 
 - Conductor Mode 的 Diff → Comment → Fix → Verify → Re-review；
 - Git fallback Mode 的 base 探测和双份 Diff；
-- 初始无 Finding 时立即收敛；
+- 初始无 Finding 时仍须经收敛门（独立复审，或降级为自审收敛）；
+- 自审无 Finding 不得直接宣布收敛、盲审信息包不含 Finding 历史（eval 9）；
+- 独立 reviewer 的 Finding 不被单方驳回：误报分支不改代码、不换方向重修，由新 reviewer 复核，再次报出则有界停止（eval 10）；
+- 收敛后任何改动使结论作废、修复 Delta 由仓库外快照求得、第 8 轮后预算耗尽则有界停止（eval 11）；
 - 修复后继续下一轮；
-- 重复 Finding、连续无进展和第 8 轮的有界停止；
+- 重复 Finding（首次再现换根因方向重修一次、仍复现才停止，eval 5）、连续无进展和第 8 轮的有界停止；
 - 验证失败时不宣称完成。
 
 每条用例都应以 transcript、工具调用记录、Diff 或测试输出作为 evidence。不能只凭最终一句“已完成”判定通过。

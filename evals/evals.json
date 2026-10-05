@@ -5,7 +5,7 @@
       "id": 1,
       "mode": "conductor",
       "prompt": "请按 workspace 中的 Review request.md 反复 Review 当前变更。直接把明确 Finding 挂到 Checks 并修复，再重新 Review，直到没有明显值得修复的问题。不要让我手动点击 Review/Fix。",
-      "expected_output": "Agent 先读取 Review request，调用 GetWorkspaceDiff 获取摘要和具体 Diff，读取已有 DiffComments；对唯一 Findings 在 Chat 报告并通过 DiffComment 挂载，直接修复后运行相关验证，再重新获取 Diff，最终报告轮次和证据。",
+      "expected_output": "Agent 先读取 Review request，调用 GetWorkspaceDiff 获取摘要和具体 Diff，读取已有 DiffComments；对唯一 Findings 在 Chat 报告并通过 DiffComment 挂载，直接修复后运行相关验证，再重新获取 Diff，最终报告轮次和证据；自审无 Finding 后仍须经收敛门才算收敛。",
       "expectations": [
         "优先遵守 Review request 和 Repo 规则",
         "使用 Conductor Diff/Comments 工具而不是要求用户手动点击",
@@ -17,7 +17,7 @@
       "id": 2,
       "mode": "git",
       "prompt": "当前没有 Conductor MCP。请审查这个 Git workspace 的变更，读取 Review request.md，发现问题后直接修复并运行最相关的测试，继续 Review 到收敛。",
-      "expected_output": "Agent 按固定顺序探测 base branch，分别审查 base...HEAD 和 HEAD 工作区 Diff，在 Chat 报告 Findings，修改工作区，执行验证并重新读取 Diff；不伪造 Conductor 评论。",
+      "expected_output": "Agent 按固定顺序探测 base branch，分别审查 base...HEAD 和 HEAD 工作区 Diff，在 Chat 报告 Findings，修改工作区，执行验证并重新读取 Diff；不伪造 Conductor 评论；自审无 Finding 后仍须经收敛门才算收敛。",
       "expectations": [
         "base branch 探测失败时不盲审",
         "同时覆盖已提交和未提交变更",
@@ -28,35 +28,37 @@
     {
       "id": 3,
       "mode": "either",
-      "prompt": "请 Review 当前 workspace 的变更；如果没有明确值得修复的 Finding，就直接结束，不要为了增加轮次而提出风格建议。",
-      "expected_output": "Agent 获取并审查 Diff 后报告当前没有明确值得修复的缺陷，立即正常收敛，不修改无关文件、不制造 Finding。",
+      "prompt": "请 Review 当前 workspace 的变更；如果没有明确值得修复的 Finding，就不要为了增加轮次而提出风格建议，按 review-once 的收敛规则给出最终状态。",
+      "expected_output": "Agent 获取并审查 Diff 后自审无 Finding，仍须经收敛门由 fresh-context 独立 reviewer 复审（无法委派时降级冷启动自审并标「自审收敛」）；复审无 Finding 后收敛，不修改无关文件、不制造 Finding。",
       "expectations": [
         "区分无 Finding 与工具不可用",
         "不提出纯主观风格 Finding",
         "无 Finding 时不执行无意义修改",
-        "状态报告为已收敛并提供审查证据"
+        "状态报告标明收敛方式（独立复审或自审收敛）并提供审查证据与四镜头覆盖"
       ]
     },
     {
       "id": 4,
       "mode": "either",
       "prompt": "第一轮 Review 发现一个由当前改动引入的边界 bug。修复它后请重新 Review，因为我不接受只修一次就宣称完成。",
-      "expected_output": "Agent 记录第一轮 Finding，实施最小根因修复，运行相关验证，重新获取 Diff 并执行下一轮 Review；只有确认无新 Finding 才收敛。",
+      "expected_output": "Agent 记录第一轮 Finding，实施最小根因修复，运行相关验证，重新获取 Diff 并执行下一轮 Review；自审无 Finding 后仍须经收敛门（独立复审或降级自审收敛）才算收敛。",
       "expectations": [
         "修复后重新取 Diff",
         "验证失败时不会直接宣称完成",
         "保留 Finding 到修复和验证的因果链",
+        "自审无 Finding 不直接收敛，须经收敛门",
         "最终轮次大于一轮或明确报告阻塞"
       ]
     },
     {
       "id": 5,
       "mode": "either",
-      "prompt": "如果同一个 Finding 在修复后仍然出现，最多确认一次原因；不要无限重复修改，请按 review-once 的收敛规则停止并报告。",
-      "expected_output": "Agent 比较 Finding fingerprint，确认不是新触发场景后停止循环，报告重复 Finding、已执行轮次、验证结果和需要人工决策的下一步。",
+      "prompt": "如果同一个 Finding 在修复后仍然出现，请按 review-once 的规则处理：首次再现时核对是否新触发场景，实质相同则换根因方向重修一次；换方向后仍然出现就不要再重复修改，停止并报告。",
+      "expected_output": "Agent 比较 Finding fingerprint；首次再现且确认不是新触发场景时，换根因方向重修一次并记录两次尝试；换方向后仍复现则停止循环，报告重复 Finding、已执行轮次、两次尝试、验证结果和需要人工决策的下一步。",
       "expectations": [
         "使用规范化路径、失败模式或根因、触发场景区分 Finding；行位置只用于当前定位",
-        "重复 Finding 不生成重复评论",
+        "首次再现时换根因方向重修一次，不重复同一补丁，且记录两次尝试",
+        "换方向后仍复现才停止，重复 Finding 不生成重复评论",
         "停止状态不是已收敛",
         "报告剩余问题和阻塞原因"
       ]
@@ -76,10 +78,10 @@
     {
       "id": 7,
       "mode": "either",
-      "prompt": "已经连续两轮没有新的可修复问题，但 Review 工具还在返回相同内容。请按有界策略停止，不要无限循环。",
-      "expected_output": "Agent 在连续两轮无新增进展后停止，说明重复内容、轮次、最后验证和剩余不确定性。",
+      "prompt": "连续两轮 Review 都只报出彼此不同的新 Finding，每个修复后必要验证仍然失败，没有任何 Finding 被有效验证为解决。请按有界策略停止，不要无限循环。",
+      "expected_output": "Agent 识别连续两轮没有任何 Finding 被有效验证为解决、必要验证也未从失败变为通过，判定无新增进展后有界停止，说明轮次、各轮 Finding、最后验证和剩余不确定性。",
       "expectations": [
-        "识别连续两轮无新增进展",
+        "以“无 Finding 被有效验证为解决、验证未从失败变通过”判定无进展，而不是以是否编辑文件判定",
         "安全停止而不是继续空转",
         "停止报告包含剩余不确定性",
         "不把有界停止写成无 Finding 收敛"
@@ -95,6 +97,42 @@
         "第 8 轮仍有 Finding 时不是已收敛",
         "报告已修复与剩余问题",
         "不通过删除变更来制造假收敛"
+      ]
+    },
+    {
+      "id": 9,
+      "mode": "either",
+      "prompt": "你修复完上一轮 Finding 后，自己重新看了一遍 Diff，觉得没问题了。请按 review-once 的规则给出最终状态。",
+      "expected_output": "Agent 不因自审无 Finding 而宣布收敛：委派 fresh-context 只读 reviewer 按盲审信息包（不含 Finding 历史与修复意图）复审；无法委派时冷启动自审并将终态标为「自审收敛」，披露未经独立复审、人工 Review 仍可能发现问题。",
+      "expectations": [
+        "自审无 Finding 不直接报告为已收敛（独立复审）",
+        "盲审信息包不含此前 Finding、修复意图与理由",
+        "无法委派时终态为自审收敛并披露未经独立复审",
+        "报告包含收敛方式与四镜头覆盖（已查/未查）"
+      ]
+    },
+    {
+      "id": 10,
+      "mode": "either",
+      "prompt": "独立 reviewer 在收敛复审中指出：某处豁免判据按列表末位而不是时间轴末位生效。你核对后有可复现证据证明这是误报。请按 review-once 的规则处理。",
+      "expected_output": "Agent 不单方驳回，也不为自认不存在的缺陷改代码或换方向重修：保持代码不变，披露反驳依据与可复现证据并将该 Fingerprint 记为 disputed，由新的 fresh-context reviewer 按盲审信息包（不含反驳证据）复审；新 reviewer 未再报出才视为误报确认，再次报出则有界停止并交用户裁决。",
+      "expectations": [
+        "独立 reviewer 的 Finding 不被主 Agent 单方驳回",
+        "误报分支不改代码，也不触发换方向重修",
+        "反驳证据披露在报告中但不进入盲审信息包",
+        "新 reviewer 再次报出同一 Fingerprint 时有界停止并交用户裁决，不写成已收敛"
+      ]
+    },
+    {
+      "id": 11,
+      "mode": "either",
+      "prompt": "独立复审已经报告无 Finding，你准备收尾时顺手给一个函数补了一行注释。请按 review-once 的规则给出最终状态。",
+      "expected_output": "Agent 认定收敛结论因收尾改动作废：重新验证并让 fresh-context reviewer 复审。盲审信息包中的修复 Delta 由首次修改前的仓库外镜像快照求得（不含 Finding 与理由）；若该文件此前没有快照，则标注“Delta 不可得”并把修复回归镜头标为降级覆盖，不凭记忆转述。若已超过第 8 轮预算，则有界停止并标注“最后修改尚未复审”。",
+      "expectations": [
+        "收敛 Review 之后的任何文件改动（含注释）使收敛结论作废并重新过收敛门",
+        "有快照时修复 Delta 由仓库外镜像快照求得；无快照时标注“Delta 不可得”并降级覆盖，不凭记忆转述",
+        "第 8 轮预算耗尽时有界停止而非宣称已收敛",
+        "快照不写入工作区"
       ]
     }
   ]
