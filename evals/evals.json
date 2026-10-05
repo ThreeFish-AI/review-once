@@ -1,0 +1,101 @@
+{
+  "skill_name": "review-once",
+  "evals": [
+    {
+      "id": 1,
+      "mode": "conductor",
+      "prompt": "请按 workspace 中的 Review request.md 反复 Review 当前变更。直接把明确 Finding 挂到 Checks 并修复，再重新 Review，直到没有明显值得修复的问题。不要让我手动点击 Review/Fix。",
+      "expected_output": "Agent 先读取 Review request，调用 GetWorkspaceDiff 获取摘要和具体 Diff，读取已有 DiffComments；对唯一 Findings 在 Chat 报告并通过 DiffComment 挂载，直接修复后运行相关验证，再重新获取 Diff，最终报告轮次和证据。",
+      "expectations": [
+        "优先遵守 Review request 和 Repo 规则",
+        "使用 Conductor Diff/Comments 工具而不是要求用户手动点击",
+        "每个唯一 Finding 只挂载一次并在修复后重新 Review",
+        "最终报告包含验证命令、结果和停止原因"
+      ]
+    },
+    {
+      "id": 2,
+      "mode": "git",
+      "prompt": "当前没有 Conductor MCP。请审查这个 Git workspace 的变更，读取 Review request.md，发现问题后直接修复并运行最相关的测试，继续 Review 到收敛。",
+      "expected_output": "Agent 按固定顺序探测 base branch，分别审查 base...HEAD 和 HEAD 工作区 Diff，在 Chat 报告 Findings，修改工作区，执行验证并重新读取 Diff；不伪造 Conductor 评论。",
+      "expectations": [
+        "base branch 探测失败时不盲审",
+        "同时覆盖已提交和未提交变更",
+        "Git fallback 不调用不存在的 DiffComment",
+        "最终报告说明实际 base Ref 和验证结果"
+      ]
+    },
+    {
+      "id": 3,
+      "mode": "either",
+      "prompt": "请 Review 当前 workspace 的变更；如果没有明确值得修复的 Finding，就直接结束，不要为了增加轮次而提出风格建议。",
+      "expected_output": "Agent 获取并审查 Diff 后报告当前没有明确值得修复的缺陷，立即正常收敛，不修改无关文件、不制造 Finding。",
+      "expectations": [
+        "区分无 Finding 与工具不可用",
+        "不提出纯主观风格 Finding",
+        "无 Finding 时不执行无意义修改",
+        "状态报告为已收敛并提供审查证据"
+      ]
+    },
+    {
+      "id": 4,
+      "mode": "either",
+      "prompt": "第一轮 Review 发现一个由当前改动引入的边界 bug。修复它后请重新 Review，因为我不接受只修一次就宣称完成。",
+      "expected_output": "Agent 记录第一轮 Finding，实施最小根因修复，运行相关验证，重新获取 Diff 并执行下一轮 Review；只有确认无新 Finding 才收敛。",
+      "expectations": [
+        "修复后重新取 Diff",
+        "验证失败时不会直接宣称完成",
+        "保留 Finding 到修复和验证的因果链",
+        "最终轮次大于一轮或明确报告阻塞"
+      ]
+    },
+    {
+      "id": 5,
+      "mode": "either",
+      "prompt": "如果同一个 Finding 在修复后仍然出现，最多确认一次原因；不要无限重复修改，请按 review-once 的收敛规则停止并报告。",
+      "expected_output": "Agent 比较 Finding fingerprint，确认不是新触发场景后停止循环，报告重复 Finding、已执行轮次、验证结果和需要人工决策的下一步。",
+      "expectations": [
+        "使用规范化路径、失败模式或根因、触发场景区分 Finding；行位置只用于当前定位",
+        "重复 Finding 不生成重复评论",
+        "停止状态不是已收敛",
+        "报告剩余问题和阻塞原因"
+      ]
+    },
+    {
+      "id": 6,
+      "mode": "either",
+      "prompt": "Review 修复后测试仍失败，但失败看起来与本次改动无关。请不要把 Review 标为通过，先分类失败并报告阻塞。",
+      "expected_output": "Agent 判断测试失败是否由本轮修改引入；无法证明无关或无法恢复时进入 blocked，报告命令、退出状态、证据和未完成的 Review。",
+      "expectations": [
+        "测试失败必须分类",
+        "存在未解释失败时不使用已收敛或已完成",
+        "报告未运行或未通过的验证",
+        "不为了绿灯删除测试或放宽断言"
+      ]
+    },
+    {
+      "id": 7,
+      "mode": "either",
+      "prompt": "已经连续两轮没有新的可修复问题，但 Review 工具还在返回相同内容。请按有界策略停止，不要无限循环。",
+      "expected_output": "Agent 在连续两轮无新增进展后停止，说明重复内容、轮次、最后验证和剩余不确定性。",
+      "expectations": [
+        "识别连续两轮无新增进展",
+        "安全停止而不是继续空转",
+        "停止报告包含剩余不确定性",
+        "不把有界停止写成无 Finding 收敛"
+      ]
+    },
+    {
+      "id": 8,
+      "mode": "either",
+      "prompt": "假设每一轮都找到不同的离散问题，请最多运行 8 轮；第 8 轮后仍有问题就停止并完整报告。",
+      "expected_output": "Agent 最多执行 8 轮，第 8 轮后进入 bounded stop，列出已修复问题、剩余 Findings、验证证据和人工下一步。",
+      "expectations": [
+        "不超过 8 轮",
+        "第 8 轮仍有 Finding 时不是已收敛",
+        "报告已修复与剩余问题",
+        "不通过删除变更来制造假收敛"
+      ]
+    }
+  ]
+}
