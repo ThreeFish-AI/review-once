@@ -54,7 +54,14 @@ mkdir -p ~/.claude/skills
 ln -s ~/projects/review-once ~/.claude/skills/review-once
 ```
 
-Codex 侧把链接目标换成 `~/.agents/skills/review-once` 即可复用同一份检出。目标路径已存在时 `ln -s` 会把链接嵌进旧目录内，切换安装方式前先移除旧路径。
+Codex 侧复用同一份检出，把链接注册到 `~/.agents/skills/review-once`：
+
+```bash
+mkdir -p ~/.agents/skills
+ln -s ~/projects/review-once ~/.agents/skills/review-once
+```
+
+目标路径已存在时 `ln -s` 会把链接嵌进旧目录内，切换安装方式前先移除旧路径。
 
 Claude Code 使用 `/review-once`，Codex 使用 `$review-once`，同时提供具体 Repo、base（如 `origin/feature/1.x.x`）与 Review request。发现不到 Skill 时重启当前 Agent 会话。安装路径及显式调用按 [Claude Code 文档](https://code.claude.com/docs/en/skills) 与 [OpenAI 文档](https://developers.openai.com/codex/skills/)；这里不引入插件、后台守护或新的全局权限。
 
