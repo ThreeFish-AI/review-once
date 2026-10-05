@@ -52,7 +52,7 @@ normalized path + failure mode / root cause + triggering scenario
 ## 状态机
 
 ```text
-DISCOVER
+BASELINE（建立基线，对应主循环步骤 1–2）
   -> REVIEW
   -> REPORT
   -> FIX
