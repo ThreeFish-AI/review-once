@@ -37,13 +37,13 @@ Repo 根目录即 Skill 根目录，不需要额外嵌套目录。当前实现�
 Claude Code 用户级安装（目录已存在时先检查，不覆盖）：
 
 ```bash
-git clone --branch feat/review-once https://github.com/ThreeFish-AI/review-once.git "$HOME/.claude/skills/review-once"
+git clone --branch main https://github.com/ThreeFish-AI/review-once.git "$HOME/.claude/skills/review-once"
 ```
 
 Codex 用户级安装：
 
 ```bash
-git clone --branch feat/review-once https://github.com/ThreeFish-AI/review-once.git "$HOME/.agents/skills/review-once"
+git clone --branch main https://github.com/ThreeFish-AI/review-once.git "$HOME/.agents/skills/review-once"
 ```
 
 Claude Code 使用 `/review-once`，Codex 使用 `$review-once`，同时提供具体 Repo、base（如 `origin/feature/1.x.x`）与 Review request。发现不到 Skill 时重启当前 Agent 会话。安装路径及显式调用按 [Claude Code 文档](https://code.claude.com/docs/en/skills) 与 [OpenAI 文档](https://developers.openai.com/codex/skills/)；这里不引入插件、后台守护或新的全局权限。
