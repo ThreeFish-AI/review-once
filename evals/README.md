@@ -15,6 +15,8 @@
 
 每条用例都应以 transcript、工具调用记录、Diff 或测试输出作为 evidence。不能只凭最终一句“已完成”判定通过。
 
+`evals.json` 使用官方 schema 的字段（`skill_name`、`id`、`prompt`、`expected_output`、`expectations`），并附加项目自定义 `mode` 字段（`conductor` / `git` / `either`）标注用例的目标运行环境；官方工具链不读取 `mode`，接入官方 improve/benchmark 流程时可原样保留或删除。
+
 ## Trigger eval
 
 `trigger-evals.json` 使用官方 `run_eval.py` 接受的 JSON array，包含正负交替的 24 条 query。每项包含 `query` 与 `should_trigger`：
