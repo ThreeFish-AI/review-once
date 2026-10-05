@@ -41,3 +41,17 @@
 **后续防范**：发布前同时审查运行时主循环、评测断言和可视化资产；任何图表只能作为说明，不得改变运行契约的状态机语义。
 
 **同类问题影响与注意事项**：视觉图、eval 和 runtime reference 出现同一概念时，只允许引用同一事实源；若图表为可读性做拓扑简化，必须保持所有关键状态转移可追踪。
+
+## RSI-004 合并前外部 Review 发现的三项工具链漂移
+
+**日期**：2026-10-05
+
+**问题描述**：对 PR #1 的独立深度 Review 发现三项非阻塞缺陷：`evals/evals.json` 的字段名 `assertions` 与官方 skill-creator `references/schemas.md` 定义的 `expectations` 漂移（并附加非 schema 字段 `mode`）；README 两条安装命令硬编码 `--branch feat/review-once`，合并后分支删除即失效；[Review Contract](../../references/review-contract.md) 状态机首节点 `DISCOVER` 在 SKILL.md 主循环中无对应术语。
+
+**表因与根因**：evals.json 官方仓库自身也存在命名漂移（其 SKILL.md 叙述称 assertions、schemas.md 示例用 expectations），且 `jq`/`quick_validate.py` 均不校验该文件，漂移被本地校验绿灯掩盖；安装命令在 PR 阶段编写，缺少“合并后时效”视角；状态机为图示性命名，未与运行时主循环的词汇表对齐。
+
+**处理方式**：`assertions` 全部更名为 `expectations`，`mode` 在 [evals/README.md](../../evals/README.md) 明示为项目扩展；安装命令改为 `--branch main`（合并后即刻生效，第 35 行说明保持解释合并时序）；状态机首节点更名为 `BASELINE` 并标注对应主循环步骤 1–2。
+
+**后续防范**：接入官方 skill-creator 工具链的字段以 `references/schemas.md` 为准，而不是官方文档叙述；任何硬编码分支名的面向用户命令都必须回答“该 Ref 在合并后是否仍存在”；跨文件共享的图示节点名必须能在运行时文档中检索到同词汇。
+
+**同类问题影响与注意事项**：与 RSI-003 同属“多资产各自演进导致的漂移”，但此次漂移源部分来自上游（官方仓库内部不一致）；引用上游 schema 时应同时记录核验日期与具体文件，上游漂移不能自动豁免本仓库的一致性义务。
