@@ -22,5 +22,6 @@
     {"id": 21, "query": "请评估是否应该采用事件驱动架构，并写一份设计方案。", "should_trigger": false},
     {"id": 22, "query": "在没有 Conductor MCP 时，用 Git merge-base 和 git diff 完成 Review-Fix 循环。", "should_trigger": true},
     {"id": 23, "query": "请为这个 React 页面做一次 UI 视觉评审并生成截图。", "should_trigger": false},
-    {"id": 24, "query": "最多 Review 8 轮；每次修复后重新取证，直到无明显问题或明确阻塞。", "should_trigger": true}
+    {"id": 24, "query": "最多 Review 8 轮；每次修复后重新取证，直到无明显问题或明确阻塞。", "should_trigger": true},
+    {"id": 25, "query": "请把当前分支的变更打包发布为 v1.0 Release 并生成 changelog，不需要做代码 Review。", "should_trigger": false}
 ]
