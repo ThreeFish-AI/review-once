@@ -92,7 +92,7 @@
 
 **表因与根因**：表因是图示从第一版（PR #1 同批）起就缺这些状态。根因是 RSI-003「拓扑简化必须保持所有关键状态转移可追踪」规则与 BLOCKED 折叠同日同 PR 诞生，但从未回溯适用于其诞生 commit 自身的资产；有记录的同步（RSI-006）只覆盖 self_reviewed 节点新增与「争议」词条文案级修补，无记录的表示法漂移持续存活于六轮盲审之下。
 
-**处理方式**：candidate.json 新增 `blocked` 终态节点（两条代表性入边：verify→blocked「验证失败且与本轮无关」、review→blocked「工具 / 权限 / 决策不足（任何状态可触发）」）与 `disputed` 中间态节点（两条出边：→converged「未再报出 → 按其余结果收敛」、→bounded「再次报出 → 交用户裁决」）；「阻塞」「争议」移出 bounded sublabel；开始节点 sublabel 补「建立基线 BASELINE」；卡片改写并注明「收敛门完整出边以 review-contract.md 状态机为准」；HTML 经 archify finalize（validate/deliver/check/browser-check 四门）再生，未手改。护栏升级：状态词汇登记表断言（终态集=契约四终态、DISPUTED 双出边可追踪、HTML 与 candidate 节点集零漂移）固化为仓库内被跟踪的校验器 [tests/run_all.sh](../../tests/run_all.sh)（evals schema、Markdown 链接锚点、状态词汇矩阵、`git diff --check` 四门），防第七次同类漂移。
+**处理方式**：candidate.json 新增 `blocked` 终态节点（两条代表性入边：verify→blocked「验证失败但与本轮无关」、review→blocked「工具 / 权限 / 决策不足（任何状态可触发）」）与 `disputed` 中间态节点（两条出边：→converged「未再报出 → 按其余结果收敛」、→bounded「再次报出 → 交用户裁决」）；「阻塞」「争议」移出 bounded sublabel；开始节点 sublabel 补「建立基线 BASELINE」；卡片改写并注明「收敛门完整出边以 review-contract.md 状态机为准」；HTML 经 archify finalize（validate/deliver/check/browser-check 四门）再生，未手改。护栏升级：状态词汇登记表断言（终态集=契约四终态、DISPUTED 双出边可追踪、HTML 与 candidate 节点集零漂移）固化为仓库内被跟踪的校验器 [tests/run_all.sh](../../tests/run_all.sh)（evals schema、Markdown 链接锚点、状态词汇矩阵、`git diff --check` 四门），防第七次同类漂移。
 
 **后续防范**（扩展 RSI-003，并将 RSI-003 回溯适用于其诞生 commit 自身的资产）：**契约状态机的每个终态与中间态，要么出现在图示拓扑中，要么出现在图示的显式简化免责声明中**；CONVERGENCE_GATE 以边标签表示属可辩护简化（契约自注非终态），但此类简化决定必须留档。图示资产只准经 candidate.json → archify 流水线再生，严禁手改 HTML 造成 candidate↔html split-brain。
 
