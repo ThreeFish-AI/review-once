@@ -4,7 +4,7 @@
   "meta": {
     "title": "review-once · 双 Mode 有界 Review-Fix 生命周期",
     "locale": "zh-CN",
-    "subtitle": "Review → Chat → Fix → Verify → 收敛门 → 收敛 / 自审收敛 / 有界停止",
+    "subtitle": "Review → Chat → Fix → Verify → 收敛门 → 收敛 / 自审收敛 / 有界停止 / 阻塞",
     "animation": "none",
     "visual_preset": "signal-flow",
     "quality_profile": "showcase",
@@ -33,12 +33,12 @@
       "id": "request",
       "type": "start",
       "label": "开始 Review",
-      "sublabel": "读取 Review request.md（若指定）",
+      "sublabel": "读取 Review request.md · 建立基线 BASELINE",
       "lane": "main",
       "col": 0,
       "step": "01",
       "tag": "scope",
-      "width": 180
+      "width": 190
     },
     {
       "id": "review",
@@ -49,7 +49,7 @@
       "col": 2,
       "step": "02",
       "tag": "Finding gate",
-      "width": 190
+      "width": 170
     },
     {
       "id": "report",
@@ -60,7 +60,7 @@
       "col": 3,
       "step": "03",
       "tag": "evidence",
-      "width": 170
+      "width": 140
     },
     {
       "id": "fix",
@@ -71,7 +71,7 @@
       "col": 4,
       "step": "04",
       "tag": "bounded",
-      "width": 170
+      "width": 140
     },
     {
       "id": "conductor",
@@ -81,7 +81,7 @@
       "lane": "evidence",
       "col": 0,
       "tag": "MCP",
-      "width": 190
+      "width": 170
     },
     {
       "id": "git",
@@ -91,7 +91,7 @@
       "lane": "evidence",
       "col": 1,
       "tag": "CLI",
-      "width": 190
+      "width": 160
     },
     {
       "id": "verify",
@@ -101,7 +101,7 @@
       "lane": "loop",
       "col": 4,
       "tag": "feedback",
-      "width": 180
+      "width": 140
     },
     {
       "id": "converged",
@@ -111,17 +111,27 @@
       "lane": "terminal",
       "col": 2,
       "tag": "done",
-      "width": 190
+      "width": 140
     },
     {
       "id": "bounded",
       "type": "failure",
       "label": "有界停止",
-      "sublabel": "重复 / 无进展 / 阻塞 / 争议 / 8 轮",
+      "sublabel": "重复 / 无进展 / 8 轮 / 争议再报出",
       "lane": "terminal",
       "col": 3,
       "tag": "decision",
-      "width": 190
+      "width": 160
+    },
+    {
+      "id": "blocked",
+      "type": "failure",
+      "label": "阻塞",
+      "sublabel": "工具 / 权限 / 决策不足",
+      "lane": "terminal",
+      "col": 4,
+      "tag": "halt",
+      "width": 140
     },
     {
       "id": "self_reviewed",
@@ -131,7 +141,17 @@
       "lane": "terminal",
       "col": 1,
       "tag": "degraded",
-      "width": 190
+      "width": 160
+    },
+    {
+      "id": "disputed",
+      "type": "decision",
+      "label": "误报复核 DISPUTED",
+      "sublabel": "不改代码 · 新 reviewer 复核中",
+      "lane": "loop",
+      "col": 3,
+      "tag": "dispute",
+      "width": 140
     }
   ],
   "transitions": [
@@ -174,7 +194,7 @@
       "id": "report-fix",
       "from": "report",
       "to": "fix",
-      "label": "可安全修复",
+      "label": "安全修复",
       "variant": "default"
     },
     {
@@ -189,8 +209,7 @@
       "from": "verify",
       "to": "review",
       "label": "重新取证",
-      "variant": "emphasis",
-      "route": "left-channel"
+      "variant": "emphasis"
     },
     {
       "id": "review-converged",
@@ -212,6 +231,41 @@
       "to": "self_reviewed",
       "label": "无法委派：冷启动自审",
       "variant": "default"
+    },
+    {
+      "id": "review-blocked",
+      "from": "review",
+      "to": "blocked",
+      "label": "工具 / 权限 / 决策不足（任何状态可触发）",
+      "variant": "default"
+    },
+    {
+      "id": "verify-blocked",
+      "from": "verify",
+      "to": "blocked",
+      "label": "验证失败且与本轮无关",
+      "variant": "default"
+    },
+    {
+      "id": "review-disputed",
+      "from": "review",
+      "to": "disputed",
+      "label": "收敛门 Finding 判定误报",
+      "variant": "default"
+    },
+    {
+      "id": "disputed-converged",
+      "from": "disputed",
+      "to": "converged",
+      "label": "未再报出 → 按其余结果收敛",
+      "variant": "emphasis"
+    },
+    {
+      "id": "disputed-bounded",
+      "from": "disputed",
+      "to": "bounded",
+      "label": "再次报出 → 交用户裁决",
+      "variant": "security"
     }
   ],
   "cards": [
@@ -220,7 +274,7 @@
       "title": "共享契约",
       "items": [
         "两个 Mode 只改变取证载体，不改变 Finding 判定与停止语义",
-        "Review Contract 与主循环保持唯一事实源"
+        "Finding 判定、状态机与报告格式以 Review Contract 为唯一事实源；停止预算与轮次以 SKILL.md 为准"
       ]
     },
     {
@@ -235,8 +289,9 @@
       "dot": "rose",
       "title": "有界终止",
       "items": [
-        "重复 Finding、连续无进展、阻塞、误报复核后再报出（交用户裁决）或第 8 轮触发有界停止",
-        "收敛须经 fresh-context 独立复审；无法委派只能标「自审收敛」，收敛后任何改动使结论作废"
+        "重复 Finding、连续无进展或第 8 轮触发有界停止；阻塞（工具/权限/决策不足）是与之并列的独立终态",
+        "误报复核 DISPUTED：新 reviewer 未再报出则按其余结果收敛，再次报出则有界停止并交用户裁决",
+        "收敛须经 fresh-context 独立复审；无法委派只能标「自审收敛」，收敛后任何改动使结论作废；收敛门完整出边以 review-contract.md 状态机为准"
       ]
     }
   ]
