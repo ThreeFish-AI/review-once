@@ -32,6 +32,7 @@
 | --- | --- |
 | [openai.yaml](../../agents/openai.yaml) | Codex 侧 UI 元数据与 default prompt |
 | [issue.md](./issue.md) | RSI Issue 台账（发布前 Review 发现的漂移与假收敛教训） |
+| [tests/run_all.sh](../../tests/run_all.sh) | 仓库护栏校验器：evals schema、Markdown 链接锚点、图-契约状态词汇矩阵与 `git diff --check` |
 
 ## Research and Visual Evidence
 

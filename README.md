@@ -93,6 +93,8 @@ unzip -l "$SKILL_ROOT/.temp/dist/review-once.skill"
 
 发布包只含 Skill 入口、UI 元数据、三份运行时 Reference 和 License；README、调研、评测及 `.git/` 永不进入包。若已安装官方 `skills-ref`，额外执行 `skills-ref validate "$SKILL_ROOT"`；未安装则如实记录“不适用”，不冒称 Portable 校验执行过。
 
+仓库自身的护栏校验（evals schema、Markdown 链接锚点、图-契约状态词汇矩阵、`git diff --check`）由 [tests/run_all.sh](./tests/run_all.sh) 提供，仅供仓库维护，不进入发布包。
+
 ## 评测
 
 评测资产位于 [evals/README.md](./evals/README.md)：
