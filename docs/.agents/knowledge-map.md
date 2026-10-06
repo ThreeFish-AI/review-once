@@ -6,7 +6,7 @@
 
 | 文档 | 内容 |
 | --- | --- |
-| [SKILL.md](../../SKILL.md) | Skill 触发边界、双 Mode 路由、主循环、收敛条件和交付格式 |
+| [SKILL.md](../../SKILL.md) | Skill 触发边界、双 Mode 路由、主循环、收敛与停止预算、交付格式入口 |
 | [README.md](../../README.md) | 安装、调用、验证和评测入口 |
 | [LICENSE](../../LICENSE) | MIT License |
 
@@ -14,7 +14,7 @@
 
 | 文档 | 内容 |
 | --- | --- |
-| [review-contract.md](../../references/review-contract.md) | Finding 判定、Fingerprint、状态机、证据和最终报告 |
+| [review-contract.md](../../references/review-contract.md) | Finding 判定、Fingerprint、状态机、证据和最终报告（报告格式 SSOT） |
 | [conductor-mode.md](../../references/conductor-mode.md) | Conductor Diff/Comments/Checks 工作流 |
 | [git-mode.md](../../references/git-mode.md) | Git fallback 的 base 探测、Diff 获取和验证 |
 
@@ -25,6 +25,14 @@
 | [evals/README.md](../../evals/README.md) | Output eval 与 Trigger eval 运行说明 |
 | [evals/evals.json](../../evals/evals.json) | 双 Mode 和收敛行为评测 |
 | [evals/trigger-evals.json](../../evals/trigger-evals.json) | Skill 触发准确率评测 |
+
+## Agent 接口与治理
+
+| 文档 | 内容 |
+| --- | --- |
+| [openai.yaml](../../agents/openai.yaml) | Codex 侧 UI 元数据与 default prompt |
+| [issue.md](./issue.md) | RSI Issue 台账（发布前 Review 发现的漂移与假收敛教训） |
+| [tests/run_all.sh](../../tests/run_all.sh) | 仓库护栏校验器：evals schema、Markdown 链接锚点、图-契约状态词汇矩阵与 `git diff --check` |
 
 ## Research and Visual Evidence
 

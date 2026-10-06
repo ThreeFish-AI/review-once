@@ -26,16 +26,14 @@
 
 - 正例覆盖“反复 Review”“Review request”“Conductor Checks”“自动修复再审查”等同义入口；
 - 负例覆盖一次性 Review、解释代码、只跑测试、普通开发、PR 发布和 Release；
-- collision case 使用共享的“检查/修复/变更”词汇，但目标是 Security Audit、测试编写、文档审阅或 Release 发布。
+- collision case 使用共享的“检查/修复/变更”词汇，但目标是 Security Audit、测试编写、一次性 Review、UI 视觉评审或 Release 发布。
 
 建议每条 query 重复运行 3 次；官方 Runner 的默认判定是正例 trigger rate `>= 0.5`、负例 `< 0.5`。若需要更严格的质量门槛，应另行标注为项目额外标准。Description 优化时固定 60/40 train/validation 切分，只用 train 失败项改写，按 validation 结果选择版本。官方 Runner 会直接读取数组，不需要额外的 `skill_name` 或 `queries` 包装层。
 
 ## 本地校验
 
 ```bash
-jq empty evals/evals.json
-jq empty evals/trigger-evals.json
-git diff --check
+bash tests/run_all.sh
 ```
 
 ## 本机 Smoke 记录

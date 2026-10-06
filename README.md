@@ -1,6 +1,6 @@
 # review-once
 
-Portable Agent Skill，用于在 Conductor 或普通 Git workspace 中执行有界的 Review-Fix loop：读取 Review 规则、审查当前 Diff、直接修复明确缺陷、运行验证，再重新 Review，直到收敛或明确阻塞。
+Portable Agent Skill，用于在 Conductor 或普通 Git workspace 中执行有界的 Review-Fix loop：读取 Review 规则、审查当前 Diff、直接修复明确缺陷、运行验证，再重新 Review，直到经收敛门确认收敛，或以自审收敛、有界停止、阻塞安全停止。
 
 ## 适用场景
 
@@ -28,13 +28,13 @@ Conductor Mode 的详细规则见 [references/conductor-mode.md](./references/co
 - 每轮覆盖四个审查镜头：行为正确性、契约一致性、修复回归、仓库惯例。
 - 自审无 Finding 不构成收敛：宣布收敛前须经收敛门，由 fresh-context 独立 reviewer 盲审；无法委派时只能标「自审收敛」并披露未经独立复审。
 - 修复后重新获取 Diff 和 Review 结果，不依赖陈旧结论；收敛 Review 之后任何文件改动都使收敛作废。
-- 最多 8 轮；同一根因两次不同方向修复后仍复现、连续两轮无进展、误报争议待裁决或工具/验证阻塞时安全停止。
+- 最多 8 轮；同一根因两次不同方向修复后仍复现、连续两轮无进展、误报争议待裁决、工具/验证阻塞，或修复需要超出 Review 范围的产品、架构或安全决策时安全停止。
 - 测试失败必须分类处理；存在未解释失败时不得宣称 Review 已完成。
 - 不默认向 GitHub 发布 Review；Conductor 评论使用 Checks 面板的 `DiffComment`。
 
 ## 安装
 
-Repo 根目录即 Skill 根目录，不需要额外嵌套目录。当前实现位于 PR 工作分支 `feat/review-once`；合并后可从 `main` 获取。
+Repo 根目录即 Skill 根目录，不需要额外嵌套目录。
 
 Claude Code 用户级安装（目录已存在时先检查，不覆盖）：
 
@@ -93,11 +93,13 @@ unzip -l "$SKILL_ROOT/.temp/dist/review-once.skill"
 
 发布包只含 Skill 入口、UI 元数据、三份运行时 Reference 和 License；README、调研、评测及 `.git/` 永不进入包。若已安装官方 `skills-ref`，额外执行 `skills-ref validate "$SKILL_ROOT"`；未安装则如实记录“不适用”，不冒称 Portable 校验执行过。
 
+仓库自身的护栏校验（evals schema、Markdown 链接锚点、图-契约状态词汇矩阵、`git diff --check`）由 [tests/run_all.sh](./tests/run_all.sh) 提供，仅供仓库维护，不进入发布包。
+
 ## 评测
 
 评测资产位于 [evals/README.md](./evals/README.md)：
 
-- `evals/evals.json` 验证双 Mode、无 Finding、重复 Finding、无进展、测试失败等输出行为；
+- `evals/evals.json` 验证双 Mode、无 Finding、收敛门与自审收敛、重复 Finding、误报复核、修复 Delta、无进展、测试失败等输出行为；
 - `evals/trigger-evals.json` 验证触发准确率，并覆盖普通 Review、Conductor Review 和近邻 collision case。
 
 ## 许可证
