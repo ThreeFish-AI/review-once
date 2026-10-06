@@ -107,7 +107,8 @@ REVIEW --有 Finding--> REPORT -> FIX -> VERIFY -> REVIEW
 REVIEW --自审无 Finding--> CONVERGENCE_GATE（不是终态）
 CONVERGENCE_GATE --独立 reviewer 无 Finding且验证有效--> CONVERGED
 CONVERGENCE_GATE --无 Finding 但验证无效或过期--> VERIFY（补跑；通过则落入对应终态，文件未变无需重审；失败按 VERIFY 失败两条转移分类）
-CONVERGENCE_GATE --独立 reviewer 有 Finding，认定真实--> REPORT（回到普通修复轮，计数）
+CONVERGENCE_GATE --独立 reviewer 有 Finding，认定真实--> REPORT（回到修复轮，计数；其 FIX→VERIFY 后经下方转移直接重过门）
+VERIFY --收敛门 Finding 修复后的验证通过--> CONVERGENCE_GATE（该修复轮的 Review 即收敛门复审，跳过主 Agent 自审）
 CONVERGENCE_GATE --独立 reviewer 有 Finding，主 Agent 判定误报--> DISPUTED（不改代码，见误报复核）
 DISPUTED --新 reviewer 未再报出同一 Fingerprint--> CONVERGENCE_GATE（按其余结果收敛，计入新一轮）
 DISPUTED --新 reviewer 再次报出--> BOUNDED_STOP（交用户裁决）
@@ -123,7 +124,7 @@ VERIFY --验证失败但与本轮无关--> BLOCKED
 第 8 轮之后 --需要再过一次门（收敛后改动）--> BOUNDED_STOP（标注“最后修改尚未复审”）
 ```
 
-轮次预算、提前停止条件、进展定义与第 8 轮边界以 [Skill 收敛与停止](../SKILL.md#收敛与停止) 为唯一事实源；状态机只补充与转移直接相关的计轮规则——收敛门复审与触发它的自审计为同一轮（因此第 8 轮可以包含一次收敛门），收敛结论作废后重新过门与 DISPUTED 复核各计入新一轮，超出第 8 轮则有界停止。
+轮次预算、提前停止条件、进展定义与第 8 轮边界以 [Skill 收敛与停止](../SKILL.md#收敛与停止) 为唯一事实源；状态机只补充与转移直接相关的计轮规则——收敛门复审与触发它的自审计为同一轮（因此第 8 轮可以包含一次收敛门），收敛结论作废后重新过门与 DISPUTED 复核各计入新一轮，收敛门 Finding 修复后的重入门复审即该修复轮的 Review（无主 Agent 自审可配对，计入该修复轮而不另计一轮），超出第 8 轮则有界停止。
 
 同一轮同时出现认定真实与判定误报的 Finding 时，真实部分按对应分支处理，误报部分进 DISPUTED；第 8 轮先安全修复真实项再有界停止，并列出待裁决争议。
 
