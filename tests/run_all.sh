@@ -16,8 +16,13 @@ echo "== 护栏: 状态词汇矩阵 =="
 python3 "$TESTS/check_states.py" || rc=1
 
 echo "== 护栏: git diff --check =="
-BASE=$(git merge-base HEAD origin/main 2>/dev/null || git rev-parse HEAD)
-git diff --check "$BASE" && echo "[gitdiff] clean" || rc=1
+BASE=$(git merge-base HEAD origin/main 2>/dev/null) || BASE=""
+if [ -n "$BASE" ]; then
+  git diff --check "$BASE" && echo "[gitdiff] clean" || rc=1
+else
+  echo "[gitdiff] SKIPPED: origin/main 不可用，分支级 diff 检查未执行，不计入 clean" >&2
+  rc=1
+fi
 
 if [ "$rc" -eq 0 ]; then echo "== ALL GREEN =="; else echo "== RED (rc=$rc) =="; fi
 exit $rc

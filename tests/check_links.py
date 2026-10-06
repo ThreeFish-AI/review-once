@@ -23,7 +23,7 @@ def main() -> int:
         anchors_cache: dict[str, set] = {}
         for text, target in LINK_RE.findall(md.read_text(encoding="utf-8")):
             if target.startswith(("http://", "https://", "mailto:")):
-                continue  # 外部 URL 不在机械校验范围（README 已声明）
+                continue  # 外部 URL 不在机械校验范围
             checked += 1
             rel, _, anchor = target.partition("#")
             anchor = anchor.strip()
