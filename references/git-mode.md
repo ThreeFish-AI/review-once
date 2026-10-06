@@ -28,7 +28,7 @@ git diff HEAD
 git ls-files --others --exclude-standard
 ```
 
-分别读取 branch Diff、staged/unstaged Diff 理解变更过程，同时以 `git diff <merge-base> --` 核对当前工作区最终状态，避免把已经撤回的中间版本误报为现存缺陷。`git diff HEAD` 不包含 untracked 文件；必须用 `git ls-files --others --exclude-standard` 枚举、筛选本次新增源码/文档/测试并读取正文（例如 `git diff --no-index -- /dev/null <file>`；退出 1 表示存在差异，不表示工具失败）。不为纳入 Review 而擅自 `git add`。
+分别读取 branch Diff、staged/unstaged Diff 理解变更过程，同时以 `git diff <merge-base> --` 核对当前工作区最终状态，避免把已经撤回的中间版本误报为现存缺陷。`git diff HEAD` 不包含 untracked 文件；必须用 `git ls-files --others --exclude-standard` 枚举、筛选本次新增源码/文档/测试并读取正文（例如 `git diff --no-index -- /dev/null <file>`；rc=1 且 stderr 为空表示存在差异，stderr 非空表示执行失败——完整三分支判定见[修复 Delta](./review-contract.md#修复-delta)）。不为纳入 Review 而擅自 `git add`。
 
 排除构建缓存、临时文件、凭证和无关变更；无法确认文件归属时报告范围缺口，不静默漏审。每次读 Diff 必须检查命令退出状态，读取错误不能当成空 Diff。
 
@@ -37,7 +37,7 @@ git ls-files --others --exclude-standard
 1. 读取 `Review request.md`、`AGENTS.md`、项目 README 和变更涉及的上下游代码。
 2. 从 Repo 的 manifest、Makefile、Conductor settings 或 CI 配置识别已有测试入口；优先运行与改动文件最相关的最小命令。
 3. 不擅自安装依赖、不删除数据、不修改锁文件、不切换用户凭证。
-4. 若测试失败，先判断是本轮修复引入、已有失败，还是环境缺失；没有证据时标记为 `blocked`，不能宣称通过。
+4. 若测试失败，先判断是本轮修复引入、已有失败，还是环境缺失；没有证据时按[状态机](./review-contract.md#状态机)进入 `BLOCKED` 终态（区别于 Finding 的 `blocked` 状态），不能宣称通过。
 
 ## Fallback 循环
 
@@ -49,13 +49,13 @@ git ls-files --others --exclude-standard
 4. 首次修改某个 BASELINE 时已存在的文件前，按[修复 Delta](./review-contract.md#修复-delta)把它快照到仓库之外的临时目录；然后直接做最小根因修复。
 5. 运行相关验证并记录退出状态。
 6. 重新计算并核对 merge-base，获取最终 Diff、`git diff HEAD` 和 untracked 列表，并按快照求出修复 Delta 作“修复回归”镜头的输入。
-7. 自审有 Finding 则回到步骤 1 开始下一轮（四个镜头全量覆盖，修复回归镜头对照 Delta）；自审无 Finding 时直接进入**收敛门**：委派 fresh-context 只读 reviewer，按[盲审信息包](./review-contract.md#盲审信息包)独立复审（Diff、untracked 文件正文与修复 Delta 由主 Agent 取好后提供）。reviewer 报告 Finding 且认定真实则回到步骤 3（先在 Chat 报告再修复）；认为是误报则不改代码，按[误报复核](./review-contract.md#误报复核)进入 DISPUTED；无 Finding 且收敛 Review 之后未再改文件才可收敛。无法委派时按[降级协议](./review-contract.md#降级协议)标「自审收敛」。
+7. 自审有 Finding 则回到步骤 1 开始下一轮（四个镜头全量覆盖，修复回归镜头对照 Delta）；自审无 Finding 时直接进入**收敛门**：委派 fresh-context 只读 reviewer，按[盲审信息包](./review-contract.md#盲审信息包)独立复审（Diff、untracked 文件正文与修复 Delta 由主 Agent 取好后提供）。reviewer 报告 Finding 且认定真实则回到步骤 3（先在 Chat 报告，再修复），修复验证后进入下一轮全量四镜头复审并重新过收敛门（无需重跑主 Agent 四镜头自审后再报告）；认为是误报则不改代码，按[误报复核](./review-contract.md#误报复核)进入 DISPUTED；无 Finding 且收敛 Review 之后未再改文件才可收敛。无法委派时按[降级协议](./review-contract.md#降级协议)标「自审收敛」；验证失败、权限或工具不可用时的出口见[状态机](./review-contract.md#状态机)。
 
 若分支在循环中被用户外部改写，重新计算 merge-base 并在 Chat 中报告基线变化；不要继续使用旧 Diff。
 
 ## 输出证据
 
-最终报告至少包含：
+最终报告至少包含（完整格式见 [Review Contract 最终报告](./review-contract.md#最终报告)）：
 
 - 实际采用的 base Ref，而不是只写“默认分支”；
 - `git diff --stat` 的变更范围；
