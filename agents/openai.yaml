@@ -1,4 +1,4 @@
 interface:
   display_name: "review-once"
   short_description: "自动执行 Review、最小修复与验证，直到收敛或明确阻塞"
-  default_prompt: "使用 $review-once 按当前 Repo 的 Review request 审查并修复工作区变更，持续到无明确值得修复的缺陷；遵守 Repo 规则，不自动提交或推送。"
+  default_prompt: "使用 $review-once 按当前 Repo 的 Review request 审查并修复工作区变更，持续到经收敛门确认无明确值得修复的缺陷（无法委派独立复审时如实标注自审收敛）；遵守 Repo 规则，不自动提交或推送。"

@@ -26,11 +26,12 @@
 2. 读取用户指定的 Review request 和适用 Repo 规则。
 3. 对每个变更文件调用 `GetWorkspaceDiff({file: ...})`，结合上下游代码验证行为。
 4. 调用 `GetDiffComments()`，避免重复发布已经存在的 Finding。
-5. 按 [Review Contract](./review-contract.md) 筛选并在 Chat 中先报告 Findings。
+5. 按 [Review Contract](./review-contract.md) 逐项覆盖四个[审查镜头](./review-contract.md#审查镜头)，筛选并在 Chat 中先报告 Findings。
 6. 对确实存在的 Finding 调用 `DiffComment`，一次只挂载一个唯一问题；评论正文保持简短，不在其中塞入完整修复方案或无关背景。
-7. 直接在 workspace 中做最小根因修复。
+7. 首次修改某个 BASELINE 时已存在的文件前，按[修复 Delta](./review-contract.md#修复-delta)把它快照到仓库之外的临时目录；然后直接在 workspace 中做最小根因修复。
 8. 运行相关测试、Lint、类型检查或静态检查，记录本轮命令退出状态；`GetTerminalOutput` 仅作补充，不能用旧的绿灯替代新验证。
-9. 再次获取 stat、具体 Diff 和评论；以新结果决定收敛、继续或阻塞。
+9. 再次获取 stat、具体 Diff 和评论，并按快照求出修复 Delta 作“修复回归”镜头的输入；自审有 Finding 则回到步骤 1 开始下一轮，无 Finding 进入步骤 10。
+10. 自审无 Finding 时进入**收敛门**：委派 fresh-context 只读 reviewer，按[盲审信息包](./review-contract.md#盲审信息包)独立复审（因 Conductor 工具绑定原 workspace，信息包中的 Diff 与修复 Delta 需由主 Agent 取好后以文本提供，并包含 untracked 文件）。reviewer 报告 Finding 且认定真实则回到步骤 5（先在 Chat 报告，再挂载、修复）；认为是误报则不改代码、不挂载 `DiffComment`，按[误报复核](./review-contract.md#误报复核)进入 DISPUTED；无 Finding 且收敛 Review 之后未再改文件才可收敛。无法委派时按[降级协议](./review-contract.md#降级协议)标「自审收敛」。验证失败、权限或工具不可用时的出口见[状态机](./review-contract.md#状态机)。
 
 ## 定位与评论纪律
 
