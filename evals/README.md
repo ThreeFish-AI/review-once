@@ -33,9 +33,7 @@
 ## 本地校验
 
 ```bash
-jq empty evals/evals.json
-jq empty evals/trigger-evals.json
-git diff --check
+bash tests/run_all.sh
 ```
 
 ## 本机 Smoke 记录

@@ -49,7 +49,7 @@ git ls-files --others --exclude-standard
 4. 首次修改某个 BASELINE 时已存在的文件前，按[修复 Delta](./review-contract.md#修复-delta)把它快照到仓库之外的临时目录；然后直接做最小根因修复。
 5. 运行相关验证并记录退出状态。
 6. 重新计算并核对 merge-base，获取最终 Diff、`git diff HEAD` 和 untracked 列表，并按快照求出修复 Delta 作“修复回归”镜头的输入。
-7. 自审有 Finding 则回到步骤 1 开始下一轮（四个镜头全量覆盖，修复回归镜头对照 Delta）；自审无 Finding 时直接进入**收敛门**：委派 fresh-context 只读 reviewer，按[盲审信息包](./review-contract.md#盲审信息包)独立复审（Diff、untracked 文件正文与修复 Delta 由主 Agent 取好后提供）。reviewer 报告 Finding 且认定真实则回到步骤 3（先在 Chat 报告，再修复），修复验证后进入下一轮全量四镜头复审并重新过收敛门（无需重跑主 Agent 四镜头自审后再报告）；认为是误报则不改代码，按[误报复核](./review-contract.md#误报复核)进入 DISPUTED；无 Finding 且收敛 Review 之后未再改文件才可收敛。无法委派时按[降级协议](./review-contract.md#降级协议)标「自审收敛」；验证失败、权限或工具不可用时的出口见[状态机](./review-contract.md#状态机)。
+7. 自审有 Finding 则回到步骤 1 开始下一轮（四个镜头全量覆盖，修复回归镜头对照 Delta）；自审无 Finding 时直接进入**收敛门**：委派 fresh-context 只读 reviewer，按[盲审信息包](./review-contract.md#盲审信息包)独立复审（Diff、untracked 文件正文与修复 Delta 由主 Agent 取好后提供）。reviewer 报告 Finding 且认定真实则回到步骤 3（先在 Chat 报告，再修复），修复验证后，下一轮跳过本步句首的主 Agent 自审分支，直接由收敛门 reviewer 按盲审信息包做全量四镜头复审并重新过收敛门；认为是误报则不改代码，按[误报复核](./review-contract.md#误报复核)进入 DISPUTED；无 Finding 且收敛 Review 之后未再改文件才可收敛。无法委派时按[降级协议](./review-contract.md#降级协议)标「自审收敛」；验证失败、权限或工具不可用时的出口见[状态机](./review-contract.md#状态机)。
 
 若分支在循环中被用户外部改写，重新计算 merge-base 并在 Chat 中报告基线变化；不要继续使用旧 Diff。
 
