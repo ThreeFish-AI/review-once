@@ -83,11 +83,7 @@ for s in STATES:
     row = f"  {s:<18}"
     for name in RUNTIME:
         row += f"{'●':>14}" if re.search(rf"\b{s}\b", texts[name]) else f"{'·':>14}"
-    in_cand = any(s.lower() in (st.get("id", "") + st.get("label", "") + st.get("sublabel", ""))
-                  for st in cand["states"]) or \
-              any(s.lower() in (tr.get("label", "") + tr.get("variant", ""))
-                  for tr in cand["transitions"])
-    row += f"{'●':>16}" if in_cand else f"{'·':>16}"
+    row += f"{'●':>16}" if _traceable[s] else f"{'·':>16}"
     row += f"{'●':>8}" if s in html or s.lower() in html else f"{'·':>8}"
     print(row)
 print(f"[states] Fingerprint 5 态: " + ", ".join(f"{s}={'●' if s in texts['review-contract'] else '·'}" for s in FINGERPRINT))

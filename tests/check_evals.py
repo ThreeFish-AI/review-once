@@ -20,9 +20,9 @@ for ev in evals["evals"]:
         errors.append(f"evals.json id={eid}: expectations 非非空列表")
     if ev.get("mode") not in MODES:
         errors.append(f"evals.json id={eid}: mode 非法 {ev.get('mode')}")
-extra = set(ev.keys()) - {"id", "mode", "prompt", "expected_output", "expectations"}
-if extra:
-    errors.append(f"evals.json 存在 schema 外字段: {extra}")
+    extra = set(ev.keys()) - {"id", "mode", "prompt", "expected_output", "expectations"}
+    if extra:
+        errors.append(f"evals.json id={eid}: 存在 schema 外字段 {extra}")
 ids = [ev["id"] for ev in evals["evals"]]
 assert ids == sorted(ids) and len(set(ids)) == len(ids), "evals id 非递增唯一"
 

@@ -7,7 +7,6 @@ cd "$REPO" || exit 1
 rc=0
 
 echo "== 护栏: evals JSON 与 schema =="
-jq empty evals/evals.json && jq empty evals/trigger-evals.json || rc=1
 python3 "$TESTS/check_evals.py" || rc=1
 
 echo "== 护栏: Markdown 链接与锚点 =="
@@ -17,7 +16,8 @@ echo "== 护栏: 状态词汇矩阵 =="
 python3 "$TESTS/check_states.py" || rc=1
 
 echo "== 护栏: git diff --check =="
-git diff --check && echo "[gitdiff] clean" || rc=1
+BASE=$(git merge-base HEAD origin/main 2>/dev/null || git rev-parse HEAD)
+git diff --check "$BASE" && echo "[gitdiff] clean" || rc=1
 
 if [ "$rc" -eq 0 ]; then echo "== ALL GREEN =="; else echo "== RED (rc=$rc) =="; fi
 exit $rc
