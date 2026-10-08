@@ -38,6 +38,22 @@ for term in CN_TERMINALS:
         if term not in texts[name]:
             errors.append(f"{name} 缺交付终态口径: {term}")
 
+# —— 硬断言：终态挂载制/回显防循环/audit 模式的新契约词汇跨文档存在（RSI-007 护栏化） ——
+NEW_CONTRACT = {
+    "SKILL.md": ["终态挂载制"],
+    "review-contract": ["终态挂载制", "Checks 面板"],
+    "conductor-mode": ["终态挂载", "Checks 面板", "回显", "audit 模式"],
+}
+for name, kws in NEW_CONTRACT.items():
+    for kw in kws:
+        if kw not in texts[name]:
+            errors.append(f"{name} 缺新契约词汇: {kw}")
+# evals 不得静默丢失新行为覆盖（audit 模式 / 回显防循环）
+_evals_text = (ROOT / "evals" / "evals.json").read_text(encoding="utf-8")
+for kw in ("audit 模式", "回显"):
+    if kw not in _evals_text:
+        errors.append(f"evals.json 缺新行为覆盖关键词: {kw}")
+
 # —— 图-契约词汇登记表（RSI-007）——
 # 契约 11 态必须在图示资产可追踪：节点 id/label/sublabel 或边 label 至少一处出现
 # （免责声明仅适用于 CONVERGENCE_GATE：契约自注非终态，以边标签呈现即可追踪）
