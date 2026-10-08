@@ -14,7 +14,7 @@
 
 | 文档 | 内容 |
 | --- | --- |
-| [review-contract.md](../../references/review-contract.md) | Finding 判定、Fingerprint、状态机、证据和最终报告（报告格式 SSOT） |
+| [review-contract.md](../../references/review-contract.md) | Finding 判定、Fingerprint、状态机、证据和最终报告（报告格式与人读友好写作约束 SSOT） |
 | [conductor-mode.md](../../references/conductor-mode.md) | Conductor Diff/Comments/Checks 工作流 |
 | [git-mode.md](../../references/git-mode.md) | Git fallback 的 base 探测、Diff 获取和验证 |
 

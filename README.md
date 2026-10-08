@@ -31,6 +31,7 @@ Conductor Mode 的详细规则见 [references/conductor-mode.md](./references/co
 - 最多 8 轮；同一根因两次不同方向修复后仍复现、连续两轮无进展、误报争议待裁决、工具/验证阻塞，或修复需要超出 Review 范围的产品、架构或安全决策时安全停止。
 - 测试失败必须分类处理；存在未解释失败时不得宣称 Review 已完成。
 - 不默认向 GitHub 发布 Review；Conductor 评论使用 Checks 面板的 `DiffComment`，且默认**终态挂载**——只挂仍需用户处理的 Finding，收敛时零新增评论、零人工 resolve；用户显式要求逐条留痕时进入 [audit 模式](./references/conductor-mode.md#audit-模式逐条-inline-留痕)。
+- 最终报告给人看：总分总——概述先给结论、字段承载细节、改进建议与下一步收束；效果与影响两面落位挂依据，改进建议仅范围外可选、不构成 Finding。
 
 ## 安装
 
@@ -99,7 +100,7 @@ unzip -l "$SKILL_ROOT/.temp/dist/review-once.skill"
 
 评测资产位于 [evals/README.md](./evals/README.md)：
 
-- `evals/evals.json` 验证双 Mode、无 Finding、收敛门与自审收敛、重复 Finding、误报复核、修复 Delta、无进展、测试失败、终态挂载（默认模式收敛零新增、audit 模式逐轮留痕）、评论回显防循环与验证阻塞挂载等输出行为；
+- `evals/evals.json` 验证双 Mode、无 Finding、收敛门与自审收敛、重复 Finding、误报复核、修复 Delta、无进展、测试失败、终态挂载（默认模式收敛零新增、audit 模式逐轮留痕）、评论回显防循环与验证阻塞挂载、最终报告人读友好格式（概述、效果与影响、改进建议、真问题不降格）等输出行为；
 - `evals/trigger-evals.json` 验证触发准确率，并覆盖普通 Review、Conductor Review 和近邻 collision case。
 
 ## 许可证

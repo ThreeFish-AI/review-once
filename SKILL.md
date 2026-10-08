@@ -87,6 +87,7 @@ Review 与 Fix 使用不同职责。中间轮可由主 Agent 自审以控制成�
 
 - 第 8 轮仍有 Finding：可做本轮安全修复和验证，但因预算不足不能再 Review，必须有界停止并标注“最后修改尚未复审”，不能宣称收敛；
 - 第 8 轮收敛之后又改动文件：同样因预算不足有界停止，标注“最后修改尚未复审”；
+- 第 8 轮收敛之后在最终报告核对中发现符合 Finding 判定的新问题（此后未再改动文件）：同样因预算不足有界停止，不修复，发现项列入「剩余问题」；
 - 第 8 轮内收敛门出现误报争议：因预算不足有界停止，交用户裁决；
 - 无 Finding 且未修改代码时，无需为了形式补跑无关测试。
 
@@ -94,4 +95,4 @@ Review 与 Fix 使用不同职责。中间轮可由主 Agent 自审以控制成�
 
 ## 交付格式
 
-最终 Chat 报告使用 [Review Contract 最终报告](references/review-contract.md#最终报告)定义的模板；事实不足时写明“未验证”，不得补写推测。Review 状态四选一（受控副本，权威定义见 Contract）：已收敛（独立复审）/ 自审收敛 / 有界停止 / 阻塞。详细的 Finding 判定、评论格式和状态转移见 [Review Contract](references/review-contract.md)。
+最终 Chat 报告使用 [Review Contract 最终报告](references/review-contract.md#最终报告)定义的模板：以概述开篇，含「效果与影响」「改进建议」字段，叙述性内容遵守该节的人读友好写作约束（结构化字段口径不受影响）；事实不足时写明“未验证”，不得补写推测。发送前按 Contract §最终报告 完成「最终报告核对」（报告逐项对照当前 Diff 与验证结果；核对中发现符合 Finding 判定的问题按状态机处理），核对完成是快照清理与终态挂载的前置。Review 状态四选一（受控副本，权威定义见 Contract）：已收敛（独立复审）/ 自审收敛 / 有界停止 / 阻塞。详细的 Finding 判定、评论格式和状态转移见 [Review Contract](references/review-contract.md)。
