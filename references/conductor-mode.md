@@ -33,7 +33,7 @@
 9. 运行相关测试、Lint、类型检查或静态检查，记录本轮命令退出状态；`GetTerminalOutput` 仅作补充，不能用旧的绿灯替代新验证。
 10. 再次获取 stat、具体 Diff 和评论，并按快照求出修复 Delta 作“修复回归”镜头的输入；自审有 Finding 则回到步骤 1 开始下一轮，无 Finding 进入步骤 11。
 11. 自审无 Finding 时进入**收敛门**：委派 fresh-context 只读 reviewer，按[盲审信息包](./review-contract.md#盲审信息包)独立复审（因 Conductor 工具绑定原 workspace，信息包中的 Diff 与修复 Delta 需由主 Agent 取好后以文本提供，并包含 untracked 文件）。reviewer 报告 Finding 且认定真实则回到步骤 6（Chat 报告后直接修复；audit 模式才同时挂载），修复验证后，跳过步骤 10 的主 Agent 自审分支，直接由收敛门 reviewer 按盲审信息包做全量四镜头复审并重新过收敛门（该复审即本修复轮的 Review，计入该轮而不另计）；认为是误报则不改代码、不挂载 `DiffComment`，按[误报复核](./review-contract.md#误报复核)进入 DISPUTED；无 Finding 且收敛 Review 之后未再改文件才可收敛。无法委派时按[降级协议](./review-contract.md#降级协议)标「自审收敛」。验证失败、权限或工具不可用时的出口见[状态机](./review-contract.md#状态机)。
-12. **终态挂载**：终态（CONVERGED / SELF_REVIEWED / BOUNDED_STOP / BLOCKED）确定后、发送最终报告前，且仅当存在仍需用户处理的 Finding（未修复、blocked、DISPUTED 待裁决、已修复但必要验证未通过需用户重跑或接手）时，为其逐条挂载 `DiffComment`（一条一句可行动摘要，指向当前 Diff 实际存在的行；无法定位的待处理项只在 Chat 报告并在「剩余问题」行列出）；完全收敛时零挂载。已挂载且仍待处理的 Finding（含 audit 逐轮挂载与既往运行的终态挂载）不重复挂载，仅为新出现的待处理项挂载；定位行漂移或摘要点过期时以新评论更新并在报告中注明，不制造重复死线程。
+12. **终态挂载**：终态（CONVERGED / SELF_REVIEWED / BOUNDED_STOP / BLOCKED）确定并完成最终报告核对后、发送最终报告前，且仅当存在仍需用户处理的 Finding（未修复、blocked、DISPUTED 待裁决、已修复但必要验证未通过需用户重跑或接手）时，为其逐条挂载 `DiffComment`（一条一句可行动摘要，指向当前 Diff 实际存在的行；无法定位的待处理项只在 Chat 报告并在「剩余问题」行列出）；完全收敛时零挂载。已挂载且仍待处理的 Finding（含 audit 逐轮挂载与既往运行的终态挂载）不重复挂载，仅为新出现的待处理项挂载；定位行漂移或摘要点过期时以新评论更新并在报告中注明，不制造重复死线程。
 
 ## audit 模式（逐条 inline 留痕）
 
