@@ -6,7 +6,10 @@
 
 `evals.json` 覆盖：
 
-- Conductor Mode 的 Diff → Comment → Fix → Verify → Re-review；
+- Conductor Mode 的 Diff → Chat 报告 → Fix → Verify → Re-review，默认终态挂载制下完全收敛零新增评论（eval 12）；
+- audit 模式：用户显式要求逐条留痕时逐轮挂载、终态只补新待处理项（eval 1）；
+- 评论回显防循环：自身产物回显（`[review-once]` 署名）无批注不重复挂载、不追加回执，新 Finding 与终态挂载不受限（eval 13）；
+- 验证环境阻塞时终态为阻塞，已修复未验证的 Finding 按待处理项挂载（eval 14）；
 - Git fallback Mode 的 base 探测和双份 Diff；
 - 初始无 Finding 时仍须经收敛门（独立复审，或降级为自审收敛）；
 - 自审无 Finding 不得直接宣布收敛、盲审信息包不含 Finding 历史（eval 9）；

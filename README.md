@@ -17,7 +17,7 @@ Skill 不负责自动 Commit、Push、创建或合并 PR，也不替用户完成
 
 | Mode | 反馈载体 | Diff 来源 | 适用环境 |
 | --- | --- | --- | --- |
-| Conductor | Checks 面板 + Chat | `GetWorkspaceDiff` | Conductor MCP 工具可用 |
+| Conductor | Chat 过程留痕 + 终态 Checks 挂载 | `GetWorkspaceDiff` | Conductor MCP 工具可用 |
 | Git fallback | Chat | `git merge-base` + `git diff` | 普通 Claude Code、Codex 或无 Conductor 工具 |
 
 Conductor Mode 的详细规则见 [references/conductor-mode.md](./references/conductor-mode.md)，Git fallback Mode 的详细规则见 [references/git-mode.md](./references/git-mode.md)。共同的 Finding 判定、终止条件和报告格式见 [references/review-contract.md](./references/review-contract.md)。
@@ -30,7 +30,7 @@ Conductor Mode 的详细规则见 [references/conductor-mode.md](./references/co
 - 修复后重新获取 Diff 和 Review 结果，不依赖陈旧结论；收敛 Review 之后任何文件改动都使收敛作废。
 - 最多 8 轮；同一根因两次不同方向修复后仍复现、连续两轮无进展、误报争议待裁决、工具/验证阻塞，或修复需要超出 Review 范围的产品、架构或安全决策时安全停止。
 - 测试失败必须分类处理；存在未解释失败时不得宣称 Review 已完成。
-- 不默认向 GitHub 发布 Review；Conductor 评论使用 Checks 面板的 `DiffComment`。
+- 不默认向 GitHub 发布 Review；Conductor 评论使用 Checks 面板的 `DiffComment`，且默认**终态挂载**——只挂仍需用户处理的 Finding，收敛时零新增评论、零人工 resolve；用户显式要求逐条留痕时进入 [audit 模式](./references/conductor-mode.md#audit-模式逐条-inline-留痕)。
 
 ## 安装
 
@@ -99,7 +99,7 @@ unzip -l "$SKILL_ROOT/.temp/dist/review-once.skill"
 
 评测资产位于 [evals/README.md](./evals/README.md)：
 
-- `evals/evals.json` 验证双 Mode、无 Finding、收敛门与自审收敛、重复 Finding、误报复核、修复 Delta、无进展、测试失败等输出行为；
+- `evals/evals.json` 验证双 Mode、无 Finding、收敛门与自审收敛、重复 Finding、误报复核、修复 Delta、无进展、测试失败、终态挂载（默认模式收敛零新增、audit 模式逐轮留痕）、评论回显防循环与验证阻塞挂载等输出行为；
 - `evals/trigger-evals.json` 验证触发准确率，并覆盖普通 Review、Conductor Review 和近邻 collision case。
 
 ## 许可证

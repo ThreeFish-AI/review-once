@@ -4,13 +4,14 @@
     {
       "id": 1,
       "mode": "conductor",
-      "prompt": "请按 workspace 中的 Review request.md 反复 Review 当前变更。直接把明确 Finding 挂到 Checks 并修复，再重新 Review，直到没有明显值得修复的问题。不要让我手动点击 Review/Fix。",
-      "expected_output": "Agent 先读取 Review request，调用 GetWorkspaceDiff 获取摘要和具体 Diff，读取已有 DiffComments；对唯一 Findings 在 Chat 报告并通过 DiffComment 挂载，直接修复后运行相关验证，再重新获取 Diff，最终报告轮次和证据；自审无 Finding 后仍须经收敛门才算收敛。",
+      "prompt": "请按 workspace 中的 Review request.md 反复 Review 当前变更。把每个明确 Finding 逐条挂到 Checks 留痕并直接修复，再重新 Review，直到没有明显值得修复的问题。不要让我手动点击 Review/Fix。",
+      "expected_output": "Agent 识别用户显式要求逐条挂到 Checks，进入 audit 模式：先读取 Review request 与已有 DiffComments，每轮在 Chat 报告后对每个唯一 Finding 调用 DiffComment 逐轮挂载（评论末尾附 [review-once] 署名行），最小修复并运行验证后重新获取 Diff；自审无 Finding 仍须经收敛门；终态时已挂载评论不重复挂载，只为新出现的待处理项补挂，最终报告「Checks 面板」行按 audit 口径披露累计挂载数与待处理数。",
       "expectations": [
-        "优先遵守 Review request 和 Repo 规则",
-        "使用 Conductor Diff/Comments 工具而不是要求用户手动点击",
-        "每个唯一 Finding 只挂载一次并在修复后重新 Review",
-        "最终报告包含验证命令、结果和停止原因"
+        "识别用户显式逐条留痕要求，进入 audit 模式而非默认终态挂载制",
+        "中间轮对每个唯一 Finding 逐轮挂载并同步 Chat 报告",
+        "自审无 Finding 后仍须经收敛门才算收敛",
+        "终态不重复挂载，仅为新出现的待处理项补挂",
+        "最终报告 Checks 面板行按 audit 口径披露，并包含验证命令、结果和停止原因"
       ]
     },
     {
@@ -133,6 +134,42 @@
         "有快照时修复 Delta 由仓库外镜像快照求得；无快照时标注“Delta 不可得”并降级覆盖，不凭记忆转述",
         "第 8 轮预算耗尽时有界停止而非宣称已收敛",
         "快照不写入工作区"
+      ]
+    },
+    {
+      "id": 12,
+      "mode": "conductor",
+      "prompt": "请按 workspace 中的 Review request.md 反复 Review 当前变更，发现明确缺陷直接修复并验证，再 Review，直到收敛。不要让我手动操作。",
+      "expected_output": "Agent 走默认终态挂载制：中间轮 Findings 只在 Chat 报告留痕，全程不调用 DiffComment；多轮修复验证后经收敛门独立复审通过，终态 CONVERGED 且无待处理 Finding，Checks 面板零新增；最终报告「Checks 面板」行写零新增，仅当面板无存量未解决评论时才标注零人工收尾。",
+      "expectations": [
+        "中间轮 Findings 只在 Chat 留痕，不调用 DiffComment",
+        "收敛门独立复审通过后才宣告收敛",
+        "完全收敛时 Checks 面板零新增评论",
+        "报告 Checks 面板行如实披露新增数与面板存量"
+      ]
+    },
+    {
+      "id": 13,
+      "mode": "conductor",
+      "prompt": "上一轮 Review 有界停止后，Checks 面板还有几条本 Skill 挂载的未解决评论（带 [review-once] 署名、无用户批注）被回传给我。请继续 Review 当前变更直到收敛。",
+      "expected_output": "Agent 核对回显附件：全部为本 Skill 自身产物（[review-once] 署名行）且无用户批注，在 Chat 确认闭环，不对回显项重复挂载或追加回执；对当前 Diff 照常四镜头 Review，发现的新唯一 Finding 在 Chat 报告并修复；终态挂载义务不受回显禁令限制，仅为新出现的待处理项挂载。",
+      "expectations": [
+        "不把自身产物回显当新 Finding 或对其重复挂载",
+        "回显仅在 Chat 确认闭环，不追加回执评论",
+        "当前 Diff 的新真实 Finding 照常报告并修复",
+        "终态挂载规则不受回显禁令影响"
+      ]
+    },
+    {
+      "id": 14,
+      "mode": "conductor",
+      "prompt": "Review 中一个明确 Finding 已按最小根因修复，但运行仓库验证命令时因本地缺少依赖失败，与该修复无关。请按 review-once 的规则收尾。",
+      "expected_output": "Agent 将验证失败归类为与本轮无关的环境阻塞，终态 BLOCKED；该 Finding 属「已修复但必要验证未通过、需用户重跑或接手验证」，落入终态挂载判据，为其挂载一条带 [review-once] 署名的 DiffComment；最终报告说明需用户执行的验证步骤，Checks 面板行如实披露新增 1 条，不宣称验证通过或评论会自动消失。",
+      "expectations": [
+        "验证失败归类为与本轮无关，终态为阻塞而非收敛",
+        "已修复未验证的 Finding 按待处理项挂载",
+        "报告如实说明需用户执行的验证",
+        "不宣称验证通过或挂载评论会自动消失"
       ]
     }
   ]
