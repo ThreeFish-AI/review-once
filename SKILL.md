@@ -55,7 +55,7 @@ metadata:
 2. **建立基线**：记录本轮基线 Ref、工作区未提交 Diff、待审查文件和当前轮次。无法确认正确基线时停止，不盲审错误范围。
 3. **Review**：按 Review Contract 筛选 Findings，并覆盖其中的四个[审查镜头](references/review-contract.md#审查镜头)（逐项记录，不得只做行为一个维度）；一次 Finding 只代表一个离散问题，评论范围尽量保持在能理解问题的最短行区间。
 4. **Chat 报告**：先列出 Finding 的严重性、位置、影响场景和证据。没有 Finding 时明确报告“本轮无明确值得修复的缺陷”。
-5. **挂载反馈**：Conductor Mode 使用 `DiffComment` 将唯一 Finding 挂载到 Checks；Git fallback 只在 Chat 中记录，不伪造 Conductor 评论。
+5. **挂载反馈（终态挂载制）**：中间轮的 Findings 只在 Chat 报告留痕，**不挂 `DiffComment`**——自动循环中会被本轮修复的 Finding 若在中间轮挂载，修复后即成为无法自动 resolve 的死线程，等于把收尾转嫁为人工操作。`DiffComment` 仅在**终态**为仍需用户处理的 Finding（未修复、blocked、DISPUTED 待裁决）挂载，一条一句可行动摘要；完全收敛时 Checks 面板零新增评论，用户零人工收尾。用户显式要求逐条 inline 留痕（audit 模式）时，才按「每个唯一 Finding 一条」逐轮挂载。Git fallback 恒只在 Chat 中记录，不伪造 Conductor 评论。
 6. **修复**：对本轮 Findings 实施最小根因修复。首次修改某个 BASELINE 时已存在的文件前，先按[修复 Delta](references/review-contract.md#修复-delta)把它快照到仓库之外的临时目录。若修复需要产品取舍、扩大范围或修改外部系统，停止并请求决策。
 7. **验证**：先运行与改动最相关的测试、Lint、类型检查或静态检查，再运行仓库允许的更广检查；遵守仓库时间预算，无规定时将本地检查总时长控制在 3 分钟以内，超时如实报告。验证命令必须成功退出且覆盖修改行为；不得通过删测试或放宽断言制造绿灯。
 8. **重新 Review**：修复后重新获取 Diff 和评论，再进入下一轮；禁止只检查工作树“看起来干净”。

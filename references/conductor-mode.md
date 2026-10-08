@@ -27,12 +27,13 @@
 3. 对每个变更文件调用 `GetWorkspaceDiff({file: ...})`，结合上下游代码验证行为。
 4. 调用 `GetDiffComments()`，避免重复发布已经存在的 Finding。
 5. 按 [Review Contract](./review-contract.md) 逐项覆盖四个[审查镜头](./review-contract.md#审查镜头)，筛选 Findings。
-6. 在 Chat 中先报告 Findings。
-7. 对确实存在的 Finding 调用 `DiffComment`，一次只挂载一个唯一问题；评论正文保持简短，不在其中塞入完整修复方案或无关背景。
+6. 在 Chat 中先报告 Findings（中间轮的唯一留痕载体）。
+7. 中间轮不挂 `DiffComment`（终态挂载制，见下方「定位与评论纪律」）；audit 模式例外：用户显式要求逐条 inline 留痕时，对确实存在的 Finding 调用 `DiffComment`，一次只挂载一个唯一问题，评论正文保持简短。
 8. 首次修改某个 BASELINE 时已存在的文件前，按[修复 Delta](./review-contract.md#修复-delta)把它快照到仓库之外的临时目录；然后直接在 workspace 中做最小根因修复。
 9. 运行相关测试、Lint、类型检查或静态检查，记录本轮命令退出状态；`GetTerminalOutput` 仅作补充，不能用旧的绿灯替代新验证。
 10. 再次获取 stat、具体 Diff 和评论，并按快照求出修复 Delta 作“修复回归”镜头的输入；自审有 Finding 则回到步骤 1 开始下一轮，无 Finding 进入步骤 11。
-11. 自审无 Finding 时进入**收敛门**：委派 fresh-context 只读 reviewer，按[盲审信息包](./review-contract.md#盲审信息包)独立复审（因 Conductor 工具绑定原 workspace，信息包中的 Diff 与修复 Delta 需由主 Agent 取好后以文本提供，并包含 untracked 文件）。reviewer 报告 Finding 且认定真实则回到步骤 6（先在 Chat 报告，再挂载、修复），修复验证后，跳过步骤 10 的主 Agent 自审分支，直接由收敛门 reviewer 按盲审信息包做全量四镜头复审并重新过收敛门（该复审即本修复轮的 Review，计入该轮而不另计）；认为是误报则不改代码、不挂载 `DiffComment`，按[误报复核](./review-contract.md#误报复核)进入 DISPUTED；无 Finding 且收敛 Review 之后未再改文件才可收敛。无法委派时按[降级协议](./review-contract.md#降级协议)标「自审收敛」。验证失败、权限或工具不可用时的出口见[状态机](./review-contract.md#状态机)。
+11. 自审无 Finding 时进入**收敛门**：委派 fresh-context 只读 reviewer，按[盲审信息包](./review-contract.md#盲审信息包)独立复审（因 Conductor 工具绑定原 workspace，信息包中的 Diff 与修复 Delta 需由主 Agent 取好后以文本提供，并包含 untracked 文件）。reviewer 报告 Finding 且认定真实则回到步骤 6（Chat 报告后直接修复；audit 模式才同时挂载），修复验证后，跳过步骤 10 的主 Agent 自审分支，直接由收敛门 reviewer 按盲审信息包做全量四镜头复审并重新过收敛门（该复审即本修复轮的 Review，计入该轮而不另计）；认为是误报则不改代码、不挂载 `DiffComment`，按[误报复核](./review-contract.md#误报复核)进入 DISPUTED；无 Finding 且收敛 Review 之后未再改文件才可收敛。无法委派时按[降级协议](./review-contract.md#降级协议)标「自审收敛」。验证失败、权限或工具不可用时的出口见[状态机](./review-contract.md#状态机)。
+12. **终态挂载**：终态（CONVERGED / SELF_REVIEWED / BOUNDED_STOP / BLOCKED）确定后、发送最终报告前，且仅当存在仍需用户处理的 Finding（未修复、blocked、DISPUTED 待裁决）时，为其逐条挂载 `DiffComment`（一条一句可行动摘要，指向当前 Diff 实际存在的行）；完全收敛时零挂载。audit 模式下已逐轮挂载的评论不重复挂载，终态只为新出现的待处理项补挂。
 
 ## 定位与评论纪律
 
@@ -40,7 +41,8 @@
 - 一个 Finding 不拆成多条重复评论；多个独立根因不合并成模糊评论。
 - 修复后旧评论仍可作为历史证据，但不能直接当作新一轮 Finding；必须检查当前 Diff 是否仍复现。
 - `GetDiffComments` 只读评论，不把“读取评论”误当作“评论已解决”。
-- 工具无 resolve API 时，在 Chat 标明修复/复核状态，不宣称旧评论已经在 UI 消失。
+- **终态挂载制**：`DiffComment` 工具只能新增、没有 resolve API——中间轮挂载的评论在修复后无法自动消除，会把收尾变成人工逐条 resolve。因此默认只在终态为「仍需用户处理的 Finding」挂载；audit 模式（用户显式要求逐条 inline 留痕）才逐轮挂载。终态报告中按[最终报告](./review-contract.md#最终报告)的「Checks 面板」行披露新增评论数。
+- **评论回显不再追加**：Conductor 把未解决评论作为附件回传时，先核对作者与内容——若全部为本 Skill 自身产物回显且无用户批注，在 Chat 确认闭环即可，**严禁再挂新评论**：每一条新评论都会再次进入回传队列，形成自我循环。回显附件中出现用户批注或第三方评论时，按其内容进入对应处理分支。
 
 ## Conductor 特有边界
 
