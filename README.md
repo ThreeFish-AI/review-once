@@ -24,9 +24,11 @@ Conductor Mode 的详细规则见 [references/conductor-mode.md](./references/co
 
 ## 核心约束
 
-- 只报告当前变更引入、离散、可证明且严格的 PR reviewer 会要求修改的缺陷。
+- 只报告当前 Review 范围内（默认即当前变更）、离散、可证明且严格的 PR reviewer 会要求修改的缺陷；用户在运行中显式扩大或收窄范围时记录审查范围声明并传入收敛门盲审信息包，范围外的真实观察不修复、不进争议，写入改进建议。
 - 每轮覆盖四个审查镜头：行为正确性、契约一致性、修复回归、仓库惯例。
 - 自审无 Finding 不构成收敛：宣布收敛前须经收敛门，由 fresh-context 独立 reviewer 盲审；无法委派时只能标「自审收敛」并披露未经独立复审。
+- 收敛门 reviewer 按只读判据工作（不运行会写入 tracked 或未忽略路径的命令），每次过门委派新的 reviewer 实例，gate 返回后核对工作区与送审时一致。
+- 用户明确要求提交时，Git 发布排在最终报告核对完成之后、快照清理之前；提交流程改写文件按收敛后改动处理。
 - 修复后重新获取 Diff 和 Review 结果，不依赖陈旧结论；收敛 Review 之后任何文件改动都使收敛作废。
 - 最多 8 轮；同一根因两次不同方向修复后仍复现、连续两轮无进展、误报争议待裁决、工具/验证阻塞，或修复需要超出 Review 范围的产品、架构或安全决策时安全停止。
 - 测试失败必须分类处理；存在未解释失败时不得宣称 Review 已完成。
@@ -100,7 +102,7 @@ unzip -l "$SKILL_ROOT/.temp/dist/review-once.skill"
 
 评测资产位于 [evals/README.md](./evals/README.md)：
 
-- `evals/evals.json` 验证双 Mode、无 Finding、收敛门与自审收敛、重复 Finding、误报复核、修复 Delta、无进展、测试失败、终态挂载（默认模式收敛零新增、audit 模式逐轮留痕）、评论回显防循环与验证阻塞挂载、最终报告人读友好格式（概述、效果与影响、改进建议、真问题不降格）等输出行为；
+- `evals/evals.json` 验证双 Mode、无 Finding、收敛门与自审收敛、重复 Finding、误报复核、修复 Delta、无进展、测试失败、终态挂载（默认模式收敛零新增、audit 模式逐轮留痕）、评论回显防循环与验证阻塞挂载、最终报告人读友好格式（概述、效果与影响、改进建议、真问题不降格），以及审查范围声明传导（eval 16、收窄方向 eval 23）、范围外观察分支（eval 17）、收敛门只读判据与门后核对（eval 18）、reviewer 实例换新（eval 19）、事实改写同批同步（eval 20）、派生物再生与工具写入预快照（eval 21）、用户要求提交的时序（eval 22）等输出行为；
 - `evals/trigger-evals.json` 验证触发准确率，并覆盖普通 Review、Conductor Review 和近邻 collision case。
 
 ## 许可证
