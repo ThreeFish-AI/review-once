@@ -40,17 +40,18 @@ for term in CN_TERMINALS:
 
 # —— 硬断言：终态挂载制/回显防循环/audit 模式（RSI-008）与最终报告人读友好/总分总（RSI-009）的新契约词汇跨文档存在（RSI-007 护栏化） ——
 NEW_CONTRACT = {
-    "SKILL.md": ["终态挂载制", "人读友好"],
-    "review-contract": ["终态挂载制", "Checks 面板", "人读友好", "效果与影响", "改进建议", "总分总"],
-    "conductor-mode": ["终态挂载", "Checks 面板", "回显", "audit 模式"],
+    "SKILL.md": ["终态挂载制", "人读友好", "审查范围声明", "范围外", "同批同步", "派生物", "新的收敛门 reviewer 实例", "Git 发布"],
+    "review-contract": ["终态挂载制", "Checks 面板", "人读友好", "效果与影响", "改进建议", "总分总", "审查范围声明", "范围外观察", "只读＝", "全部出现处", "reviewer 实例", "Git 发布"],
+    "conductor-mode": ["终态挂载", "Checks 面板", "回显", "audit 模式", "审查范围声明", "范围外", "收敛门 reviewer 实例", "生成器"],
+    "git-mode": ["审查范围声明", "范围外", "收敛门 reviewer 实例", "生成器"],
 }
 for name, kws in NEW_CONTRACT.items():
     for kw in kws:
         if kw not in texts[name]:
             errors.append(f"{name} 缺新契约词汇: {kw}")
-# evals 不得静默丢失新行为覆盖（audit 模式 / 回显防循环 / 最终报告人读友好与总分总）
+# evals 不得静默丢失新行为覆盖（audit 模式 / 回显防循环 / 最终报告人读友好与总分总 / RSI-010 七项）
 _evals_text = (ROOT / "evals" / "evals.json").read_text(encoding="utf-8")
-for kw in ("audit 模式", "回显", "人读友好", "总分总"):
+for kw in ("audit 模式", "回显", "人读友好", "总分总", "审查范围声明", "范围外观察", "只读＝", "reviewer 实例", "同批同步", "派生物", "Git 发布"):
     if kw not in _evals_text:
         errors.append(f"evals.json 缺新行为覆盖关键词: {kw}")
 
