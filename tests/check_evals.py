@@ -29,8 +29,8 @@ assert ids == sorted(ids) and len(set(ids)) == len(ids), "evals id 非递增唯�
 trig = json.loads(T.read_text(encoding="utf-8"))
 assert isinstance(trig, list)
 pos = [t for t in trig if t["should_trigger"]]
-if not (len(trig) == 25 and len(pos) == 12):
-    errors.append(f"trigger 计数漂移: total={len(trig)} pos={len(pos)}（基线 25/12/13）")
+if not (len(trig) == 27 and len(pos) == 13):
+    errors.append(f"trigger 计数漂移: total={len(trig)} pos={len(pos)}（基线 27/13/14）")
 for t in trig:
     if set(t.keys()) != {"id", "query", "should_trigger"}:
         errors.append(f"trigger-evals id={t.get('id')}: 字段漂移 {set(t.keys())}")

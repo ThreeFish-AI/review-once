@@ -38,9 +38,9 @@ for term in CN_TERMINALS:
         if term not in texts[name]:
             errors.append(f"{name} 缺交付终态口径: {term}")
 
-# —— 硬断言：终态挂载制/回显防循环/audit 模式（RSI-008）与最终报告人读友好/总分总（RSI-009）的新契约词汇跨文档存在（RSI-007 护栏化） ——
+# —— 硬断言：终态挂载制/回显防循环/audit 模式（RSI-008）、最终报告人读友好/总分总（RSI-009）、RSI-010 七项与自改进回路钩子（RSI-011）的新契约词汇跨文档存在（RSI-007 护栏化） ——
 NEW_CONTRACT = {
-    "SKILL.md": ["终态挂载制", "人读友好", "审查范围声明", "范围外", "同批同步", "派生物", "新的收敛门 reviewer 实例", "Git 发布", "送审", "词干", "收窄豁免", "补记最终 SHA", "形态判定", "违规写入"],
+    "SKILL.md": ["终态挂载制", "人读友好", "审查范围声明", "范围外", "同批同步", "派生物", "新的收敛门 reviewer 实例", "Git 发布", "送审", "词干", "收窄豁免", "补记最终 SHA", "形态判定", "违规写入", "自改进回路", "旁路登记", "G0–G4 门禁", "门禁全绿", "硬禁令", "不热改"],
     "review-contract": ["终态挂载制", "Checks 面板", "人读友好", "效果与影响", "改进建议", "总分总", "审查范围声明", "范围外观察", "只读＝", "全部出现处", "reviewer 实例", "Git 发布", "生成器", "迟到快照", "访问边界", "词干", "兼含纳入与排除", "只增不减", "预跑", "时间轴在后者为准"],
     "conductor-mode": ["终态挂载", "Checks 面板", "回显", "audit 模式", "审查范围声明", "范围外", "收敛门 reviewer 实例", "生成器", "经回显核验"],
     "git-mode": ["审查范围声明", "范围外", "收敛门 reviewer 实例", "生成器"],
@@ -54,6 +54,11 @@ _evals_text = (ROOT / "evals" / "evals.json").read_text(encoding="utf-8")
 for kw in ("audit 模式", "回显", "人读友好", "总分总", "审查范围声明", "范围外观察", "只读＝", "reviewer 实例", "同批同步", "派生物", "Git 发布", "词干", "porcelain", "迟到快照", "只增不减", "修复自致", "预跑", "补记最终 SHA", "时间轴在后者为准", "再应用排除"):
     if kw not in _evals_text:
         errors.append(f"evals.json 缺新行为覆盖关键词: {kw}")
+# 触发例不得静默丢失 RSI 用法覆盖（RSI-011）：正例须含 RSI 沉淀入口，负例须含非 RSI 用法的普通 review
+_trig_text = (ROOT / "evals" / "trigger-evals.json").read_text(encoding="utf-8")
+for kw in ("按 RSI", "帮我 review"):
+    if kw not in _trig_text:
+        errors.append(f"trigger-evals.json 缺 RSI 触发覆盖关键词: {kw}")
 
 # —— 图-契约词汇登记表（RSI-007）——
 # 契约 11 态必须在图示资产可追踪：节点 id/label/sublabel 或边 label 至少一处出现
