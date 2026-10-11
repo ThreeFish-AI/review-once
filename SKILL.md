@@ -29,6 +29,8 @@ metadata:
 
 以下请求不触发本 Skill：一次性 Review、解释已有代码、只运行测试、创建或合并 PR、发布 Release，以及没有待审查变更的普通开发任务。
 
+用户以第一人称指出本 Skill 自身缺陷并要求按 RSI 沉淀时，本 Skill 作为统一 RSI 回路的仓内入口触发（见[自改进回路](#自改进回路rsi)），但该请求不走 Review-Fix 主循环。
+
 ## 不变量
 
 1. **规则优先级**：首先服从当前 Harness 的 System/Developer 指令、权限和执行模式；在其允许范围内，用户明确要求与适用 Repo 规则优先于本 Skill 默认规则。指定的 `Review request.md` 提供具体 Review 标准，不可覆盖更高层限制；未提供时使用 [Review Contract](references/review-contract.md)。明确指定却无法读取时停止并报告，不静默替换。
@@ -97,3 +99,9 @@ Review 与 Fix 使用不同职责。中间轮可由主 Agent 自审以控制成�
 ## 交付格式
 
 最终 Chat 报告使用 [Review Contract 最终报告](references/review-contract.md#最终报告)定义的模板：以概述开篇，含「效果与影响」「改进建议」字段，叙述性内容遵守该节的人读友好写作约束（结构化字段口径不受影响）；事实不足时写明“未验证”，不得补写推测。发送前按 Contract §最终报告 完成「最终报告核对」（报告逐项对照当前 Diff 与验证结果；核对中发现符合 Finding 判定的问题按状态机处理），核对完成是快照清理、Git 发布（用户要求时）与终态挂载的前置。Review 状态四选一（受控副本，权威定义见 Contract）：已收敛（独立复审）/ 自审收敛 / 有界停止 / 阻塞。详细的 Finding 判定、评论格式和状态转移见 [Review Contract](references/review-contract.md)。
+
+## 自改进回路（RSI）
+
+本 Skill 自身文本的缺陷与经验沉淀走统一 RSI（Recursive Self-Improvement）回路，协议主体不在本仓：触发白名单与信任边界、旁路捕获、G0–G4 门禁、确认与豁免文法一律以统一协议 SSOT（[references/protocol.md](https://github.com/ThreeFish-AI/rsi/blob/main/references/protocol.md)）为准；本仓适配契约——ledger 为 [docs/.agents/issue.md](docs/.agents/issue.md)（条目号 RSI-NNN 顺延）、分支与 commit 式样等参数——以适配档案（[repos/review-once.md](https://github.com/ThreeFish-AI/rsi/blob/main/repos/review-once.md)）为准。
+
+使用本 Skill 过程中发现其文本自身的缺陷（门禁无法判定、规约自相矛盾、死链/锚点失效、模板缺位、宿主能力不符且无降级路径）时，先旁路登记台账，不打断 Review 循环；被 Review 的目标仓库自身的缺陷属作业对象，不入账。交付后调用统一 `rsi` skill 走 Steward / Verifier 回路，门禁全绿并经用户逐批确认后向本仓提 PR。硬禁令：不推默认分支、不合并上游 PR、不 force-push、严禁 rebase；会话内不热改已安装的 Skill 目录。

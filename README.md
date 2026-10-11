@@ -35,6 +35,7 @@ Conductor Mode 的详细规则见 [references/conductor-mode.md](./references/co
 - 测试失败必须分类处理；存在未解释失败时不得宣称 Review 已完成。
 - 不默认向 GitHub 发布 Review；Conductor 评论使用 Checks 面板的 `DiffComment`，且默认**终态挂载**——只挂仍需用户处理的 Finding，收敛时零新增评论、零人工 resolve；用户显式要求逐条留痕时进入 [audit 模式](./references/conductor-mode.md#audit-模式逐条-inline-留痕)。
 - 最终报告给人看：总分总——概述先给结论、字段承载细节、改进建议与下一步收束；效果与影响两面落位挂依据，改进建议仅范围外可选、不构成 Finding。
+- 本 Skill 自身文本的缺陷与经验经统一 RSI 回路沉淀（协议 SSOT 在 ThreeFish-AI/rsi，台账在 `docs/.agents/issue.md`）；被 Review 的目标仓库自身缺陷属作业对象，不入该回路。
 
 ## 安装
 
@@ -104,7 +105,7 @@ unzip -l "$SKILL_ROOT/.temp/dist/review-once.skill"
 评测资产位于 [evals/README.md](./evals/README.md)：
 
 - `evals/evals.json` 验证双 Mode、无 Finding、收敛门与自审收敛、重复 Finding、误报复核、修复 Delta、无进展、测试失败、终态挂载（默认模式收敛零新增、audit 模式逐轮留痕）、评论回显防循环与验证阻塞挂载、最终报告人读友好格式（概述、效果与影响、改进建议、真问题不降格），以及审查范围声明传导（eval 16、收窄方向 eval 23）、范围外观察分支（eval 17）、收敛门只读判据与门后核对（eval 18）、reviewer 实例换新（eval 19）、事实改写同批同步（eval 20）、派生物再生与工具写入预快照（eval 21）、用户要求提交的时序（eval 22）、复合声明先并集后排除解析（eval 24）与多来源范围裁决时间轴 tiebreak（eval 25）等输出行为；
-- `evals/trigger-evals.json` 验证触发准确率，并覆盖普通 Review、Conductor Review 和近邻 collision case。
+- `evals/trigger-evals.json` 验证触发准确率，并覆盖普通 Review、Conductor Review、RSI 沉淀正例与非 RSI 用法负例、近邻 collision case。
 
 ## 许可证
 

@@ -6,7 +6,7 @@
 
 | 文档 | 内容 |
 | --- | --- |
-| [SKILL.md](../../SKILL.md) | Skill 触发边界、双 Mode 路由、主循环、收敛与停止预算、交付格式入口 |
+| [SKILL.md](../../SKILL.md) | Skill 触发边界、双 Mode 路由、主循环、收敛与停止预算、交付格式与自改进回路（RSI）入口 |
 | [README.md](../../README.md) | 安装、调用、验证和评测入口 |
 | [LICENSE](../../LICENSE) | MIT License |
 
