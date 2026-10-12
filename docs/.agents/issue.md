@@ -150,7 +150,7 @@
 
 **表因与根因**：表因是台账从未被入口文档引用，Agent 运行时不可见。根因是 RSI 机制先前无统一 SSOT：各仓要么仓内自建协议，要么完全无钩子（本仓），判定与门禁语义只能靠人工记忆执行；台账条目只能事后补记，运行时旁路捕获与交付后 Steward / Verifier 回路无从谈起。
 
-**处理方式**：接入统一 RSI 回路（本仓为六仓切换的最后一仓，形态是「增补钩子」而非「整替协议」——本仓无旧仓内 RSI.md 需要 stub）：[SKILL.md](../../SKILL.md) 新增「自改进回路（RSI）」薄指针章节——统一协议 SSOT 指向 ThreeFish-AI/rsi 的 `references/protocol.md`（触发白名单、旁路捕获、G0–G4 门禁、确认与豁免文法以它为准），本仓适配契约（ledger 位置、RSI-NNN 顺延、branch_style、commit_convention）指向其 `repos/review-once.md`，附硬禁令一句话摘要；触发边界补 RSI 入口触发说明。新契约词汇（自改进回路/旁路登记/门禁全绿/硬禁令/不热改等）同批落 [tests/check_states.py](../../tests/check_states.py) NEW_CONTRACT 断言并增触发例覆盖关键词断言（RSI-007 纪律）；[trigger-evals](../../evals/trigger-evals.json) 新增 id 26（RSI 沉淀正例）与 id 27（非 RSI 用法负例），计数断言（27/13/14）、[evals/README](../../evals/README.md) 数量极性与覆盖声明、README 核心约束与评测清单、knowledge-map 索引同批对齐（RSI-005 纪律）（PR 待回填）。
+**处理方式**：接入统一 RSI 回路（本仓为六仓切换的最后一仓，形态是「增补钩子」而非「整替协议」——本仓无旧仓内 RSI.md 需要 stub）：[SKILL.md](../../SKILL.md) 新增「自改进回路（RSI）」薄指针章节——统一协议 SSOT 指向 ThreeFish-AI/rsi 的 `references/protocol.md`（触发白名单、旁路捕获、G0–G4 门禁、确认与豁免文法以它为准），本仓适配契约（ledger 位置、RSI-NNN 顺延、branch_style、commit_convention）指向其 `repos/review-once.md`，附硬禁令一句话摘要；触发边界补 RSI 入口触发说明。新契约词汇（自改进回路/旁路登记/门禁全绿/硬禁令/不热改等）同批落 [tests/check_states.py](../../tests/check_states.py) NEW_CONTRACT 断言并增触发例覆盖关键词断言（RSI-007 纪律）；[trigger-evals](../../evals/trigger-evals.json) 新增 id 26（RSI 沉淀正例）与 id 27（非 RSI 用法负例），计数断言（27/13/14）、[evals/README](../../evals/README.md) 数量极性与覆盖声明、README 核心约束与评测清单、knowledge-map 索引同批对齐（RSI-005 纪律）——落地：[PR #8](https://github.com/ThreeFish-AI/review-once/pull/8) · commit `45dd835` · merge `737bdac`（2026-10-11T16:01:49Z）。
 
 **后续防范**：入口文档引用的跨仓机制变更时同批回查三处——SKILL.md 指针、护栏词汇断言、触发例与计数断言；新增触发面必须同批更新 evals/README 的数量与极性声明；「台账零引用」旧形态若回归（指针被删即回到旧形态），由 NEW_CONTRACT 词汇断言红灯拦截，不依赖人工记忆。
 
