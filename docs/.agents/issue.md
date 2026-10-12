@@ -155,3 +155,17 @@
 **后续防范**：入口文档引用的跨仓机制变更时同批回查三处——SKILL.md 指针、护栏词汇断言、触发例与计数断言；新增触发面必须同批更新 evals/README 的数量与极性声明；「台账零引用」旧形态若回归（指针被删即回到旧形态），由 NEW_CONTRACT 词汇断言红灯拦截，不依赖人工记忆。
 
 **同类问题影响与注意事项**：与 RSI-005 同属「多资产各自演进漂移」的预防面，本次漂移资产是入口文档 × 机制回路本身。凡「人工驱动的旁路机制」（台账、清单、备忘），不被运行时入口引用即等于不存在。统一回路上收后协议语义变更不再需要六仓同步（SSOT 单点生效），但各仓适配档案成为新的双写面——改协议时须回查 `repos/<repo-key>.md` 是否需要同批演进。
+
+## RSI-012 链接门在 `.temp` 祖先路径下空转假绿（check_links 过滤器按绝对路径组件排除）
+
+**日期**：2026-10-12
+
+**问题描述**：RSI 统一回路把上游隔离 clone 放在 `.temp/rsi/<repo-key>/repo/<slug>/`。在这个路径下原位跑 [tests/run_all.sh](../../tests/run_all.sh)，链接门输出 `[links] checked=0 files=0 errors=0` 并判绿；同一 commit clone 到 `.temp` 之外再跑，结果是 `checked=113 files=9`。也就是说链接门在隔离 clone 里空转假绿，死链与锚点失效一概看不见。
+
+**表因与根因**：表因是 [tests/check_links.py](../../tests/check_links.py) 的 `MD_FILES` 过滤器用 `".temp" not in p.parts` 判定排除，而 `p.parts` 是绝对路径的全部组件，仓库父路径只要含 `.temp` 就会全量排除。根因是 RSI-007 护栏自 `.temp/` 固化进 `tests/`（[PR #4](https://github.com/ThreeFish-AI/review-once/pull/4) · commit `ed53f10`）时，「跳过仓内 gitignored 临时物」的排除意图被写成了对绝对路径的判定；同时校验器对「扫描集为空」没有断言，0 文件、0 错误一样返回成功。
+
+**处理方式**：排除判定改为仓库相对路径——`md_files(root)` 仅当 `p.relative_to(root).parts` 含 `.git` / `.temp` / `.context` 时排除；扫描集为空直接报错，空转不再判绿。新增 `self_test()`，由 `main()` 每次先跑：在 `<tmp>/.temp/fake/repo` 下放一个含死链的 md、再在仓内 `.temp/` 下放一个，断言前者被扫到并报出死链、后者仍被排除（旧逻辑下 `checked=0 files=0`，自检红灯）。修复后隔离 clone 原位输出 `[links] checked=115 files=9 errors=0 selftest=ok（本条目自身新增 2 条链接前为 113）`——落地：（PR 待回填）。
+
+**后续防范**：护栏按路径过滤时一律对仓库根相对路径判定，不对绝对路径组件判定；校验器以「扫描对象非空」为前置断言，`files=0` 视为失败而非通过；`self_test()` 钉住「仓库位于 `.temp` 祖先下」的失败形态，过滤逻辑一旦回退即红灯。
+
+**同类问题影响与注意事项**：与 RSI-006「假收敛」同属「无证据的绿」——输入为 0 的检查器返回成功，与「检查通过」无法区分。护栏的运行位置并不固定（维护者检出、CI、RSI 隔离 clone、Agent workspace），依赖运行位置的过滤都应在非常规位置复跑一次；`.gitignore` 里的目录名（`.temp/`、`.context/`）同时是 Agent 工作区的约定目录名，按名排除时最容易误伤宿主路径。
