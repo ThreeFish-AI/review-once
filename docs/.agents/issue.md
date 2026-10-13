@@ -178,7 +178,7 @@
 
 **表因与根因**：表因是 [盲审信息包](../../references/review-contract.md#盲审信息包)的只读禁令只枚举了 autofix lint/format、`--fix` 类检查、快照更新、`pre-commit run` 四类负面例，未点名包管理器/解释器命令这一副作用形态。根因：「不运行会写入 tracked 或未忽略路径的命令」要求 reviewer 自行推断某命令是否产生写入，`uv run` 字面是「运行」而非「写入」，且 `.gitignore` 豁免句（「只写被 .gitignore 覆盖路径……不在此列」）无实证核对要求——reviewer 以「通常被忽略」的惯例假定替代对目标仓现行 `.gitignore` 的核对，推断链在 fresh-context 下无人复核即放行。
 
-**处理方式**：[盲审信息包](../../references/review-contract.md#盲审信息包)只读定义处补一句显式禁令：包管理器/解释器命令（`uv run`、`npm install`、`pip install` 等）不得在目标仓内运行——它们会在仓内生成 `.venv`、lockfile 等 untracked 副作用文件，前句 `.gitignore` 豁免不覆盖此类命令，必要的环境准备一律在目标仓之外进行。同批落 [tests/check_states.py](../../tests/check_states.py) NEW_CONTRACT 断言锚定「包管理器」（RSI-007 纪律，防该句被静默删除；RSI-010 复审补缺先例——本补丁新增承重词须同批锚护栏）——落地：（PR 待回填）。
+**处理方式**：[盲审信息包](../../references/review-contract.md#盲审信息包)只读定义处补一句显式禁令：包管理器/解释器命令（`uv run`、`npm install`、`pip install` 等）不得在目标仓内运行——它们会在仓内生成 `.venv`、lockfile 等 untracked 副作用文件，前句 `.gitignore` 豁免不覆盖此类命令，必要的环境准备一律在目标仓之外进行。同批落 [tests/check_states.py](../../tests/check_states.py) NEW_CONTRACT 断言锚定「包管理器」（RSI-007 纪律，防该句被静默删除；RSI-010 复审补缺先例——本补丁新增承重词须同批锚护栏）——落地：（PR #11 · commit `0ce9ccb`）。
 
 **后续防范**：禁令枚举类条款出现新型「字面不像写入、实则产生仓内副作用文件」的命令族时，同批点名入禁令例清单而非依赖 reviewer 推断；豁免句（「被 .gitignore 覆盖即不在此列」）每次扩面时必须同步声明对哪些命令族不适用，防「全称禁令 × 豁免」在 fresh-context 下被惯例假定裁决（RSI-008 教训的豁免面方向）；本补丁新增的承重词同批锚 NEW_CONTRACT 护栏，静默删除由红灯拦截。
 
