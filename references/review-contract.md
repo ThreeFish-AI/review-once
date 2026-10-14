@@ -42,7 +42,7 @@
 
 ## 盲审信息包
 
-收敛门的独立 reviewer 必须在 fresh context 中以只读方式工作，且每次过收敛门都委派新的 reviewer 实例（含认定真实修复后的重入门、DISPUTED 复核与收敛结论作废后的重新过门）；续用或 resume 此前 reviewer 的会话，等同于向其提供下方「不提供」清单中的 Finding 历史。只读＝不修改工作区文件，也不运行会写入 tracked 或未忽略路径的命令（autofix lint/format、`--fix` 类检查、测试快照（snapshot）更新、`pre-commit run` 等）；只写被 .gitignore 覆盖路径（如测试缓存）的命令不在此列。reviewer 以只读命令直接访问目标 Repo（读取文件、检索、只读 git 子命令）；下方「提供」项是信息包的最低保障材料而非访问边界，镜头的检索面（如镜头 2 的全量同主题词检索）以只读命令对 Repo 执行。reviewer 无目标 Repo 只读访问能力时，由主 Agent 预跑镜头 2 所需全仓同主题词检索并把命中上下文（或相关文件清单）并入「提供」清单，或在覆盖矩阵如实披露镜头 2 检索面降级——不得以部分检索冒充已查。收敛所需的必要验证由主 Agent 执行（主循环步骤 7），reviewer 的任何自跑命令不替代它：
+收敛门的独立 reviewer 必须在 fresh context 中以只读方式工作，且每次过收敛门都委派新的 reviewer 实例（含认定真实修复后的重入门、DISPUTED 复核与收敛结论作废后的重新过门）；续用或 resume 此前 reviewer 的会话，等同于向其提供下方「不提供」清单中的 Finding 历史。只读＝不修改工作区文件，也不运行会写入 tracked 或未忽略路径的命令（autofix lint/format、`--fix` 类检查、测试快照（snapshot）更新、`pre-commit run` 等）；只写被 .gitignore 覆盖路径（如测试缓存）的命令不在此列。包管理器/解释器命令（`uv run`、`npm install`、`pip install` 等）不得在目标仓内运行——它们会在仓内生成 `.venv`、lockfile 等 untracked 副作用文件，前句 `.gitignore` 豁免不覆盖此类命令，必要的环境准备一律在目标仓之外进行。reviewer 以只读命令直接访问目标 Repo（读取文件、检索、只读 git 子命令）；下方「提供」项是信息包的最低保障材料而非访问边界，镜头的检索面（如镜头 2 的全量同主题词检索）以只读命令对 Repo 执行。reviewer 无目标 Repo 只读访问能力时，由主 Agent 预跑镜头 2 所需全仓同主题词检索并把命中上下文（或相关文件清单）并入「提供」清单，或在覆盖矩阵如实披露镜头 2 检索面降级——不得以部分检索冒充已查。收敛所需的必要验证由主 Agent 执行（主循环步骤 7），reviewer 的任何自跑命令不替代它：
 
 - **提供**：Review 标准（`Review request.md` 或本 Contract，及[审查范围声明](#规则优先级)——含范围对象、来源原话与被覆盖判据，不含主 Agent 的问题清单）、完整最新 Diff（含 untracked 文件）、审查范围超出 Diff 时范围内文件的当前全文、被改文件涉及事实性改写时该文件的当前全文（供镜头 2 全量检索）、适用 Repo 规则、四镜头清单，以及[修复 Delta](#修复-delta)（纯 Diff，不附 Finding 与理由），供“修复回归”镜头定位修复位置；
 - **不提供**：本轮及此前的 Finding 历史、修复意图与理由、主 Agent 的“已验证”结论——这些会锚定 reviewer，使其复核“上一轮说过的问题”而不是独立找问题；
