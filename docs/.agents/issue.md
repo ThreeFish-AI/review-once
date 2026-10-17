@@ -192,4 +192,3 @@
 - 处理方式：`references/review-contract.md` §修复 Delta 增补「重建自版本库」例外（资格三项全取 BASELINE 机械记录：首轮 HEAD SHA + `git status --porcelain` 清单 + 无外部改写记录；`git cat-file --filters` 重建 + `--numstat` 一致性核对；任一不满足回落「Delta 不可得」）；SKILL.md 主循环步骤 2 追加首轮记录义务作资格前置；eval 21 与 check_states 锚同批演进。PR #12（commit 6b93417、11003b7）。
 - 后续防范：①「清单内文件」「BASELINE 未记录 SHA」两类边界在 eval 21 expectation 钉死——例外不放宽到它们；②重建源恒用首轮 SHA，禁 Git 发布后 HEAD 与 merge-base；③`git show` 在 eol 属性下产生伪 Delta，必须 `cat-file --filters`；④assume-unchanged/skip-worktree 改动对 status 不可见，由 numstat 核对兜底；⑤zsh 中 `$sha:` 会被解析为修饰符，写 `${sha}`。
 - 同类问题影响与注意事项：凡「有效性只按时序判定、未看内容来源」的规约面（如盲审信息包的材料新鲜度）都可能存在同型缺口；给例外开口时资格条件必须全部取自机械记录、且 fail-closed 回落，否则等于给「凭记忆转述」开后门。本条目经盲评死区豁免申报合并（G2 谎报风险面见 PR 描述）。
-
