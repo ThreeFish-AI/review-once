@@ -192,7 +192,7 @@
 
 **表因与根因**：表因＝[修复 Delta](../../references/review-contract.md#修复-delta) 第 1 条只判「事后补照存入的已改状态」无效、快照缺失处置段一律要求「Delta 不可得」；根因＝快照有效性只按「时序」（是否首次写入前）判定，未区分「内容来源」（工作区已改状态 vs 不可变提交对象）。
 
-**处理方式**：[修复 Delta](../../references/review-contract.md#修复-delta) 增补「重建自版本库」例外——资格三项：①首轮 BASELINE 记录的 HEAD SHA；②文件被该 SHA 跟踪且不在同时记录的 `git status --porcelain -z` 清单内（①②取自 BASELINE 机械记录）；③循环中 Chat 证据无用户外部改写或提交记录（取自循环留痕）；做法：`git cat-file --filters` 自该 SHA 重建 + `--numstat` 只比两列数字的一致性核对；任一条件不满足、无法判定、命令失败或核对不一致一律回落「Delta 不可得」。[SKILL.md](../../SKILL.md) 主循环步骤 2 追加首轮记录义务（记入 Chat 证据）作资格前置；eval 11/21 与 [check_states.py](../../tests/check_states.py) 锚同批演进。落地：（PR #12 · commit `6b93417`、`11003b7`）。
+**处理方式**：[修复 Delta](../../references/review-contract.md#修复-delta) 增补「重建自版本库」例外——资格三项：①首轮 BASELINE 记录的 HEAD SHA；②文件被该 SHA 跟踪且不在同时记录的 `git status --porcelain -z` 清单内（①②取自 BASELINE 机械记录）；③循环中 Chat 证据无用户外部改写或提交记录（取自循环留痕）；做法：`git cat-file --filters` 自该 SHA 重建 + `--numstat` 只比两列数字的一致性核对；任一条件不满足、无法判定、命令失败或核对不一致一律回落「Delta 不可得」。[SKILL.md](../../SKILL.md) 主循环步骤 2 追加首轮记录义务（记入 Chat 证据）作资格前置；eval 11/21 与 [check_states.py](../../tests/check_states.py) 锚同批演进——落地：（PR #12 · commit `6b93417`、`11003b7`、`b99bb3a`、`7506e1c`）。
 
 **后续防范**：①「清单内文件」「BASELINE 未记录 SHA」两类边界在 eval 21 expectation 钉死——例外不放宽到它们；②重建源恒用首轮 SHA，禁 Git 发布后 HEAD 与 merge-base；③`git show` 输出 blob 原始字节、跨属性配置不保证与工作区一致，重建一律 `cat-file --filters` 且由 numstat 核对兜底；④assume-unchanged/skip-worktree 改动对 status 不可见，由 numstat 核对兜底；⑤zsh 中 `$sha:` 后跟合法修饰符字母会被解析为修饰符，写 `${sha}`。
 
