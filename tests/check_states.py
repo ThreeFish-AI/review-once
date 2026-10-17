@@ -51,7 +51,7 @@ for name, kws in NEW_CONTRACT.items():
             errors.append(f"{name} 缺新契约词汇: {kw}")
 # evals 不得静默丢失新行为覆盖（audit 模式 / 回显防循环 / 最终报告人读友好与总分总 / RSI-010 七项）
 _evals_text = (ROOT / "evals" / "evals.json").read_text(encoding="utf-8")
-for kw in ("audit 模式", "回显", "人读友好", "总分总", "审查范围声明", "范围外观察", "只读＝", "reviewer 实例", "同批同步", "派生物", "Git 发布", "词干", "porcelain", "迟到快照", "只增不减", "修复自致", "预跑", "补记最终 SHA", "时间轴在后者为准", "再应用排除", "重建自版本库", "numstat"):
+for kw in ("audit 模式", "回显", "人读友好", "总分总", "审查范围声明", "范围外观察", "只读＝", "reviewer 实例", "同批同步", "派生物", "Git 发布", "词干", "porcelain", "porcelain -z", "迟到快照", "只增不减", "修复自致", "预跑", "补记最终 SHA", "时间轴在后者为准", "再应用排除", "重建自版本库", "numstat"):
     if kw not in _evals_text:
         errors.append(f"evals.json 缺新行为覆盖关键词: {kw}")
 # 触发例不得静默丢失 RSI 用法覆盖（RSI-011）：正例须含 RSI 沉淀入口，负例须含非 RSI 用法的普通 review
