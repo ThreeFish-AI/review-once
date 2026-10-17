@@ -54,7 +54,7 @@ metadata:
 每轮严格按以下顺序执行：
 
 1. **加载上下文**：定位用户指定的 `Review request.md`；读取适用的 Repo 规则、当前 Diff、已有 Review 评论和相关测试入口。
-2. **建立基线**：记录本轮基线 Ref、工作区未提交 Diff、待审查文件、审查范围声明（默认＝当前 Diff）和当前轮次。首轮另记录 `HEAD` 提交 SHA 与 `git status --porcelain` 清单（版本库重建基线的资格前置，不记录则该例外不适用；见[修复 Delta](references/review-contract.md#修复-delta)）。无法确认正确基线时停止，不盲审错误范围。
+2. **建立基线**：记录本轮基线 Ref、工作区未提交 Diff、待审查文件、审查范围声明（默认＝当前 Diff）和当前轮次。首轮另把 `HEAD` 提交 SHA 与 `git status --porcelain -z` 清单记入 Chat 证据（版本库重建基线的资格前置，不记录则该例外不适用；见[修复 Delta](references/review-contract.md#修复-delta)）。无法确认正确基线时停止，不盲审错误范围。
 3. **Review**：按 Review Contract 筛选 Findings，并覆盖其中的四个[审查镜头](references/review-contract.md#审查镜头)（逐项记录，不得只做行为一个维度）；一次 Finding 只代表一个离散问题，评论范围尽量保持在能理解问题的最短行区间。
 4. **Chat 报告**：先列出 Finding 的严重性、位置、影响场景和证据。没有 Finding 时明确报告“本轮无明确值得修复的缺陷”。
 5. **挂载反馈（终态挂载制）**：中间轮的 Findings 只在 Chat 报告留痕，**不挂 `DiffComment`**——自动循环中会被本轮修复的 Finding 若在中间轮挂载，修复后即成为无法自动 resolve 的死线程，等于把收尾转嫁为人工操作。`DiffComment` 仅在**终态**为仍需用户处理的 Finding（未修复、blocked、DISPUTED 待裁决、已修复但必要验证未通过）挂载，一条一句可行动摘要；完全收敛时 Checks 面板零新增评论、零人工 resolve。用户显式要求逐条 inline 留痕时进入 [audit 模式](references/conductor-mode.md#audit-模式逐条-inline-留痕)，按其规则逐轮挂载。Git fallback 恒只在 Chat 中记录，不伪造 Conductor 评论。
