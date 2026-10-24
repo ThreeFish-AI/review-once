@@ -104,7 +104,7 @@ unzip -l "$SKILL_ROOT/.temp/dist/review-once.skill"
 
 评测资产位于 [evals/README.md](./evals/README.md)：
 
-- `evals/evals.json` 验证双 Mode、无 Finding、收敛门与自审收敛、重复 Finding、误报复核、修复 Delta、无进展、测试失败、终态挂载（默认模式收敛零新增、audit 模式逐轮留痕）、评论回显防循环与验证阻塞挂载、最终报告人读友好格式（概述、效果与影响、改进建议、真问题不降格），以及审查范围声明传导（eval 16、收窄方向 eval 23）、范围外观察分支（eval 17）、收敛门只读判据与门后核对（eval 18）、reviewer 实例换新（eval 19）、事实改写同批同步（eval 20）、派生物再生与工具写入预快照（eval 21）、用户要求提交的时序（eval 22）、复合声明先并集后排除解析（eval 24）、多来源范围裁决时间轴 tiebreak（eval 25）、并行编排可选档与用户显式要求例外（eval 26、27）等输出行为；
+- `evals/evals.json` 验证双 Mode、无 Finding、收敛门与自审收敛、重复 Finding、误报复核、修复 Delta、无进展、测试失败、终态挂载（默认模式收敛零新增、audit 模式逐轮留痕）、评论回显防循环与验证阻塞挂载、最终报告人读友好格式（概述、效果与影响、改进建议、真问题不降格），以及审查范围声明传导（eval 16、收窄方向 eval 23）、范围外观察分支（eval 17）、收敛门只读判据与门后核对（eval 18）、reviewer 实例换新（eval 19）、事实改写同批同步（eval 20）、派生物再生与工具写入预快照（eval 21）、用户要求提交的时序（eval 22）、复合声明先并集后排除解析（eval 24）、多来源范围裁决时间轴 tiebreak（eval 25）、并行编排可选档与用户显式要求例外（eval 26、27）、修复方向复核（eval 28）等输出行为；
 - `evals/trigger-evals.json` 验证触发准确率，并覆盖普通 Review、Conductor Review、RSI 沉淀正例与非 RSI 用法负例、近邻 collision case。
 
 ## 许可证
