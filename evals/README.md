@@ -20,6 +20,7 @@
 - 用户要求提交的时序、hook 改写作废重过门、终态翻转重核对与再收敛后补发布（eval 22）；
 - 复合声明（兼含纳入与排除）按先并集后排除解析：排除区按收窄规则（声明边界优先于 Change-introduced）、纳入区按扩大规则（eval 24）；
 - 多来源范围裁决冲突以时间轴在后者为准，无法判定先后停止询问（eval 25）；
+- 并行编排可选增强档：多 agent 派发能力＋已获委派许可＋Diff 规模大三条件同时满足才启用（任一不满足回落默认档不阻塞），镜头独立 finder fresh-context 互不知晓、按规范化 Fingerprint 机械去重、3 skeptic（静态证据/触发场景/判定标准）≥2 票多数决对抗复核，淘汰者留痕票型；编排轮计一轮不虚增轮次预算，收敛门仍单 reviewer fresh-context 不被多数决替代（eval 26）；
 - Git fallback Mode 的 base 探测和双份 Diff；
 - 初始无 Finding 时仍须经收敛门（独立复审，或降级为自审收敛）；
 - 自审无 Finding 不得直接宣布收敛、盲审信息包不含 Finding 历史（eval 9）；

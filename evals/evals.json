@@ -318,6 +318,20 @@
         "来源原话与被覆盖判据记入审查范围声明并传入盲审信息包",
         "无法判定先后时停止并询问，不任选其一"
       ]
+    },
+    {
+      "id": 26,
+      "mode": "either",
+      "prompt": "当前 workspace 的 Diff 很大：一次跨 5 个模块的重构同批改了约 40 个文件。运行环境可派发 Subagent 且已获委派许可。请按 review-once 的规则执行本轮 Review。",
+      "expected_output": "Agent 判定并行编排启用条件同时满足（宿主多 agent 派发能力＋已获委派许可＋Diff 规模大），按并行编排执行本轮 Review：每个审查镜头派发独立 fresh-context finder（互不知晓彼此 Finding，防锚定），主 Agent 按规范化 Fingerprint 机械去重（只做键合并不改写候选内容），每条候选由 3 个不同视角 skeptic（静态证据/触发场景/判定标准）独立复核、≥2 票多数决存活；存活 Finding 进入 Chat 报告与修复轮，淘汰者留痕票型与淘汰依据；该轮计为一轮，不因镜头拆分或 skeptic 复核另计轮次虚增轮次预算；中间轮默认仍是主 Agent 自审，后续小 Diff 轮回落默认档；收敛门仍由单 reviewer fresh-context 按盲审信息包复审，多 finder 的「无 Finding」或多数决结果不构成收敛判据。",
+      "expectations": [
+        "并行编排启用条件须同时满足：宿主多 agent 派发能力＋已获委派许可＋Diff 规模大；任一不满足时按默认档（中间轮主 Agent 自审）执行，不因缺档阻塞",
+        "每个审查镜头派发独立 fresh-context finder，互不知晓彼此 Finding；四镜头覆盖矩阵由各 finder 结果汇总",
+        "各 finder 候选按规范化 Fingerprint 机械去重，只做键合并，不改写候选内容与严重性",
+        "每条候选由 3 个不同视角 skeptic（静态证据/触发场景/判定标准）复核，≥2 票多数决存活；存活者进入 Chat 报告与修复轮，淘汰者留痕票型与淘汰依据并入证据要求",
+        "编排轮计为一轮（一次完整的 Diff Review），不得以镜头拆分或 skeptic 复核另计轮次、变相虚增轮次预算；Review 执行者条目记 finder 数与候选票型",
+        "并行编排不替代收敛门独立性：收敛门仍由单 reviewer fresh-context 按盲审信息包复审，多 finder 多数决或「无 Finding」不构成收敛判据，终态判定不受编排形态影响"
+      ]
     }
   ]
 }
