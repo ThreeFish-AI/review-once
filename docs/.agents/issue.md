@@ -206,7 +206,7 @@
 
 **表因与根因**：表因＝[SKILL.md](../../SKILL.md) 主循环步骤 3 与职责段未提供第三档；根因＝收敛门（RSI-006）引入时只补齐「判定主体独立」的强制档与「控制成本」的默认档，未覆盖宿主具备多 agent 派发能力这一档位——大 Diff 下镜头串行自审的漏检代价未成文（对抗复核的检出优势在 RSI-009 复盘已有先验：41 条候选经对抗核查淘汰 20 条误报，但未结晶为可复用执行档）。
 
-**处理方式**：[Review Contract](../../references/review-contract.md#并行编排) 新增「并行编排」节（SSOT）——启用条件＝宿主多 agent 派发能力＋已获委派许可＋Diff 规模大（任一不满足回落默认档，不因缺档阻塞）；三段做法＝镜头独立 finder（fresh-context、互不知晓彼此 Finding）→机械去重（只做键合并）→3 skeptic（静态证据/触发场景/判定标准）≥2 票多数决对抗复核（淘汰者留痕票型）；坑位＝token 成本显著、编排轮计为一轮不虚增轮次预算、不替代收敛门独立性（多 finder 多数决不构成收敛判据）。[SKILL.md](../../SKILL.md) 步骤 3 与职责段指针同步（中间轮默认仍是主 Agent 自审，不因能力可用而强制升级）；[证据要求](../../references/review-contract.md#证据要求) Review 执行者条目追加编排轮记名（finder 数与候选票型）；eval 26 与 [check_states.py](../../tests/check_states.py) NEW_CONTRACT 锚同批演进——落地：（PR 待回填 · commit 待回填）。
+**处理方式**：[Review Contract](../../references/review-contract.md#并行编排) 新增「并行编排」节（SSOT）——启用条件＝宿主多 agent 派发能力＋已获委派许可＋Diff 规模大（任一不满足回落默认档，不因缺档阻塞）；三段做法＝镜头独立 finder（fresh-context、互不知晓彼此 Finding）→机械去重（只做键合并）→3 skeptic（静态证据/触发场景/判定标准）≥2 票多数决对抗复核（淘汰者留痕票型）；坑位＝token 成本显著、编排轮计为一轮不虚增轮次预算、不替代收敛门独立性（多 finder 多数决不构成收敛判据）。[SKILL.md](../../SKILL.md) 步骤 3 与职责段指针同步（中间轮默认仍是主 Agent 自审，不因能力可用而强制升级）；[证据要求](../../references/review-contract.md#证据要求) Review 执行者条目追加编排轮记名（finder 数与候选票型）；eval 26 与 [check_states.py](../../tests/check_states.py) NEW_CONTRACT 锚同批演进——落地：[PR #13](https://github.com/ThreeFish-AI/review-once/pull/13) · commit a5e62eb。
 
 **后续防范**：①新增执行档位必须显式钉死与收敛门的关系——多数决结果不构成收敛判据，防「并行轮替代独立收敛」的口径漂移；②可选档一律写明「任一条件不满足回落默认档」，防缺档阻塞或能力误判强启；③档位增补不推翻既有成本默认（RSI-006 的「中间轮自审以控制成本」保留为默认），防回退既有 RSI 决策。
 
