@@ -322,15 +322,27 @@
     {
       "id": 26,
       "mode": "either",
-      "prompt": "当前 workspace 的 Diff 很大：一次跨 5 个模块的重构同批改了约 40 个文件。运行环境可派发 Subagent 且已获委派许可。请按 review-once 的规则执行本轮 Review。",
-      "expected_output": "Agent 判定并行编排启用条件同时满足（宿主多 agent 派发能力＋已获委派许可＋Diff 规模大），按并行编排执行本轮 Review：每个审查镜头派发独立 fresh-context finder（互不知晓彼此 Finding，防锚定），主 Agent 按规范化 Fingerprint 机械去重（只做键合并不改写候选内容），每条候选由 3 个不同视角 skeptic（静态证据/触发场景/判定标准）独立复核、≥2 票多数决存活；存活 Finding 进入 Chat 报告与修复轮，淘汰者留痕票型与淘汰依据；该轮计为一轮，不因镜头拆分或 skeptic 复核另计轮次虚增轮次预算；中间轮默认仍是主 Agent 自审，后续小 Diff 轮回落默认档；收敛门仍由单 reviewer fresh-context 按盲审信息包复审，多 finder 的「无 Finding」或多数决结果不构成收敛判据。",
+      "prompt": "当前 workspace 的 Diff 很大：一次跨 5 个模块的重构同批改了约 40 个文件。运行环境可派发 Subagent 且已获委派许可，用户并已明确要求本轮以多 agent 并行方式执行 Review。请按 review-once 的规则执行本轮 Review。",
+      "expected_output": "Agent 判定并行编排启用条件同时满足（宿主多 agent 派发能力＋已获委派许可＋Diff 规模大），按并行编排执行本轮 Review：每个审查镜头派发独立 fresh-context finder（互不知晓彼此 Finding，防锚定），主 Agent 按规范化 Fingerprint 机械去重（只做键合并不改写候选内容），每条候选由 3 个不同视角 skeptic（静态证据/触发场景/判定标准）独立复核（每票为该候选是否满足 Finding 判定的整体裁定，三轴仅为审查侧重）、≥2 票多数决存活；存活 Finding 进入 Chat 报告与修复轮，淘汰者留痕票型与淘汰依据；该轮计为一轮，不因镜头拆分或 skeptic 复核另计轮次虚增轮次预算；中间轮默认仍是主 Agent 自审，后续小 Diff 轮回落默认档；收敛门仍由单 reviewer fresh-context 按盲审信息包复审，多 finder 的「无 Finding」或多数决结果不构成收敛判据；finder 与 skeptic 全程只读——不运行写入命令与包管理器/解释器命令（环境准备一律在仓外），任务提示不含本轮及此前 Finding 历史与修复意图、至少含完整最新 Diff 与审查范围声明，无 Repo 直访能力时由主 Agent 预跑镜头检索或如实披露镜头 2 检索面降级。",
       "expectations": [
-        "并行编排启用条件须同时满足：宿主多 agent 派发能力＋已获委派许可＋Diff 规模大；任一不满足时按默认档（中间轮主 Agent 自审）执行，不因缺档阻塞",
+        "并行编排启用条件须同时满足：宿主多 agent 派发能力＋已获委派许可＋Diff 规模大；任一不满足时按默认档（中间轮主 Agent 自审）执行，不因缺档阻塞；用户显式要求并行执行时视为已获委派许可并视为条件三成立、启用不再是可选，宿主派发能力缺失仍回落默认档并披露",
         "每个审查镜头派发独立 fresh-context finder，互不知晓彼此 Finding；四镜头覆盖矩阵由各 finder 结果汇总",
         "各 finder 候选按规范化 Fingerprint 机械去重，只做键合并，不改写候选内容与严重性",
-        "每条候选由 3 个不同视角 skeptic（静态证据/触发场景/判定标准）复核，≥2 票多数决存活；存活者进入 Chat 报告与修复轮，淘汰者留痕票型与淘汰依据并入证据要求",
-        "编排轮计为一轮（一次完整的 Diff Review），不得以镜头拆分或 skeptic 复核另计轮次、变相虚增轮次预算；Review 执行者条目记 finder 数与候选票型",
-        "并行编排不替代收敛门独立性：收敛门仍由单 reviewer fresh-context 按盲审信息包复审，多 finder 多数决或「无 Finding」不构成收敛判据，终态判定不受编排形态影响"
+        "每条候选由 3 个不同视角 skeptic（静态证据/触发场景/判定标准）复核（每票为该候选是否满足 Finding 判定的整体裁定，三轴仅为审查侧重），≥2 票多数决存活；存活者进入 Chat 报告与修复轮，淘汰者留痕票型与淘汰依据并入证据要求",
+        "编排轮计为一轮（一次完整的 Diff Review），不得以镜头拆分或 skeptic 复核另计轮次、变相虚增轮次预算；Review 执行者条目按独立 reviewer/主 Agent 自审/并行编排（finder 组）三选一记，编排轮另记 finder 数、候选票型与淘汰依据",
+        "并行编排不替代收敛门独立性：收敛门仍由单 reviewer fresh-context 按盲审信息包复审，多 finder 多数决或「无 Finding」不构成收敛判据，终态判定不受编排形态影响",
+        "finder 与 skeptic 同受盲审信息包只读纪律、「不提供」与「提供」材料面约束：只以只读命令访问目标仓、不运行包管理器/解释器等会产生仓内副作用的命令（环境准备一律在仓外），任务提示不含本轮及此前 Finding 历史与修复意图、至少含完整最新 Diff 与审查范围声明，无 Repo 直访能力时由主 Agent 预跑镜头检索并入任务提示或如实披露镜头 2 检索面降级"
+      ]
+    },
+    {
+      "id": 27,
+      "mode": "either",
+      "prompt": "当前 workspace 的 Diff 很大：一次跨 5 个模块的重构同批改了约 40 个文件。运行环境可派发 Subagent 且已获委派许可，用户未对 Review 执行形态提出任何要求。请按 review-once 的规则执行本轮 Review。",
+      "expected_output": "Agent 判定并行编排三条件同时满足、用户未显式要求并行——该档可选，启用与否由 Agent 按 token 成本权衡自主决定（按成本权衡启用而非默认拉满）：选择启用时按三段做法执行（镜头独立 fresh-context finder、规范化 Fingerprint 机械去重、3 skeptic 每票整体裁定多数决对抗复核），选择不启用时按默认档（中间轮主 Agent 自审）执行，两者均契约合规、不强启不强禁；无论选择如何，该轮计为一轮，收敛门仍须单 reviewer fresh-context 独立复审。",
+      "expectations": [
+        "三条件同时满足且用户未显式要求并行时，并行编排为可选档：启用与否由 Agent 按 token 成本权衡自主决定，不强启不强禁",
+        "选择启用时按三段做法执行（镜头独立 finder、规范化 Fingerprint 机械去重、每票为候选整体裁定的 3 skeptic 多数决）；选择不启用时按默认档（中间轮主 Agent 自审）执行，两者均合规",
+        "无论启用与否该轮计为一轮，收敛门仍由单 reviewer fresh-context 独立复审，终态判定不受编排形态影响"
       ]
     }
   ]
