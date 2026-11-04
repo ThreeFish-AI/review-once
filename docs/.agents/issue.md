@@ -225,3 +225,17 @@
 **后续防范**：①契约新增「输入字段」时同步定义其消费语义，写侧格式与读侧处置不分离成文；②以「被引惯例/先例」为依据的修复建议一律先核先例自身正确性再实施——可检查规则：修复方向含「按 Repo 既有惯例」字样即触发复核义务；③照抄类修复回归的收敛门捕获成本（整数轮）作为事前复核的默认成本论证，不为省复核引入更高事后代价。
 
 **同类问题影响与注意事项**：凡 Agent 消费上游（finder/reviewer/工具/文档）产出的「建议」字段，均不得默认可信——与 RSI-016（待议条目、未落仓本台账：盲审信息包评审标准保真）、误报复核（reviewer 结论不单方驳回）同谱系：上游产出是输入而非结论。三者分工：RSI-016 管标准文本的保真传递，误报复核管 reviewer 判定的争议处置，本条管修复建议的实施前置复核。
+
+## RSI-018 触发边界缺硬约束：普通 Review 请求拉起完整 Review-Fix 循环
+
+**日期**：2026-11-04
+
+**问题描述**：用户（skill 作者）实证普通 Review 请求也会自动触发本 Skill，拉起完整多轮 Review-Fix 循环（8 轮预算、收敛门、快照全套机制），Review 过程总是太长，浪费时间和 Token；要求仅显式调用 Review Once 时才走本 Skill，普通 Review 走普通单轮 Review。
+
+**表因与根因**：表因＝[SKILL.md](../../SKILL.md) description 以 "Trigger when the user asks to repeatedly review the current Diff or workspace" 开头，触发语义居前且被行为长枚举稀释，"This includes requests to avoid manual Review/Fix clicks, use Conductor Checks and DiffComments…" 把免手动点击、工具使用列为独立触发信号。根因＝触发判据以「用户意图」为锚但缺机械判据与不触发面闭环：触发边界不触发清单的「一次性 Review」字面不覆盖「review 并修复」（无循环表述）形态——该形态既非字面「一次性 Review」也非清单其余项，恰是过度触发的洞；「明确」循环意图无机械判据，「点名」缺字面形态清单与点名后路由；触发边界「典型入口」第一条引用句本身即落在不触发面（同节自相矛盾）。
+
+**处理方式**：description 重写为「主干前置（Run … ONLY when 显式点名 / iterative review-fix loop / RSI sedimentation）＋不触发面点名实测碰撞措辞（single "review and fix" request with no iteration wording、bare mention 不是 invocation）＋运行时行为（Review request.md 标准、Conductor 工具偏好、git merge-base 降级）降级为末句」；[触发边界](../../SKILL.md#触发边界) 重写为单一触发判据（硬约束）——三种触发形态：①显式点名（`/review-once`、`$review-once`、`review-once`、`Review Once`，大小写不敏感；点名后按请求性质路由，询问/比较/吐槽类纯提及只应答不启动主循环）②明确循环意图（机械判据五形态：循环词／修后再审序列／终止条件句／对单轮的显式否定／条件延续句）③RSI 沉淀入口（沿用自改进回路段，不走主循环）；不触发面扩写「一次性 Review 与无循环表述的单轮『review 并修复』请求」，不触发时按普通单轮 Review 处理并可选一句提示 `/review-once` 可用（提示不构成触发）；典型入口引用句改为含循环表述全句；逐条挂载表述不构成循环意图、仅作 audit 模式进入信号。同批演进：[trigger-evals](../../evals/trigger-evals.json)（id 18/20 补循环语境、新增显式点名正例 id 28 与 4 条负例——无循环表述的 review 并修复×2、英文碰撞对、纯提及；27/13/14 → 32/14/18）、[evals/README](../../evals/README.md) 计数与覆盖声明、smoke 记录封闭枚举改开放式、[check_evals.py](../../tests/check_evals.py) 计数基线、[check_states.py](../../tests/check_states.py) NEW_CONTRACT 锚（显式点名/明确循环意图/修后再审/对单轮的显式否定/单轮「review 并修复」/纯提及）与 trigger 关键词（/review-once、review 并修复）、README 适用场景与评测清单极性。——落地：（待回填）
+
+**后续防范**：触发类契约条款必须同时给「触发形态机械枚举＋不触发面实测碰撞措辞＋点名后路由」三件套，不留「形容词无判据」的裁量带（RSI-010 纪律在触发面的应用）；description 句式以触发条件为主干首句，行为长枚举降级为运行时说明——枚举居前会稀释限定词；评测数据改动时同批回查「汇总类声明」（计数、极性、覆盖类、封闭枚举）（RSI-005 纪律）；新增正负例须逐字锚定护栏关键词，防语义漂移静默过门。
+
+**同类问题影响与注意事项**：与 RSI-005 同属「声明与数据漂移」家族（本次是触发口径与正例极性的漂移：id 18/20 在新口径下需补循环语境才成立），与 RSI-010 同属「承重形容词缺机械判据」家族（「明确循环意图」「点名」均补判据）。凡 instruction-only 契约的「触发边界」都同时消费两个输入面——harness 注入的 description（触发决策唯一可见面）与 SKILL 正文（触发后自检面），条款必须双侧落位且单一定义，防 split-brain。

@@ -37,11 +37,11 @@
 
 ## Trigger eval
 
-`trigger-evals.json` 使用官方 `run_eval.py` 接受的 JSON array，共 27 条 query（13 正 / 14 负）。每项包含 `query` 与 `should_trigger`：
+`trigger-evals.json` 使用官方 `run_eval.py` 接受的 JSON array，共 32 条 query（14 正 / 18 负）。每项包含 `query` 与 `should_trigger`：
 
-- 正例覆盖“反复 Review”“Review request”“Conductor Checks”“自动修复再审查”与 RSI 经验沉淀（指出本 Skill 契约缺陷并要求按 RSI 沉淀）等同义入口；
-- 负例覆盖一次性 Review（含未提循环意图的“帮我 review 这个 PR”这类非 RSI 用法）、解释代码、只跑测试、普通开发、PR 发布和 Release；
-- collision case 使用共享的“检查/修复/变更”词汇，但目标是 Security Audit、测试编写、一次性 Review、UI 视觉评审或 Release 发布。
+- 正例覆盖显式点名（`/review-once`）、明确循环意图（“反复 Review”、修后再审/终止条件/对单轮的显式否定等形态，`@Review request.md` 仅在伴随循环表述时计入）、Conductor Checks 循环、“自动修复再审查”与 RSI 经验沉淀（指出本 Skill 契约缺陷并要求按 RSI 沉淀）等同义入口；
+- 负例覆盖一次性 Review 与无循环表述的单轮 review 并修复（含“帮我 review 这个 PR”“review 一下当前变更”“review 并修复发现的问题”）、纯提及（询问/比较 skill 本身，如“review-once 是什么”）、解释代码、只跑测试、普通开发、PR 发布和 Release；
+- collision case 使用共享的“检查/修复/变更”词汇，但目标是 Security Audit、测试编写、一次性 Review、UI 视觉评审或 Release 发布；英文碰撞对（id 31 与 id 3 仅差 "then review again"）钉住循环表述的判定边界。
 
 建议每条 query 重复运行 3 次；官方 Runner 的默认判定是正例 trigger rate `>= 0.5`、负例 `< 0.5`。若需要更严格的质量门槛，应另行标注为项目额外标准。Description 优化时固定 60/40 train/validation 切分，只用 train 失败项改写，按 validation 结果选择版本。官方 Runner 会直接读取数组，不需要额外的 `skill_name` 或 `queries` 包装层。
 
@@ -53,4 +53,4 @@ bash tests/run_all.sh
 
 ## 本机 Smoke 记录
 
-2026-10-04 在本机执行官方 `run_eval.py` 的 24 条单次 smoke：12 条负例通过、12 条正例未被 Runner 记录，汇总为 `12/24`。该次 smoke 针对当时的 24 条版本；其后新增的 id 25–27（Release 负例与 RSI 触发正负例）未包含在内。单 query trace 同时确认临时 Skill 命令已进入 Claude 的 command registry，但模型先读取 `Review request.md`，未显式调用临时命令对应的 `Skill` tool。该结果属于 Runtime/Runner 触发证据不足，不作为 Trigger accuracy 通过结论；应在支持原生 Skill loader 的 Runtime 中重复运行。
+2026-10-04 在本机执行官方 `run_eval.py` 的 24 条单次 smoke：12 条负例通过、12 条正例未被 Runner 记录，汇总为 `12/24`。该次 smoke 针对当时的 24 条版本；其后新增的条目（id 25 起，含 Release 负例、RSI 触发正负例与 RSI-018 触发硬约束新增的正负例）均未包含在内。单 query trace 同时确认临时 Skill 命令已进入 Claude 的 command registry，但模型先读取 `Review request.md`，未显式调用临时命令对应的 `Skill` tool。该结果属于 Runtime/Runner 触发证据不足，不作为 Trigger accuracy 通过结论；应在支持原生 Skill loader 的 Runtime 中重复运行。
