@@ -35,7 +35,7 @@ metadata:
    - “不要让我手动点击 Review 和 Fix，持续到收敛”。
 3. **RSI 沉淀入口**：用户以第一人称指出本 Skill 自身缺陷并要求按 RSI 沉淀时，本 Skill 作为统一 RSI 回路的仓内入口触发（见[自改进回路](#自改进回路rsi)），但该请求不走 Review-Fix 主循环。
 
-以下请求不触发本 Skill：一次性 Review 与无循环表述的单轮「review 并修复」请求（含「帮我 review 这个 PR」「review 一下当前变更」「review 并修复问题」）、英文普通短语「review once」（如「just review once and fix」）、把本 Skill 当作讨论或审查对象的纯提及、解释已有代码、只运行测试、创建或合并 PR、发布 Release，以及没有待审查变更的普通开发任务。不触发时按普通单轮 Review 处理，可一句话提示「如需完整 Review-Fix 循环可显式调用 `/review-once`」（提示不构成触发）。逐条挂载/inline 留痕类表述本身不构成循环意图，仅在请求已满足上述触发形态时作为 [audit 模式](references/conductor-mode.md#audit-模式逐条-inline-留痕)的进入信号。
+以下请求不触发本 Skill：一次性 Review 与无循环表述的单轮「review 并修复」请求（含「帮我 review 这个 PR」「review 一下当前 workspace 的变更」「帮我 review 这个 PR 并修复发现的问题」）、英文普通短语「review once」（如「just review once and fix」）、把本 Skill 当作讨论或审查对象的纯提及、解释已有代码、只运行测试、创建或合并 PR、发布 Release，以及没有待审查变更的普通开发任务。不触发时按普通单轮 Review 处理，可一句话提示「如需完整 Review-Fix 循环可显式调用 `/review-once`」（提示不构成触发）。逐条挂载/inline 留痕类表述本身不构成循环意图，仅在请求已满足上述触发形态时作为 [audit 模式](references/conductor-mode.md#audit-模式逐条-inline-留痕)的进入信号。
 
 ## 不变量
 
