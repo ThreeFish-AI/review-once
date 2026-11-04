@@ -1,15 +1,20 @@
 ---
 name: review-once
 description: >-
-  Run a bounded, evidence-driven Review-Fix loop for an existing workspace change.
-  Trigger when the user asks to repeatedly review the current Diff or workspace,
-  read Review request.md, fix actionable Findings directly, report them in Chat,
-  and review again until no clear defects remain. This includes requests to avoid
-  manual Review/Fix clicks, use Conductor Checks and DiffComments, or use Git
-  merge-base and git diff as a fallback. Prefer Conductor Diff/Comments tools
-  when available; otherwise use Git diff and repository-local checks. Do not
-  trigger for ordinary code explanations, one-pass reviews, test-only requests,
-  security audits without a Review-Fix loop, or release/merge automation.
+  Run this bounded, evidence-driven review-fix loop ONLY when the user explicitly
+  invokes this skill — /review-once, $review-once, or names review-once as the
+  tool to run ("use review-once to review the changes") — asks for an iterative
+  review-fix loop (review, fix, review again until no clear defects remain), or
+  files an RSI sedimentation request. Do NOT trigger for plain review requests —
+  "review this PR", "review the changes", or a single "review and fix" with no
+  iteration wording; handle those with a normal one-pass review (you may mention
+  /review-once for the full loop). A bare mention in a question or complaint is
+  not an invocation; plain-English "review once" ("just review once and fix") is
+  not a name mention. Do not trigger for code explanations, test-only requests,
+  security audits without an iteration loop, or release/merge automation. When
+  triggered: read Review request.md as the standard, fix actionable findings,
+  verify, and loop; prefer Conductor Diff/Comments tools, else git
+  merge-base/diff.
 license: MIT
 metadata:
   short-description: Convergent Review-Fix loops for workspace changes
@@ -21,15 +26,16 @@ metadata:
 
 ## 触发边界
 
-当用户要求“反复 Review、发现问题后直接修复、再 Review，直到没有明显问题”时使用本 Skill。典型入口包括：
+本 Skill 的触发判据（硬约束）：仅当请求满足以下任一触发形态时才进入本 Skill，其余请求一律不触发——普通 Review 需求按普通单轮 Review 处理，不进入 Review-Fix 主循环：
 
-- 用户已经授权自动反复执行 `Please review the changes in this workspace @Review request.md`；
-- “自动反复审查当前 Diff 并修复 Findings”；
-- “不要让我手动点击 Review 和 Fix，持续到收敛”。
+1. **显式点名**：用户以执行意图点名本 Skill——`/review-once`、`$review-once`，或把 `review-once`／`Review Once` 作为要运行的工具点名（如「用 review-once 审查当前变更」「run review-once」）。以下不算点名：英文普通短语「review once」（如「just review once and fix」——大小写变化不改变其普通短语性质）；把本 Skill 当作讨论或审查对象的纯提及（「review-once 是什么」「review 一下 review-once 这次的改动」）。纯提及不构成触发、不进入本 Skill；经其他触发形态进入后遇到纯提及也只应答所问，不启动主循环。点名触发后按请求性质路由：执行审查或循环请求进入 Review-Fix 主循环，缺陷沉淀走第 3 形态。
+2. **明确循环意图**：自然语言明确要求多轮 Review-Fix 循环，满足以下任一形态——循环词（反复、循环、多轮、repeat、loop）；修后再审序列（修复后重新/再次 Review、fix … then review again）；终止条件句（直到收敛、直到没有明显（值得修复的）问题、until no … remain）；对单轮的显式否定（不要只修一次、不在第一轮结论后停止、不要让我手动点击 Review 和 Fix）；条件延续句（有 Finding 就修复并再审查）。典型入口：
+   - “Please review the changes in this workspace @Review request.md and fix every actionable finding, then review again.”；
+   - “自动反复审查当前 Diff 并修复 Findings”；
+   - “不要让我手动点击 Review 和 Fix，持续到收敛”。
+3. **RSI 沉淀入口**：用户以第一人称指出本 Skill 自身缺陷并要求按 RSI 沉淀时，本 Skill 作为统一 RSI 回路的仓内入口触发（见[自改进回路](#自改进回路rsi)），但该请求不走 Review-Fix 主循环。
 
-以下请求不触发本 Skill：一次性 Review、解释已有代码、只运行测试、创建或合并 PR、发布 Release，以及没有待审查变更的普通开发任务。
-
-用户以第一人称指出本 Skill 自身缺陷并要求按 RSI 沉淀时，本 Skill 作为统一 RSI 回路的仓内入口触发（见[自改进回路](#自改进回路rsi)），但该请求不走 Review-Fix 主循环。
+以下请求不触发本 Skill：一次性 Review 与无循环表述的单轮「review 并修复」请求（含「帮我 review 这个 PR」「review 一下当前 workspace 的变更」「帮我 review 这个 PR 并修复发现的问题」）、英文普通短语「review once」（如「just review once and fix」）、把本 Skill 当作讨论或审查对象的纯提及、解释已有代码、只运行测试、创建或合并 PR、发布 Release，以及没有待审查变更的普通开发任务。不触发时按普通单轮 Review 处理，可一句话提示「如需完整 Review-Fix 循环可显式调用 `/review-once`」（提示不构成触发）。逐条挂载/inline 留痕类表述本身不构成循环意图，仅在请求已满足上述触发形态时作为 [audit 模式](references/conductor-mode.md#audit-模式逐条-inline-留痕)的进入信号。
 
 ## 不变量
 

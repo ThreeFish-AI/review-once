@@ -4,12 +4,14 @@ Portable Agent Skill，用于在 Conductor 或普通 Git workspace 中执行有�
 
 ## 适用场景
 
-当用户说“反复 Review 当前 workspace 的变更，发现问题后直接修复，再 Review，直到没有明显问题”时使用：
+仅当显式调用（Claude Code 使用 `/review-once`，Codex 使用 `$review-once`，或以执行意图点名 review-once，如“用 review-once 审查当前变更”），用户明确要求多轮 Review-Fix 循环（“反复 Review 当前 workspace 的变更，发现问题后直接修复，再 Review，直到没有明显问题”），或以第一人称指出本 Skill 自身缺陷并要求按 RSI 沉淀（不走 Review-Fix 主循环）时使用：
 
 ```text
 使用 review-once 反复执行 Review request.md 中的 Review，
 把发现的明确缺陷挂载到 Chat 并直接修复，再 Review，直到收敛。
 ```
+
+普通 Review 请求（含“review 并修复”这类无循环表述的单轮请求）不适用本 Skill，按普通单轮 Review 处理即可；此时可一句话提示 `/review-once` 可用。
 
 Skill 不负责自动 Commit、Push、创建或合并 PR，也不替用户完成 OAuth/SSO。
 
@@ -105,7 +107,7 @@ unzip -l "$SKILL_ROOT/.temp/dist/review-once.skill"
 评测资产位于 [evals/README.md](./evals/README.md)：
 
 - `evals/evals.json` 验证双 Mode、无 Finding、收敛门与自审收敛、重复 Finding、误报复核、修复 Delta、无进展、测试失败、终态挂载（默认模式收敛零新增、audit 模式逐轮留痕）、评论回显防循环与验证阻塞挂载、最终报告人读友好格式（概述、效果与影响、改进建议、真问题不降格），以及审查范围声明传导（eval 16、收窄方向 eval 23）、范围外观察分支（eval 17）、收敛门只读判据与门后核对（eval 18）、reviewer 实例换新（eval 19）、事实改写同批同步（eval 20）、派生物再生与工具写入预快照（eval 21）、用户要求提交的时序（eval 22）、复合声明先并集后排除解析（eval 24）、多来源范围裁决时间轴 tiebreak（eval 25）、并行编排可选档与用户显式要求例外（eval 26、27）、修复方向复核（eval 28）等输出行为；
-- `evals/trigger-evals.json` 验证触发准确率，并覆盖普通 Review、Conductor Review、RSI 沉淀正例与非 RSI 用法负例、近邻 collision case。
+- `evals/trigger-evals.json` 验证触发准确率：正例覆盖显式点名（`/review-once`）、明确循环意图（反复 Review、Conductor 循环 Review）与 RSI 沉淀入口；负例覆盖普通 Review（含无循环表述的 review 并修复与纯提及）、非 RSI 用法与近邻 collision case。
 
 ## 许可证
 

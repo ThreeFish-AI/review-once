@@ -16,14 +16,20 @@
     {"id": 15, "query": "请把 PR 标题和描述翻译成中文，不需要查看代码变更。", "should_trigger": false},
     {"id": 16, "query": "Review request.md 里的规则优先，自动获取 Diff、挂载评论、修复并验证，直到没有值得修复的缺陷。", "should_trigger": true},
     {"id": 17, "query": "请分析这段 SQL 的性能并给出索引建议，不要修改仓库。", "should_trigger": false},
-    {"id": 18, "query": "测试失败时先修回归，再继续 Review；不要把未解释失败标成完成。", "should_trigger": true},
+    {"id": 18, "query": "请反复 Review 当前变更直到收敛；测试失败时先修回归，再继续 Review，不要把未解释失败标成完成。", "should_trigger": true},
     {"id": 19, "query": "请运行 formatter 并提交格式化结果。", "should_trigger": false},
-    {"id": 20, "query": "当前工作区的 Review 发现重复 Finding 时，请按有界策略停止并报告原因。", "should_trigger": true},
+    {"id": 20, "query": "请反复 Review 当前工作区直到收敛；发现重复 Finding 时，请按有界策略停止并报告原因。", "should_trigger": true},
     {"id": 21, "query": "请评估是否应该采用事件驱动架构，并写一份设计方案。", "should_trigger": false},
     {"id": 22, "query": "在没有 Conductor MCP 时，用 Git merge-base 和 git diff 完成 Review-Fix 循环。", "should_trigger": true},
     {"id": 23, "query": "请为这个 React 页面做一次 UI 视觉评审并生成截图。", "should_trigger": false},
     {"id": 24, "query": "最多 Review 8 轮；每次修复后重新取证，直到无明显问题或明确阻塞。", "should_trigger": true},
     {"id": 25, "query": "请把当前分支的变更打包发布为 v1.0 Release 并生成 changelog，不需要做代码 Review。", "should_trigger": false},
     {"id": 26, "query": "review-once 的收敛门判据和 references 状态机对不上，按 RSI 把这条契约缺陷沉淀进维护仓库。", "should_trigger": true},
-    {"id": 27, "query": "帮我 review 这个 PR。", "should_trigger": false}
+    {"id": 27, "query": "帮我 review 这个 PR。", "should_trigger": false},
+    {"id": 28, "query": "/review-once 跑当前变更，按 Review request.md 审查并修复。", "should_trigger": true},
+    {"id": 29, "query": "帮我 review 这个 PR 并修复发现的问题。", "should_trigger": false},
+    {"id": 30, "query": "review 一下当前 workspace 的变更。", "should_trigger": false},
+    {"id": 31, "query": "Review the changes in this workspace and fix them.", "should_trigger": false},
+    {"id": 32, "query": "review-once 是什么？跟普通 review 有什么区别？", "should_trigger": false},
+    {"id": 33, "query": "Just review once and fix the issues.", "should_trigger": false}
 ]
