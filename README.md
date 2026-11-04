@@ -4,7 +4,7 @@ Portable Agent Skill，用于在 Conductor 或普通 Git workspace 中执行有�
 
 ## 适用场景
 
-仅当显式调用（Claude Code 使用 `/review-once`，Codex 使用 `$review-once`，或以执行意图点名 review-once，如“用 review-once 审查当前变更”），或用户明确要求多轮 Review-Fix 循环（“反复 Review 当前 workspace 的变更，发现问题后直接修复，再 Review，直到没有明显问题”）时使用：
+仅当显式调用（Claude Code 使用 `/review-once`，Codex 使用 `$review-once`，或以执行意图点名 review-once，如“用 review-once 审查当前变更”），用户明确要求多轮 Review-Fix 循环（“反复 Review 当前 workspace 的变更，发现问题后直接修复，再 Review，直到没有明显问题”），或以第一人称指出本 Skill 自身缺陷并要求按 RSI 沉淀（不走 Review-Fix 主循环）时使用：
 
 ```text
 使用 review-once 反复执行 Review request.md 中的 Review，
