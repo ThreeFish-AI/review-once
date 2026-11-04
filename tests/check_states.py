@@ -40,7 +40,7 @@ for term in CN_TERMINALS:
 
 # —— 硬断言：终态挂载制/回显防循环/audit 模式（RSI-008）、最终报告人读友好/总分总（RSI-009）、RSI-010 七项、自改进回路钩子（RSI-011）、包管理器副作用禁令（RSI-013）、重建自版本库（RSI-014）、并行编排（RSI-015）、修复方向复核（RSI-017）与触发硬约束（RSI-018）的新契约词汇跨文档存在（RSI-007 护栏化） ——
 NEW_CONTRACT = {
-    "SKILL.md": ["终态挂载制", "人读友好", "审查范围声明", "范围外", "同批同步", "派生物", "新的收敛门 reviewer 实例", "Git 发布", "送审", "词干", "收窄豁免", "补记最终 SHA", "形态判定", "违规写入", "自改进回路", "旁路登记", "G0–G4 门禁", "门禁全绿", "硬禁令", "不热改", "版本库重建", "`HEAD` 提交 SHA", "porcelain -z", "并行编排", "多数决", "修复方向复核", "被引先例", "不盲从照抄", "显式点名", "明确循环意图", "修后再审", "对单轮的显式否定", "单轮「review 并修复」", "纯提及"],
+    "SKILL.md": ["终态挂载制", "人读友好", "审查范围声明", "范围外", "同批同步", "派生物", "新的收敛门 reviewer 实例", "Git 发布", "送审", "词干", "收窄豁免", "补记最终 SHA", "形态判定", "违规写入", "自改进回路", "旁路登记", "G0–G4 门禁", "门禁全绿", "硬禁令", "不热改", "版本库重建", "`HEAD` 提交 SHA", "porcelain -z", "并行编排", "多数决", "修复方向复核", "被引先例", "不盲从照抄", "显式点名", "明确循环意图", "修后再审", "对单轮的显式否定", "单轮「review 并修复」", "纯提及", "执行意图", "当作讨论或审查对象的纯提及"],
     "review-contract": ["终态挂载制", "Checks 面板", "人读友好", "效果与影响", "改进建议", "总分总", "审查范围声明", "范围外观察", "只读＝", "全部出现处", "reviewer 实例", "Git 发布", "生成器", "迟到快照", "访问边界", "词干", "兼含纳入与排除", "只增不减", "预跑", "时间轴在后者为准", "包管理器", "重建自版本库", "cat-file --filters", "被该 SHA 跟踪", "porcelain -z", "numstat", "任一条件不满足", "并行编排", "多数决", "对抗复核", "机械去重", "finder", "skeptic", "整体裁定", "跨轮编排", "物理前提", "finder 组", "视为条件三成立", "启用不再是可选", "票型", "淘汰依据", "任务提示", "修复方向复核", "被引惯例", "可信输入", "不盲从照抄", "边界语义", "不得默认照抄"],
     "conductor-mode": ["终态挂载", "Checks 面板", "回显", "audit 模式", "审查范围声明", "范围外", "收敛门 reviewer 实例", "生成器", "经回显核验"],
     "git-mode": ["审查范围声明", "范围外", "收敛门 reviewer 实例", "生成器"],
@@ -54,11 +54,16 @@ _evals_text = (ROOT / "evals" / "evals.json").read_text(encoding="utf-8")
 for kw in ("audit 模式", "回显", "人读友好", "总分总", "审查范围声明", "范围外观察", "只读＝", "reviewer 实例", "同批同步", "派生物", "Git 发布", "词干", "porcelain", "porcelain -z", "迟到快照", "只增不减", "修复自致", "预跑", "补记最终 SHA", "时间轴在后者为准", "再应用排除", "重建自版本库", "numstat", "并行编排", "多数决", "skeptic", "整体裁定", "finder 组", "视为条件三成立", "启用不再是可选", "淘汰依据", "任务提示", "不强启不强禁", "修复方向复核", "被引惯例", "边界语义", "不得默认照抄"):
     if kw not in _evals_text:
         errors.append(f"evals.json 缺新行为覆盖关键词: {kw}")
-# 触发例不得静默丢失 RSI 用法覆盖（RSI-011）与 RSI-018 触发硬约束覆盖：正例须含 RSI 沉淀入口与显式点名，负例须含非 RSI 用法的普通 review 与无循环表述的 review 并修复
-_trig_text = (ROOT / "evals" / "trigger-evals.json").read_text(encoding="utf-8")
-for kw in ("按 RSI", "帮我 review", "/review-once", "并修复"):
-    if kw not in _trig_text:
-        errors.append(f"trigger-evals.json 缺 RSI 触发覆盖关键词: {kw}")
+# 触发例不得静默丢失 RSI 用法覆盖（RSI-011）与 RSI-018 触发硬约束覆盖：正例须含 RSI 沉淀入口与显式点名，负例须含非 RSI 用法的普通 review、无循环表述的 review 并修复与英文普通短语 review once——按极性分别断言，防关键词跨极性对冲（一词同时出现在正负例时删负例不红灯）
+_trig = json.loads((ROOT / "evals" / "trigger-evals.json").read_text(encoding="utf-8"))
+_pos_q = "\n".join(t["query"] for t in _trig if t["should_trigger"])
+_neg_q = "\n".join(t["query"] for t in _trig if not t["should_trigger"])
+for kw in ("按 RSI", "/review-once"):
+    if kw not in _pos_q:
+        errors.append(f"trigger-evals.json 正例缺触发覆盖关键词: {kw}")
+for kw in ("帮我 review", "并修复", "review once"):
+    if kw not in _neg_q:
+        errors.append(f"trigger-evals.json 负例缺触发覆盖关键词: {kw}")
 
 # —— 图-契约词汇登记表（RSI-007）——
 # 契约 11 态必须在图示资产可追踪：节点 id/label/sublabel 或边 label 至少一处出现

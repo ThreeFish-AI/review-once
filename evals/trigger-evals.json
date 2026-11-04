@@ -30,5 +30,6 @@
     {"id": 29, "query": "帮我 review 这个 PR 并修复发现的问题。", "should_trigger": false},
     {"id": 30, "query": "review 一下当前 workspace 的变更。", "should_trigger": false},
     {"id": 31, "query": "Review the changes in this workspace and fix them.", "should_trigger": false},
-    {"id": 32, "query": "review-once 是什么？跟普通 review 有什么区别？", "should_trigger": false}
+    {"id": 32, "query": "review-once 是什么？跟普通 review 有什么区别？", "should_trigger": false},
+    {"id": 33, "query": "Just review once and fix the issues.", "should_trigger": false}
 ]
